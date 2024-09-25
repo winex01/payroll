@@ -22,8 +22,11 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test@test.com',
             'password' => Hash::make('password')
         ]);
+
+        $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(MenusTableSeeder::class);
     }
 }
