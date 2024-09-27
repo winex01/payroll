@@ -42,6 +42,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'menus_delete',
             'menus_reorder',
         ],
+
+        'employees' => [
+            'employees_list',
+            'employees_create',
+            'employees_show',
+            'employees_update',
+            'employees_delete',
+        ],
     ];
 
     /**

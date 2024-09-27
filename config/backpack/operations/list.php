@@ -60,7 +60,7 @@ return [
     // Force «X» actions to be shown inline before the dropdown is created
     // Example: when setting this to «2», the first «2» actions will be shown inline
     // and the rest will be moved to the dropdown
-    'lineButtonsAsDropdownShowBefore' => 0,
+    'lineButtonsAsDropdownShowBefore' => 4,
 
     // Show a "Reset" button next to the List operation subheading
     // (Showing 1 to 25 of 9999 entries. Reset)
