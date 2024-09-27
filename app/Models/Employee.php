@@ -35,6 +35,14 @@ class Employee extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function civilStatus()
+    {
+        return $this->belongsTo(CivilStatus::class);
+    }
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

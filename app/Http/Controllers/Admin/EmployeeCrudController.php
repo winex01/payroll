@@ -39,26 +39,7 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $tab = 'Personal Data';
-        CRUD::column('photo')->tab($tab);
-        CRUD::column('employee_no')->tab($tab);
-        CRUD::column('last_name')->tab($tab);
-        CRUD::column('first_name')->tab($tab);
-        CRUD::column('middle_name')->tab($tab);
-        CRUD::column('home_address')->tab($tab);
-        CRUD::column('current_address')->tab($tab);
-        CRUD::column('house_no')->tab($tab);
-        CRUD::column('street')->tab($tab);
-        CRUD::column('brgy')->tab($tab);
-        CRUD::column('city')->tab($tab);
-        CRUD::column('province')->tab($tab);
-        CRUD::column('zip_code')->tab($tab);
-
-        $tab = 'Social Agencies';
-        CRUD::column('tin')->tab($tab);
-        CRUD::column('sss')->tab($tab);
-        CRUD::column('pagibig')->tab($tab);
-        CRUD::column('philhealth')->tab($tab);
+        $this->data('column');
     }
 
     /**
@@ -71,37 +52,46 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
-        $tab = 'Personal Data';
-        CRUD::field('photo')->tab($tab);
-        CRUD::field('employee_no')->tab($tab);
-        CRUD::field('last_name')->tab($tab);
-        CRUD::field('first_name')->tab($tab);
-        CRUD::field('middle_name')->tab($tab);
-        CRUD::field('home_address')->tab($tab);
-        CRUD::field('current_address')->tab($tab);
-        CRUD::field('house_no')->tab($tab);
-        CRUD::field('street')->tab($tab);
-        CRUD::field('brgy')->tab($tab);
-        CRUD::field('city')->tab($tab);
-        CRUD::field('province')->tab($tab);
-        CRUD::field('zip_code')->tab($tab);
+        $this->data('field');
+    }
 
-        $tab = 'Social Agencies';
-        CRUD::field('tin')->tab($tab);
-        CRUD::field('sss')->tab($tab);
-        CRUD::field('pagibig')->tab($tab);
-        CRUD::field('philhealth')->tab($tab);
+    private function data($data = 'field')
+    {
+        $tab = null;
+        CRUD::{$data}('photo')->tab($tab);
+        CRUD::{$data}('employee_no')->tab($tab);
+        CRUD::{$data}('last_name')->tab($tab);
+        CRUD::{$data}('first_name')->tab($tab);
+        CRUD::{$data}('middle_name')->tab($tab);
 
-        // $table->foreignId('gender_id')->after('zip_code')->nullable()->constrained()->onDelete('set null');
-        // $table->date('date_of_birth')->nullable();
-        // $table->string('birth_place')->nullable();
-        // $table->foreignId('civil_status_id')->after('birth_place')->nullable()->constrained()->onDelete('set null');
-        // $table->date('date_of_marriage')->nullable();
-        // $table->string('telephone_no')->nullable();
-        // $table->string('mobile_no')->nullable();
-        // $table->string('personal_email')->nullable();
-        // $table->string('company_email')->nullable();
+        $tab = 'Tin, Sss, Phil...';
+        CRUD::{$data}('tin')->tab($tab);
+        CRUD::{$data}('sss')->tab($tab);
+        CRUD::{$data}('philhealth')->tab($tab);
+        CRUD::{$data}('pagibig')->tab($tab);
 
+        $tab = 'Contacts';
+        CRUD::{$data}('mobile_no')->tab($tab);
+        CRUD::{$data}('telephone_no')->tab($tab);
+        CRUD::{$data}('personal_email')->tab($tab);
+        CRUD::{$data}('company_email')->tab($tab);
+
+        $tab = 'Address Details';
+        CRUD::{$data}('current_address')->tab($tab);
+        CRUD::{$data}('home_address')->tab($tab);
+        CRUD::{$data}('house_no')->tab($tab);
+        CRUD::{$data}('street')->tab($tab);
+        CRUD::{$data}('brgy')->tab($tab);
+        CRUD::{$data}('city')->tab($tab);
+        CRUD::{$data}('province')->tab($tab);
+        CRUD::{$data}('zip_code')->tab($tab);
+
+        $tab = 'More Data...';
+        CRUD::{$data}('gender')->tab($tab);
+        CRUD::{$data}('date_of_birth')->tab($tab);
+        CRUD::{$data}('birth_place')->tab($tab);
+        CRUD::{$data}('civilStatus')->tab($tab);
+        CRUD::{$data}('date_of_marriage')->tab($tab);
     }
 
     /**
