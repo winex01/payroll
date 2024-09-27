@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Backpack\CRUD\app\Library\Widget;
 use App\Http\Requests\EmployeeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -57,12 +58,13 @@ class EmployeeCrudController extends CrudController
 
     private function data($data = 'field')
     {
-        $tab = null;
-        CRUD::{$data}('photo')->tab($tab);
-        CRUD::{$data}('employee_no')->tab($tab);
-        CRUD::{$data}('last_name')->tab($tab);
-        CRUD::{$data}('first_name')->tab($tab);
-        CRUD::{$data}('middle_name')->tab($tab);
+        Widget::add()->type('script')->content(asset('assets/js/admin/forms/employee.js'));
+
+        CRUD::{$data}('photo');
+        CRUD::{$data}('employee_no');
+        CRUD::{$data}('last_name');
+        CRUD::{$data}('first_name');
+        CRUD::{$data}('middle_name');
 
         $tab = 'Tin, Sss, Phil...';
         CRUD::{$data}('tin')->tab($tab);
