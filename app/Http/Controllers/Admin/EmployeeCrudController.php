@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Library\Widget;
+use App\Http\Controllers\Admin\Traits\Script;
 use App\Http\Requests\EmployeeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -19,6 +19,8 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+
+    use Script;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -58,7 +60,7 @@ class EmployeeCrudController extends CrudController
 
     private function data($data = 'field')
     {
-        Widget::add()->type('script')->content(asset('assets/js/admin/forms/employee.js'));
+        $this->script('assets/js/admin/forms/employee.js');
 
         CRUD::{$data}('photo');
         CRUD::{$data}('employee_no');
