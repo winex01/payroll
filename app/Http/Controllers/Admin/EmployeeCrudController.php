@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Traits\Script;
 use App\Http\Requests\EmployeeRequest;
+use App\Http\Controllers\Admin\Traits\Script;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
 /**
  * Class EmployeeCrudController
@@ -20,6 +21,7 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    use UserPermissions;
     use Script;
 
     /**
