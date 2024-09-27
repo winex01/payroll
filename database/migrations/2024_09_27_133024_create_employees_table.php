@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->string('current_address')->nullable();
             $table->string('house_no')->nullable();
             $table->string('street')->nullable();
-            $table->string('brgy')->nullable();
+            $table->string('barangay')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();
             $table->string('zip_code')->nullable();

@@ -29,8 +29,6 @@ class EmployeeCrudController extends CrudController
         CRUD::setModel(\App\Models\Employee::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/employee');
         CRUD::setEntityNameStrings('employee', 'employees');
-
-        $this->crud->setOperationSetting('tabsType', 'vertical');
     }
 
     /**
@@ -41,7 +39,26 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $tab = 'Personal Data';
+        CRUD::column('photo')->tab($tab);
+        CRUD::column('employee_no')->tab($tab);
+        CRUD::column('last_name')->tab($tab);
+        CRUD::column('first_name')->tab($tab);
+        CRUD::column('middle_name')->tab($tab);
+        CRUD::column('home_address')->tab($tab);
+        CRUD::column('current_address')->tab($tab);
+        CRUD::column('house_no')->tab($tab);
+        CRUD::column('street')->tab($tab);
+        CRUD::column('brgy')->tab($tab);
+        CRUD::column('city')->tab($tab);
+        CRUD::column('province')->tab($tab);
+        CRUD::column('zip_code')->tab($tab);
+
+        $tab = 'Social Agencies';
+        CRUD::column('tin')->tab($tab);
+        CRUD::column('sss')->tab($tab);
+        CRUD::column('pagibig')->tab($tab);
+        CRUD::column('philhealth')->tab($tab);
     }
 
     /**
@@ -53,33 +70,27 @@ class EmployeeCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(EmployeeRequest::class);
-        // CRUD::setFromDb();
 
-        $tab1 = 'Personal Data';
-        CRUD::field('photo')->tab($tab1);
-        CRUD::field('employee_no')->tab($tab1);
-        CRUD::field('last_name')->tab($tab1);
-        CRUD::field('first_name')->tab($tab1);
-        CRUD::field('middle_name')->tab($tab1);
-        CRUD::field('tin')->tab($tab1);
-        CRUD::field('sss')->tab($tab1);
-        CRUD::field('pagibig')->tab($tab1);
-        CRUD::field('philhealth')->tab($tab1);
+        $tab = 'Personal Data';
+        CRUD::field('photo')->tab($tab);
+        CRUD::field('employee_no')->tab($tab);
+        CRUD::field('last_name')->tab($tab);
+        CRUD::field('first_name')->tab($tab);
+        CRUD::field('middle_name')->tab($tab);
+        CRUD::field('home_address')->tab($tab);
+        CRUD::field('current_address')->tab($tab);
+        CRUD::field('house_no')->tab($tab);
+        CRUD::field('street')->tab($tab);
+        CRUD::field('brgy')->tab($tab);
+        CRUD::field('city')->tab($tab);
+        CRUD::field('province')->tab($tab);
+        CRUD::field('zip_code')->tab($tab);
 
-
-        // $table->string('tin')->nullable();
-        // $table->string('sss')->nullable();
-        // $table->string('pagibig')->nullable();
-        // $table->string('philhealth')->nullable();
-
-        // $table->string('home_address')->nullable();
-        // $table->string('current_address')->nullable();
-        // $table->string('house_no')->nullable();
-        // $table->string('street')->nullable();
-        // $table->string('brgy')->nullable();
-        // $table->string('city')->nullable();
-        // $table->string('province')->nullable();
-        // $table->string('zip_code')->nullable();
+        $tab = 'Social Agencies';
+        CRUD::field('tin')->tab($tab);
+        CRUD::field('sss')->tab($tab);
+        CRUD::field('pagibig')->tab($tab);
+        CRUD::field('philhealth')->tab($tab);
 
         // $table->foreignId('gender_id')->after('zip_code')->nullable()->constrained()->onDelete('set null');
         // $table->date('date_of_birth')->nullable();
@@ -102,5 +113,11 @@ class EmployeeCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function setupShowOperation()
+    {
+        $this->crud->setOperationSetting('tabsEnabled', true);
+        $this->setupListOperation();
     }
 }
