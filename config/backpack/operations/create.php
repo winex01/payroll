@@ -9,7 +9,7 @@
 return [
     // Define the size/looks of the content div for all CRUDs
     // To override per view use $this->crud->setCreateContentClass('class-string')
-    'contentClass' => 'col-md-12 bold-labels',
+    'contentClass' => 'col-md-8 bold-labels',
 
     // When using tabbed forms (create & update), what kind of tabs would you like?
     'tabsType' => 'horizontal', //options: horizontal, vertical
@@ -19,7 +19,7 @@ return [
     'inlineErrors' => true,
 
     // when the page loads, put the cursor on the first input?
-    'autoFocusOnFirstField' => true,
+    'autoFocusOnFirstField' => false,
 
     // Where do you want to redirect the user by default, save?
     // options: save_and_back, save_and_edit, save_and_new

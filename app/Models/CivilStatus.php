@@ -35,6 +35,10 @@ class CivilStatus extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class FamilyType extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,7 +17,7 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'employees';
+    protected $table = 'family_types';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -35,14 +35,6 @@ class Employee extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function civilStatus()
-    {
-        return $this->belongsTo(CivilStatus::class);
-    }
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
