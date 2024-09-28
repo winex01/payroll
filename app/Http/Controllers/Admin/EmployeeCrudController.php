@@ -66,7 +66,15 @@ class EmployeeCrudController extends CrudController
     {
         $this->script('assets/js/admin/forms/employee.js');
 
-        CRUD::{$data}('photo');
+        CRUD::{$data}([
+            'name' => 'photo',
+            'type' => ($data == 'field') ? 'upload' : 'image',
+            'withFiles' => [
+                'disk' => 'public',
+                'path' => 'photos',
+            ]
+        ]);
+
         CRUD::{$data}('employee_no');
         CRUD::{$data}('last_name');
         CRUD::{$data}('first_name');
@@ -117,5 +125,10 @@ class EmployeeCrudController extends CrudController
     {
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
+
+        CRUD::modifyColumn('photo', [
+            'height' => '100px',
+            'width' => '100px'
+        ]);
     }
 }
