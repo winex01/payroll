@@ -59,13 +59,35 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
+        $this->script('assets/js/admin/forms/employee.js');
+
         $this->data('field');
+    }
+
+    /**
+     * Define what happens when the Update operation is loaded.
+     *
+     * @see https://backpackforlaravel.com/docs/crud-operation-update
+     * @return void
+     */
+    protected function setupUpdateOperation()
+    {
+        $this->setupCreateOperation();
+    }
+
+    public function setupShowOperation()
+    {
+        $this->crud->setOperationSetting('tabsEnabled', true);
+        $this->setupListOperation();
+
+        CRUD::modifyColumn('photo', [
+            'height' => '100px',
+            'width' => '100px'
+        ]);
     }
 
     private function data($data = 'field')
     {
-        $this->script('assets/js/admin/forms/employee.js');
-
         CRUD::{$data}([
             'name' => 'photo',
             'type' => ($data == 'field') ? 'upload' : 'image',
@@ -108,27 +130,5 @@ class EmployeeCrudController extends CrudController
         CRUD::{$data}('birth_place')->tab($tab);
         CRUD::{$data}('civilStatus')->tab($tab);
         CRUD::{$data}('date_of_marriage')->tab($tab);
-    }
-
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
-    }
-
-    public function setupShowOperation()
-    {
-        $this->crud->setOperationSetting('tabsEnabled', true);
-        $this->setupListOperation();
-
-        CRUD::modifyColumn('photo', [
-            'height' => '100px',
-            'width' => '100px'
-        ]);
     }
 }
