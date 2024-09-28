@@ -25,7 +25,13 @@ class EmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'last_name' => 'required|string|min:2|max:255',
+            'first_name' => 'required|string|min:2|max:255',
+            'employee_no' => 'nullable|unique:employees,employee_no,' . (request()->id ? request()->id : 'NULL'),
+            'gender' => 'required|exists:genders,id',
+            'civilStatus' => 'required|exists:civil_statuses,id',
+            'current_address' => 'required|string|min:10|max:255',
         ];
     }
 
