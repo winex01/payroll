@@ -32,7 +32,7 @@ return new class extends Migration {
             $table->string('province')->nullable();
             $table->string('zip_code')->nullable();
 
-            $table->date('date_of_birth')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('birth_place')->nullable();
             $table->date('date_of_marriage')->nullable();
             $table->string('telephone_no')->nullable();

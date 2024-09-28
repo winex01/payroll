@@ -104,7 +104,7 @@ class EmployeeCrudController extends CrudController
 
         $tab = 'More Data...';
         CRUD::{$data}('gender')->tab($tab);
-        CRUD::{$data}('date_of_birth')->tab($tab);
+        CRUD::{$data}('birth_date')->tab($tab);
         CRUD::{$data}('birth_place')->tab($tab);
         CRUD::{$data}('civilStatus')->tab($tab);
         CRUD::{$data}('date_of_marriage')->tab($tab);
