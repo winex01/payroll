@@ -114,7 +114,7 @@ class EmployeeCrudController extends CrudController
         CRUD::{$data}('personal_email')->tab($tab);
         CRUD::{$data}('company_email')->tab($tab);
 
-        $tab = 'Address Details';
+        $tab = 'Address';
         CRUD::{$data}('current_address')->tab($tab);
         CRUD::{$data}('home_address')->tab($tab);
         CRUD::{$data}('house_no')->tab($tab);
@@ -124,7 +124,7 @@ class EmployeeCrudController extends CrudController
         CRUD::{$data}('province')->tab($tab);
         CRUD::{$data}('zip_code')->tab($tab);
 
-        $tab = 'More Data...';
+        $tab = 'More Details...';
         CRUD::{$data}('gender')->tab($tab);
         CRUD::{$data}('birth_date')->tab($tab);
         CRUD::{$data}('birth_place')->tab($tab);
