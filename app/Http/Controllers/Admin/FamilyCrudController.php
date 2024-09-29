@@ -45,6 +45,10 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
+
+        CRUD::modifyColumn('employee', [
+            'linkTo' => fn($entry, $related_key) => route('category.show', ['id' => $related_key]),
+        ]);
     }
 
     /**
@@ -86,7 +90,8 @@ class FamilyCrudController extends CrudController
             'employee_id',
             'family_type_id',
         ]);
-        CRUD::{$input}('employee')->before('last_name');
+
+        CRUD::{$input}('employee')->before('last_name')->linkTo('employee.show');
         CRUD::{$input}('familyType')->after('employee');
     }
 }
