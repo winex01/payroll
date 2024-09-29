@@ -44,7 +44,7 @@ class FamilyCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $this->input('column');
     }
 
     /**
@@ -55,17 +55,9 @@ class FamilyCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        // TODO:: validation
         CRUD::setValidation(FamilyRequest::class);
-        CRUD::setFromDb();
 
-        CRUD::removeFields([
-            'employee_id',
-            'family_type_id',
-        ]);
-
-        CRUD::field('employee')->before('last_name');
-        CRUD::field('familyType')->after('employee');
+        $this->input('field');
     }
 
     /**
@@ -82,5 +74,19 @@ class FamilyCrudController extends CrudController
     public function setupShowOperation()
     {
         $this->setupListOperation();
+    }
+
+    public function input($input = 'field')
+    {
+        CRUD::setFromDb();
+
+        $input = ucfirst($input);
+
+        CRUD::{'remove' . $input . 's'}([
+            'employee_id',
+            'family_type_id',
+        ]);
+        CRUD::{$input}('employee')->before('last_name');
+        CRUD::{$input}('familyType')->after('employee');
     }
 }
