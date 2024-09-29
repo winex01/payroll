@@ -29,6 +29,11 @@ class FamilyRequest extends FormRequest
             'familyType' => 'required|exists:family_types,id',
             'last_name' => 'required|string|min:2|max:255',
             'first_name' => 'required|string|min:2|max:255',
+            'middle_name' => 'nullable|string|min:2|max:255',
+
+            'birth_date' => 'nullable|date',
+            'contact_no' => 'nullable|phone:INTERNATIONAL,PH',
+            'address' => 'required|string|min:10|max:255',
         ];
     }
 

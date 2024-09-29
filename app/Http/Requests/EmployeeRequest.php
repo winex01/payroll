@@ -26,12 +26,24 @@ class EmployeeRequest extends FormRequest
     {
         return [
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'employee_no' => 'nullable|unique:employees,employee_no,' . (request()->id ? request()->id : 'NULL'),
             'last_name' => 'required|string|min:2|max:255',
             'first_name' => 'required|string|min:2|max:255',
-            'employee_no' => 'nullable|unique:employees,employee_no,' . (request()->id ? request()->id : 'NULL'),
+            'middle_name' => 'nullable|string|min:2|max:255',
+
             'gender' => 'required|exists:genders,id',
+
+            'mobile_no' => 'nullable|phone:INTERNATIONAL,PH',
+            'telephone_no' => 'nullable|string',
+            'personal_email' => 'nullable|email',
+            'company_email' => 'nullable|email',
+
             'civilStatus' => 'required|exists:civil_statuses,id',
             'current_address' => 'required|string|min:10|max:255',
+
+            'birth_date' => 'nullable|date',
+            'date_of_marriage' => 'nullable|date',
+
         ];
     }
 
@@ -55,7 +67,7 @@ class EmployeeRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'mobile_no' => 'The :attribute field must be a valid number.',
         ];
     }
 }
