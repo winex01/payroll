@@ -50,6 +50,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'employees_update',
             'employees_delete',
         ],
+
+        'families' => [
+            'families_list',
+            'families_create',
+            'families_show',
+            'families_update',
+            'families_delete',
+        ],
     ];
 
     /**

@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Family extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,50 +17,32 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'employees';
+    protected $table = 'families';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
-    protected $identifiableAttribute = 'full_name';
-
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('orderByFullName', function (\Illuminate\Database\Eloquent\Builder $builder) {
-            $orderBy = 'asc';
-            $builder->orderBy('last_name', $orderBy);
-            $builder->orderBy('first_name', $orderBy);
-            $builder->orderBy('middle_name', $orderBy);
-        });
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function civilStatus()
+    public function employee()
     {
-        return $this->belongsTo(CivilStatus::class);
+        return $this->belongsTo(Employee::class);
     }
 
-    public function families()
+    public function familyType()
     {
-        return $this->hasMany(Family::class);
-    }
-
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class);
+        return $this->belongsTo(FamilyType::class);
     }
 
     /*
@@ -74,10 +56,6 @@ class Employee extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getFullNameAttribute()
-    {
-        return "{$this->last_name}, {$this->first_name} {$this->middle_name}";
-    }
 
     /*
     |--------------------------------------------------------------------------

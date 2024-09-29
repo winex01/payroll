@@ -29,12 +29,25 @@ class FamilyType extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('orderByName', function (\Illuminate\Database\Eloquent\Builder $builder) {
+            $orderBy = 'asc';
+            $builder->orderBy('name', $orderBy);
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function families()
+    {
+        return $this->hasMany(Family::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
