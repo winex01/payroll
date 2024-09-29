@@ -34,6 +34,8 @@ class FamilyCrudController extends CrudController
         CRUD::setEntityNameStrings('family', 'families');
 
         $this->userPermissions();
+
+        $this->crud->query->whereHas('employee');
     }
 
     /**
@@ -45,10 +47,6 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
-
-        CRUD::modifyColumn('employee', [
-            'linkTo' => fn($entry, $related_key) => route('category.show', ['id' => $related_key]),
-        ]);
     }
 
     /**
@@ -86,12 +84,12 @@ class FamilyCrudController extends CrudController
 
         $input = ucfirst($input);
 
-        CRUD::{'remove' . $input . 's'}([
+        $this->crud->{'remove' . $input . 's'}([
             'employee_id',
             'family_type_id',
         ]);
 
-        CRUD::{$input}('employee')->before('last_name')->linkTo('employee.show');
-        CRUD::{$input}('familyType')->after('employee');
+        $this->crud->{$input}('employee')->before('last_name')->linkTo('employee.show');
+        $this->crud->{$input}('familyType')->after('employee');
     }
 }

@@ -80,7 +80,7 @@ class EmployeeCrudController extends CrudController
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
 
-        CRUD::modifyColumn('photo', [
+        $this->crud->modifyColumn('photo', [
             'height' => '100px',
             'width' => '100px'
         ]);
@@ -88,7 +88,7 @@ class EmployeeCrudController extends CrudController
 
     private function input($input = 'field')
     {
-        CRUD::{$input}([
+        $this->crud->{$input}([
             'name' => 'photo',
             'type' => ($input == 'field') ? 'upload' : 'image',
             'withFiles' => [
@@ -97,38 +97,38 @@ class EmployeeCrudController extends CrudController
             ]
         ]);
 
-        CRUD::{$input}('employee_no');
-        CRUD::{$input}('last_name');
-        CRUD::{$input}('first_name');
-        CRUD::{$input}('middle_name');
+        $this->crud->{$input}('employee_no');
+        $this->crud->{$input}('last_name');
+        $this->crud->{$input}('first_name');
+        $this->crud->{$input}('middle_name');
 
         $tab = 'Tin, Sss, Phil...';
-        CRUD::{$input}('tin')->tab($tab);
-        CRUD::{$input}('sss')->tab($tab);
-        CRUD::{$input}('philhealth')->tab($tab);
-        CRUD::{$input}('pagibig')->tab($tab);
+        $this->crud->{$input}('tin')->tab($tab);
+        $this->crud->{$input}('sss')->tab($tab);
+        $this->crud->{$input}('philhealth')->tab($tab);
+        $this->crud->{$input}('pagibig')->tab($tab);
 
         $tab = 'Contacts';
-        CRUD::{$input}('mobile_no')->tab($tab);
-        CRUD::{$input}('telephone_no')->tab($tab);
-        CRUD::{$input}('personal_email')->tab($tab);
-        CRUD::{$input}('company_email')->tab($tab);
+        $this->crud->{$input}('mobile_no')->tab($tab);
+        $this->crud->{$input}('telephone_no')->tab($tab);
+        $this->crud->{$input}('personal_email')->tab($tab);
+        $this->crud->{$input}('company_email')->tab($tab);
 
         $tab = 'Address';
-        CRUD::{$input}('current_address')->tab($tab);
-        CRUD::{$input}('home_address')->tab($tab);
-        CRUD::{$input}('house_no')->tab($tab);
-        CRUD::{$input}('street')->tab($tab);
-        CRUD::{$input}('brgy')->tab($tab);
-        CRUD::{$input}('city')->tab($tab);
-        CRUD::{$input}('province')->tab($tab);
-        CRUD::{$input}('zip_code')->tab($tab);
+        $this->crud->{$input}('current_address')->tab($tab);
+        $this->crud->{$input}('home_address')->tab($tab);
+        $this->crud->{$input}('house_no')->tab($tab);
+        $this->crud->{$input}('street')->tab($tab);
+        $this->crud->{$input}('brgy')->tab($tab);
+        $this->crud->{$input}('city')->tab($tab);
+        $this->crud->{$input}('province')->tab($tab);
+        $this->crud->{$input}('zip_code')->tab($tab);
 
         $tab = 'More Details...';
-        CRUD::{$input}('gender')->tab($tab);
-        CRUD::{$input}('birth_date')->tab($tab);
-        CRUD::{$input}('birth_place')->tab($tab);
-        CRUD::{$input}('civilStatus')->tab($tab);
-        CRUD::{$input}('date_of_marriage')->tab($tab);
+        $this->crud->{$input}('gender')->tab($tab);
+        $this->crud->{$input}('birth_date')->tab($tab);
+        $this->crud->{$input}('birth_place')->tab($tab);
+        $this->crud->{$input}('civilStatus')->tab($tab);
+        $this->crud->{$input}('date_of_marriage')->tab($tab);
     }
 }

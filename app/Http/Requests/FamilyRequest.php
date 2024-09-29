@@ -57,7 +57,7 @@ class FamilyRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'contact_no' => 'The :attribute field must be a valid number.',
         ];
     }
 }
