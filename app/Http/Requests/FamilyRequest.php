@@ -25,7 +25,10 @@ class FamilyRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'employee' => 'required|exists:employees,id',
+            'familyType' => 'required|exists:family_types,id',
+            'last_name' => 'required|string|min:2|max:255',
+            'first_name' => 'required|string|min:2|max:255',
         ];
     }
 
