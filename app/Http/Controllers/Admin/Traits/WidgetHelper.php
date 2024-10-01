@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Admin\Traits;
 
 use Backpack\CRUD\app\Library\Widget;
 
-trait Script
+trait WidgetHelper
 {
-    public function script($path)
+    public function widgetScript($path)
     {
         Widget::add()->type('script')->content(asset($path));
+    }
+
+    public function widgetView($path)
+    {
+        Widget::add()->type('view')->content($path);
     }
 }
