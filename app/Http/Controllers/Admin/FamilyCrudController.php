@@ -89,7 +89,7 @@ class FamilyCrudController extends CrudController
             'family_type_id',
         ]);
 
-        $this->crud->{$input}('employee')->before('last_name')->linkTo('employee.show');
+        $this->crud->{$input}('employee')->before('last_name');
         $this->crud->{$input}('familyType')->after('employee');
     }
 }
