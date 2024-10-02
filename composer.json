@@ -8,10 +8,12 @@
         "php": "^8.2",
         "backpack/crud": "^6.7",
         "backpack/permissionmanager": "^7.2",
+        "backpack/theme-coreuiv2": "^1.2",
         "backpack/theme-tabler": "^1.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "propaganistas/laravel-phone": "^5.3",
+        "winex01/backpack-filter": "^2.0",
         "winex01/backpack-menu": "^1.0",
         "winex01/backpack-permission-manager": "^1.2"
     },
@@ -69,5 +71,7 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": {
+    }
 }

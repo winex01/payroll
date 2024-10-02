@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EmployeeRequest;
-use App\Http\Controllers\Admin\Traits\Script;
+use App\Http\Controllers\Admin\Traits\WidgetHelper;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
 /**
@@ -22,7 +23,8 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use UserPermissions;
-    use Script;
+    use WidgetHelper;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -36,6 +38,34 @@ class EmployeeCrudController extends CrudController
         CRUD::setEntityNameStrings('employee', 'employees');
 
         $this->userPermissions();
+
+        $this->crud->allowAccess('reorder');
+    }
+
+    public function setupFilterOperation()
+    {
+        $this->crud->field([
+            'name' => 'status',
+            'label' => __('Status'),
+            'type' => 'select_from_array',
+            'options' => [
+                1 => 'Connected',
+                2 => 'Disconnected'
+            ],
+            'wrapper' => [
+                'class' => 'form-group col-md-3'
+            ]
+        ]);
+
+        //
+        $this->crud->field([
+            'name' => 'date_range',
+            'label' => __('Date Range'),
+            'type' => 'date_range',
+            'wrapper' => [
+                'class' => 'form-group col-md-3'
+            ]
+        ]);
     }
 
     /**
@@ -59,9 +89,10 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
-        $this->script('assets/js/admin/forms/employee.js');
+        $this->widgetScript('assets/js/admin/forms/employee.js');
 
         $this->input('field');
+
     }
 
     /**
