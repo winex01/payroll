@@ -24,6 +24,7 @@ class EmployeeCrudController extends CrudController
 
     use UserPermissions;
     use WidgetHelper;
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
     use FilterOperation;
 
     /**
@@ -38,6 +39,8 @@ class EmployeeCrudController extends CrudController
         CRUD::setEntityNameStrings('employee', 'employees');
 
         $this->userPermissions();
+
+        $this->crud->allowAccess('reorder');
     }
 
     public function setupFilterOperation()
