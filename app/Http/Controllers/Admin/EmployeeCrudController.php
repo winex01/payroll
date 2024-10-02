@@ -36,8 +36,6 @@ class EmployeeCrudController extends CrudController
         CRUD::setEntityNameStrings('employee', 'employees');
 
         $this->userPermissions();
-
-        $this->crud->allowAccess('reorder');
     }
 
     public function setupFilterOperation()

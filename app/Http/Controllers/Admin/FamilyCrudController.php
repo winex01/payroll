@@ -34,8 +34,7 @@ class FamilyCrudController extends CrudController
         CRUD::setEntityNameStrings('family', 'families');
 
         $this->userPermissions();
-
-        $this->crud->query->whereHas('employee');
+        $this->whereHasEmployee();
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Traits;
 
 use Backpack\CRUD\app\Library\Widget;
 
-trait WidgetHelper
+trait WidgetTrait
 {
     public function widgetScript($path)
     {

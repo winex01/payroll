@@ -7,5 +7,6 @@ use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 trait CoreTraits
 {
     use UserPermissions;
-    use WidgetHelper;
+    use WidgetTrait;
+    use EmployeeTrait;
 }
