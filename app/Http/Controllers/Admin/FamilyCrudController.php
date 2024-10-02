@@ -46,6 +46,7 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
+        $this->employeeColumn();
     }
 
     /**
