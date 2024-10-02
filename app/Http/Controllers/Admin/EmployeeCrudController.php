@@ -24,7 +24,6 @@ class EmployeeCrudController extends CrudController
 
     use UserPermissions;
     use WidgetHelper;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
     use FilterOperation;
 
     /**
