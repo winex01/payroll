@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\FamilyRequest;
+use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
 /**
  * Class FamilyCrudController
@@ -20,7 +20,7 @@ class FamilyCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use UserPermissions;
+    use CoreTraits;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
