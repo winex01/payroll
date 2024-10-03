@@ -68,7 +68,7 @@ if (!isset($field['options'])) {
     @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
-    @push('crud_fields_styles')
+    @push('after_styles')
         <!-- include select2 css-->
         <link href="{{ basset('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css') }}"
             rel="stylesheet" />
@@ -78,7 +78,7 @@ if (!isset($field['options'])) {
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
+    @push('after_scripts')
         <!-- include select2 js-->
         <script src="{{ basset('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js') }}"></script>
 
@@ -94,6 +94,15 @@ if (!isset($field['options'])) {
                     });
                 }
             }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('select[data-filter-type=select2]').select2({
+                    theme: "bootstrap",
+                    dropdownParent: document.body
+                });
+            });
         </script>
     @endpush
 @endif

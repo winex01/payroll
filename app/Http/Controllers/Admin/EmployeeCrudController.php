@@ -40,28 +40,8 @@ class EmployeeCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->crud->field([
-            'name' => 'status',
-            'label' => __('Status'),
-            'type' => 'select_from_array',
-            'options' => [
-                1 => 'Connected',
-                2 => 'Disconnected'
-            ],
-            'wrapper' => [
-                'class' => 'form-group col-md-3'
-            ]
-        ]);
-
-        //
-        $this->crud->field([
-            'name' => 'date_range',
-            'label' => __('Date Range'),
-            'type' => 'date_range',
-            'wrapper' => [
-                'class' => 'form-group col-md-3'
-            ]
-        ]);
+        $this->filterSelect2('gender');
+        $this->filterSelect2('civilStatus');
     }
 
     /**
@@ -73,6 +53,8 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
+
+        // dd($this->crud);
     }
 
     /**
@@ -80,6 +62,7 @@ class EmployeeCrudController extends CrudController
      *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
+     *
      */
     protected function setupCreateOperation()
     {
@@ -89,6 +72,7 @@ class EmployeeCrudController extends CrudController
 
         $this->input('field');
 
+        // dd($this->crud);
     }
 
     /**
