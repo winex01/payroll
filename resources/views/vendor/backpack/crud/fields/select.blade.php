@@ -96,13 +96,15 @@ if (!isset($field['options'])) {
             }
         </script>
 
-        <script>
-            $(document).ready(function() {
-                $('select[data-filter-type=select2]').select2({
-                    theme: "bootstrap",
-                    dropdownParent: document.body
+        @if ($crud->getOperation() == 'list')
+            <script>
+                $(document).ready(function() {
+                    $('select[data-filter-type=select2]').select2({
+                        theme: "bootstrap",
+                        dropdownParent: document.body
+                    });
                 });
-            });
-        </script>
+            </script>
+        @endif
     @endpush
 @endif
