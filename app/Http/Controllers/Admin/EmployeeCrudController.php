@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EmployeeRequest;
-use App\Http\Controllers\Admin\Traits\WidgetHelper;
+use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
-use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
 /**
  * Class EmployeeCrudController
@@ -22,8 +21,7 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use UserPermissions;
-    use WidgetHelper;
+    use CoreTraits;
     use FilterOperation;
 
     /**
@@ -38,34 +36,12 @@ class EmployeeCrudController extends CrudController
         CRUD::setEntityNameStrings('employee', 'employees');
 
         $this->userPermissions();
-
-        $this->crud->allowAccess('reorder');
     }
 
     public function setupFilterOperation()
     {
-        $this->crud->field([
-            'name' => 'status',
-            'label' => __('Status'),
-            'type' => 'select_from_array',
-            'options' => [
-                1 => 'Connected',
-                2 => 'Disconnected'
-            ],
-            'wrapper' => [
-                'class' => 'form-group col-md-3'
-            ]
-        ]);
-
-        //
-        $this->crud->field([
-            'name' => 'date_range',
-            'label' => __('Date Range'),
-            'type' => 'date_range',
-            'wrapper' => [
-                'class' => 'form-group col-md-3'
-            ]
-        ]);
+        $this->filterSelect2('gender');
+        $this->filterSelect2('civilStatus');
     }
 
     /**
@@ -77,6 +53,8 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
+
+        // dd($this->crud);
     }
 
     /**
@@ -84,6 +62,7 @@ class EmployeeCrudController extends CrudController
      *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
+     *
      */
     protected function setupCreateOperation()
     {
@@ -93,6 +72,7 @@ class EmployeeCrudController extends CrudController
 
         $this->input('field');
 
+        // dd($this->crud);
     }
 
     /**
@@ -159,7 +139,8 @@ class EmployeeCrudController extends CrudController
         $this->crud->{$input}('gender')->tab($tab);
         $this->crud->{$input}('birth_date')->tab($tab);
         $this->crud->{$input}('birth_place')->tab($tab);
-        $this->crud->{$input}('civilStatus')->tab($tab);
+        $name = 'civilStatus';
+        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->tab($tab);
         $this->crud->{$input}('date_of_marriage')->tab($tab);
     }
 }

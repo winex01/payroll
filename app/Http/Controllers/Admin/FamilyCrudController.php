@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\FamilyRequest;
+use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
 /**
  * Class FamilyCrudController
@@ -20,7 +20,7 @@ class FamilyCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use UserPermissions;
+    use CoreTraits;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -34,8 +34,7 @@ class FamilyCrudController extends CrudController
         CRUD::setEntityNameStrings('family', 'families');
 
         $this->userPermissions();
-
-        $this->crud->query->whereHas('employee');
+        $this->whereHasEmployee();
     }
 
     /**
@@ -47,6 +46,7 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->input('column');
+        $this->employeeColumn();
     }
 
     /**
@@ -89,7 +89,8 @@ class FamilyCrudController extends CrudController
             'family_type_id',
         ]);
 
-        $this->crud->{$input}('employee')->before('last_name')->linkTo('employee.show');
-        $this->crud->{$input}('familyType')->after('employee');
+        $this->crud->{$input}('employee')->before('last_name');
+        $name = 'familyType';
+        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->after('employee');
     }
 }
