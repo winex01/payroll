@@ -9,5 +9,6 @@ trait CoreTraits
     use UserPermissions;
     use FilterTrait;
     use WidgetTrait;
+    use StrTrait;
     use EmployeeTrait;
 }

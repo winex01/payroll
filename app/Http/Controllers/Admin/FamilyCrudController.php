@@ -90,6 +90,7 @@ class FamilyCrudController extends CrudController
         ]);
 
         $this->crud->{$input}('employee')->before('last_name');
-        $this->crud->{$input}('familyType')->after('employee');
+        $name = 'familyType';
+        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->after('employee');
     }
 }

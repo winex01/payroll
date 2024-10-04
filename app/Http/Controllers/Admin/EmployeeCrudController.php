@@ -139,7 +139,8 @@ class EmployeeCrudController extends CrudController
         $this->crud->{$input}('gender')->tab($tab);
         $this->crud->{$input}('birth_date')->tab($tab);
         $this->crud->{$input}('birth_place')->tab($tab);
-        $this->crud->{$input}('civilStatus')->tab($tab);
+        $name = 'civilStatus';
+        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->tab($tab);
         $this->crud->{$input}('date_of_marriage')->tab($tab);
     }
 }
