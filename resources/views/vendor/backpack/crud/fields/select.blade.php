@@ -1,5 +1,17 @@
 {{-- select --}}
 @php
+    if ($crud->getOperation() == 'list') {
+        if (!isset($field['wrapper'])) {
+            $field['wrapper'] = ['class' => 'form-group col-md-3'];
+        }
+
+        if (!isset($field['attributes'])) {
+            $field['attributes'] = ['data-filter-type' => 'select2'];
+        }
+
+        $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
+    }
+
     $current_value = old_empty_or_null($field['name'], '') ?? ($field['value'] ?? ($field['default'] ?? ''));
     $entity_model = $crud->getRelationModel($field['entity'], -1);
     $field['allows_null'] = $field['allows_null'] ?? $entity_model::isColumnNullable($field['name']);
@@ -14,6 +26,7 @@ if (!isset($field['options'])) {
 } else {
     $options = call_user_func($field['options'], $field['model']::query());
     }
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
@@ -27,7 +40,8 @@ if (!isset($field['options'])) {
 @if (isset($field['prefix']))
     <span class="input-group-text">{!! $field['prefix'] !!}</span>
 @endif
-<select name="{{ $field['name'] }}" data-init-function="bpFieldInitSelect2Element" @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
+<select name="{{ $field['name'] }}" data-init-function="bpFieldInitSelect2Element"
+    @if ($crud->getOperation() == 'list') data-filter-type="select2" @endif @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
 
     @if ($field['allows_null'])
         <option value="">-</option>

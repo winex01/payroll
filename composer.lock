@@ -7070,16 +7070,16 @@
         },
         {
             "name": "winex01/backpack-filter",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/winex01/backpack-filter.git",
-                "reference": "9079e13307ee989692a46c58e0a17f647298d9bb"
+                "reference": "eda922c632f95a870ae1a049d9492ae70d5e587d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/winex01/backpack-filter/zipball/9079e13307ee989692a46c58e0a17f647298d9bb",
-                "reference": "9079e13307ee989692a46c58e0a17f647298d9bb",
+                "url": "https://api.github.com/repos/winex01/backpack-filter/zipball/eda922c632f95a870ae1a049d9492ae70d5e587d",
+                "reference": "eda922c632f95a870ae1a049d9492ae70d5e587d",
                 "shasum": ""
             },
             "require": {
@@ -7126,9 +7126,9 @@
             ],
             "support": {
                 "issues": "https://github.com/winex01/backpack-filter/issues",
-                "source": "https://github.com/winex01/backpack-filter/tree/2.0.1"
+                "source": "https://github.com/winex01/backpack-filter/tree/2.0.2"
             },
-            "time": "2024-10-02T08:31:33+00:00"
+            "time": "2024-10-05T06:50:24+00:00"
         },
         {
             "name": "winex01/backpack-menu",
