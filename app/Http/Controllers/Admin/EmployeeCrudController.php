@@ -40,8 +40,8 @@ class EmployeeCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->filterSelect2('gender');
-        $this->filterSelect2('civilStatus');
+        $this->crud->field('gender');
+        $this->crud->field('civilStatus');
     }
 
     /**
