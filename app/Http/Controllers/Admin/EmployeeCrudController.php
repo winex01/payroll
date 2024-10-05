@@ -52,9 +52,20 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->input('column');
+        $this->filterQueries(function ($query) {
+            $gender = request()->input('gender');
+            $civilStatus = request()->input('civilStatus');
 
-        // dd($this->crud);
+            if ($gender) {
+                $query->where('gender_id', $gender);
+            }
+
+            if ($civilStatus) {
+                $query->where('civil_status_id', $gender);
+            }
+        });
+
+        $this->input('column');
     }
 
     /**
@@ -71,8 +82,6 @@ class EmployeeCrudController extends CrudController
         $this->widgetScript('assets/js/admin/forms/employee.js');
 
         $this->input('field');
-
-        // dd($this->crud);
     }
 
     /**
