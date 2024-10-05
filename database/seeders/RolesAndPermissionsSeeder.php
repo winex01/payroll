@@ -58,6 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'families_show',
             'families_update',
             'families_delete',
+            'families_filters',
         ],
     ];
 

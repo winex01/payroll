@@ -6,6 +6,7 @@ use App\Http\Requests\FamilyRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class FamilyCrudController
@@ -21,6 +22,7 @@ class FamilyCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -37,6 +39,11 @@ class FamilyCrudController extends CrudController
         $this->whereHasEmployee();
     }
 
+    public function setupFilterOperation()
+    {
+        $this->crud->field('familyType');
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -45,6 +52,15 @@ class FamilyCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->filterQueries(function ($query) {
+            $familyType = request('familyType');
+
+            if ($familyType) {
+                $query->where('family_type_id', $familyType);
+            }
+        });
+
+        CRUD::setFromDb(false, true);
         $this->input('column');
         $this->employeeColumn();
     }
@@ -58,7 +74,7 @@ class FamilyCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(FamilyRequest::class);
-
+        CRUD::setFromDb();
         $this->input('field');
     }
 
@@ -80,8 +96,6 @@ class FamilyCrudController extends CrudController
 
     public function input($input = 'field')
     {
-        CRUD::setFromDb();
-
         $input = ucfirst($input);
 
         $this->crud->{'remove' . $input . 's'}([
