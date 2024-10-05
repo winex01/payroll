@@ -53,15 +53,15 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
-            $gender = request()->input('gender');
-            $civilStatus = request()->input('civilStatus');
+            $gender = request('gender');
+            $civilStatus = request('civilStatus');
 
             if ($gender) {
                 $query->where('gender_id', $gender);
             }
 
             if ($civilStatus) {
-                $query->where('civil_status_id', $gender);
+                $query->where('civil_status_id', $civilStatus);
             }
         });
 
