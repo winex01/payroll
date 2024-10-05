@@ -63,6 +63,21 @@ class FamilyCrudController extends CrudController
         CRUD::setFromDb(false, true);
         $this->input('column');
         $this->employeeColumn();
+
+        $this->crud->modifyColumn('familyType', [
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%');
+                });
+            },
+            'orderable' => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query
+                    ->leftJoin('family_types', 'family_types.id', '=', 'families.family_type_id')
+                    ->orderBy('family_types.name', $columnDirection)
+                    ->select('families.*');
+            },
+        ]);
     }
 
     /**
