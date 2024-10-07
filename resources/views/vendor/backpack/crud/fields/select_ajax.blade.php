@@ -91,22 +91,28 @@ if (!isset($field['options'])) {
 @if ($crud->fieldTypeNotLoaded($field))
     @php
         $crud->markFieldTypeAsLoaded($field);
+
+        /* NOTE:: if you notice below the css and scripts i use different CDN source from select.blade.php select2 its because. the dump ass basset pacakge cause an error if load them twice.
+                 but dont worry it wont cause error if you create multiple field same type, it will only cause a problem if you use same css/script with different type.
+        */
+
     @endphp
 
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('after_styles')
         <!-- include select2 css-->
-        <link href="{{ basset('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css') }}"
+        <link href="{{ basset('https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css') }}"
             rel="stylesheet" />
         <link
-            href="{{ basset('https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css') }}"
+            href="{{ basset('https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css') }}"
             rel="stylesheet" />
     @endpush
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('after_scripts')
         <!-- include select2 js-->
-        <script src="{{ basset('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js') }}"></script>
+        <script src="{{ basset('https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.full.min.js') }}">
+        </script>
 
         @if ($crud->getOperation() == 'list')
             <script>
