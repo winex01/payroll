@@ -5,6 +5,10 @@
             $field['wrapper'] = ['class' => 'form-group col-md-3'];
         }
 
+        if (isset($field['size'])) {
+            $field['wrapper'] = ['class' => 'form-group col-md-' . $field['size']];
+        }
+
         if (!isset($field['attributes'])) {
             $field['attributes'] = ['data-filter-type' => 'select2'];
         }

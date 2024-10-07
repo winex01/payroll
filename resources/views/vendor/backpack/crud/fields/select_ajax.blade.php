@@ -49,7 +49,8 @@ if (!isset($field['options'])) {
     data-data-source="{{ $field['data_source'] }}"
     data-method="{{ isset($field['method']) ? $field['method'] : 'POST' }}"
     data-delay="{{ isset($field['delay']) ? $field['delay'] : 500 }}"
-    data-allow-clear="{{ isset($field['allow_clear']) ? $field['allow_clear'] : true }}" @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
+    data-allows-clear="{{ isset($field['allows_clear']) ? $field['allows_clear'] : true }}"
+    @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
 
     @if ($field['allows_null'])
         <option value="">-</option>
@@ -116,7 +117,7 @@ if (!isset($field['options'])) {
                     var attr = 'select[data-filter-type=select2_ajax]';
                     var selectAttribute = $(attr).attr('data-select-attribute');
                     var selectKey = $(attr).attr('data-select-key');
-                    var allowClear = $(attr).attr('data-allow-clear');
+                    var allowClear = $(attr).attr('data-allows-clear');
                     var minimumInputLength = $(attr).attr('data-minimum-input-length');
                     var placeholder = $(attr).attr('data-placeholder');
                     var closeOnSelect = $(attr).attr('data-close-on-select');
