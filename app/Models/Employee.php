@@ -27,6 +27,7 @@ class Employee extends Model
     // protected $hidden = [];
     protected $identifiableAttribute = 'full_name';
 
+    protected $appends = ['full_name'];
 
     /*
     |--------------------------------------------------------------------------
