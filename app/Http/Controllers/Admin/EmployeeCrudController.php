@@ -168,17 +168,19 @@ class EmployeeCrudController extends CrudController
         $page = request()->input('page', 1); // Get the current page or default to 1
         $results = null;
 
+        $query = \App\Models\Employee::select('id', 'first_name', 'last_name', 'middle_name'); // Base query
+
         if ($search_term) {
-            $results = \App\Models\Employee::where(function ($query) use ($search_term) {
+            $query->where(function ($query) use ($search_term) {
                 $query->where('last_name', 'LIKE', '%' . $search_term . '%')
                     ->orWhere('first_name', 'LIKE', '%' . $search_term . '%')
                     ->orWhere('middle_name', 'LIKE', '%' . $search_term . '%');
-            })
-                ->select('id', 'first_name', 'last_name', 'middle_name') // Select necessary fields
-                ->paginate(5, ['*'], 'page', $page); // Use the page parameter
-        } else {
-
+            });
         }
+
+        // Paginate the results
+        $results = $query->paginate(5, ['*'], 'page', $page);
+
 
         return response()->json($results);
     }

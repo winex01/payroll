@@ -43,7 +43,7 @@ if (!isset($field['options'])) {
 <select name="{{ $field['name'] }}" data-filter-type="select2_ajax"
     data-select-key="{{ isset($field['key']) ? $field['key'] : 'id' }}"
     data-select-attribute="{{ $field['attribute'] ?? 'name' }}"
-    data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+    data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 0 }}"
     data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : 'search...' }}"
     data-close-on-select="{{ isset($field['close_on_select']) ? $field['close_on_select'] : true }}"
     data-data-source="{{ $field['data_source'] }}"
