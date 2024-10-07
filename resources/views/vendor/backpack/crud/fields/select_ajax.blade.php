@@ -1,4 +1,4 @@
-{{-- select --}}
+{{-- select2 ajax --}}
 @php
     if ($crud->getOperation() == 'list') {
         if (!isset($field['wrapper'])) {
@@ -44,8 +44,16 @@ if (!isset($field['options'])) {
 @if (isset($field['prefix']))
     <span class="input-group-text">{!! $field['prefix'] !!}</span>
 @endif
-<select name="{{ $field['name'] }}" data-init-function="bpFieldInitSelect2Element"
-    @if ($crud->getOperation() == 'list') data-filter-type="select2" @endif @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
+<select name="{{ $field['name'] }}" data-filter-type="select2_ajax"
+    data-select-key="{{ isset($field['key']) ? $field['key'] : 'id' }}"
+    data-select-attribute="{{ $field['attribute'] ?? 'name' }}"
+    data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+    data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : 'search...' }}"
+    data-close-on-select="{{ isset($field['close_on_select']) ? $field['close_on_select'] : true }}"
+    data-data-source="{{ $field['data_source'] }}"
+    data-method="{{ isset($field['method']) ? $field['method'] : 'POST' }}"
+    data-delay="{{ isset($field['delay']) ? $field['delay'] : 500 }}"
+    data-allow-clear="{{ isset($field['allow_clear']) ? $field['allow_clear'] : true }}" @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
 
     @if ($field['allows_null'])
         <option value="">-</option>
@@ -100,26 +108,64 @@ if (!isset($field['options'])) {
         <!-- include select2 js-->
         <script src="{{ basset('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js') }}"></script>
 
-        <script>
-            function bpFieldInitSelect2Element(element) {
-                // element will be a jQuery wrapped DOM node
-                if (!element.hasClass("select2-hidden-accessible")) {
-                    let $isFieldInline = element.data('field-is-inline');
-
-                    element.select2({
-                        theme: "bootstrap",
-                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
-                    });
-                }
-            }
-        </script>
-
         @if ($crud->getOperation() == 'list')
             <script>
                 $(document).ready(function() {
-                    $('select[data-filter-type=select2]').select2({
+                    var attr = 'select[data-filter-type=select2_ajax]';
+                    var selectAttribute = $(attr).attr('data-select-attribute');
+                    var selectKey = $(attr).attr('data-select-key');
+                    var allowClear = $(attr).attr('data-allow-clear');
+                    var minimumInputLength = $(attr).attr('data-minimum-input-length');
+                    var placeholder = $(attr).attr('data-placeholder');
+                    var closeOnSelect = $(attr).attr('data-close-on-select');
+                    var dataSource = $(attr).attr('data-data-source');
+                    var method = $(attr).attr('data-method');
+                    var delay = $(attr).attr('data-delay');
+
+                    $(attr).select2({
                         theme: "bootstrap",
-                        dropdownParent: document.body
+                        dropdownParent: document.body,
+                        minimumInputLength: minimumInputLength,
+                        allowClear: allowClear,
+                        placeholder: placeholder,
+                        closeOnSelect: closeOnSelect,
+                        ajax: {
+                            url: dataSource,
+                            dataType: 'json',
+                            type: method,
+                            delay: delay,
+                            data: function(params) {
+                                return {
+                                    q: params.term, // The search term
+                                    page: params.page || 1 // Current page or default to 1
+                                };
+                            },
+                            processResults: function(data) {
+                                console.log(data);
+                                return {
+                                    results: $.map(data.data, function(item) {
+                                        return {
+                                            text: item[selectAttribute],
+                                            id: item[selectKey]
+                                        };
+                                    }),
+                                    pagination: {
+                                        more: data.current_page < data
+                                            .last_page // Check if there are more pages
+                                    }
+                                };
+                            },
+                            cache: true
+
+                        }
+
+                    })
+
+                    // Focus the input when the Select2 dropdown opens
+                    $(document).on('select2:open', function(e) {
+                        window.setTimeout(function() {
+                            document.querySelector('input.select2-search__field').focus();
+                        }, 0);
                     });
                 });
             </script>
