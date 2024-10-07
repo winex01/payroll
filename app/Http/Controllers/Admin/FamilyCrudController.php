@@ -46,7 +46,7 @@ class FamilyCrudController extends CrudController
             ->size(4)
             ->data_source(route('employee.fetch'));
 
-        $this->crud->field('familyType')->allow_clear(true);
+        $this->crud->field('familyType');
     }
 
     /**
