@@ -152,4 +152,36 @@ class EmployeeCrudController extends CrudController
         $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->tab($tab);
         $this->crud->{$input}('date_of_marriage')->tab($tab);
     }
+
+    protected function setupEmployeeFetchRoutes($segment, $routeName, $controller)
+    {
+        \Illuminate\Support\Facades\Route::post($segment . '/fetch', [
+            'as' => $routeName . '.fetch',
+            'uses' => $controller . '@fetch',
+            'operation' => 'fetch',
+        ]);
+    }
+
+    public function fetch()
+    {
+        $search_term = request()->input('q');
+        $page = request()->input('page', 1); // Get the current page or default to 1
+        $results = null;
+
+        if ($search_term) {
+            $results = \App\Models\Employee::where(function ($query) use ($search_term) {
+                $query->where('last_name', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('first_name', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('middle_name', 'LIKE', '%' . $search_term . '%');
+            })
+                ->select('id', 'first_name', 'last_name', 'middle_name') // Select necessary fields
+                ->paginate(5, ['*'], 'page', $page); // Use the page parameter
+        } else {
+
+        }
+
+        return response()->json($results);
+    }
+
+
 }

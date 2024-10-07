@@ -41,6 +41,11 @@ class FamilyCrudController extends CrudController
 
     public function setupFilterOperation()
     {
+        $this->crud->field('employee')
+            ->type('select_ajax')
+            ->size(4)
+            ->data_source(route('employee.fetch'));
+
         $this->crud->field('familyType');
     }
 
@@ -54,9 +59,13 @@ class FamilyCrudController extends CrudController
     {
         $this->filterQueries(function ($query) {
             $familyType = request('familyType');
-
             if ($familyType) {
                 $query->where('family_type_id', $familyType);
+            }
+
+            $employee = request('employee');
+            if ($employee) {
+                $query->where('employee_id', $employee);
             }
         });
 
@@ -122,4 +131,5 @@ class FamilyCrudController extends CrudController
         $name = 'familyType';
         $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->after('employee');
     }
+
 }
