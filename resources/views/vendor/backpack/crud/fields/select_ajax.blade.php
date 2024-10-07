@@ -1,12 +1,12 @@
 {{-- select2 ajax --}}
 @php
-    if ($crud->getOperation() == 'list') {
-        if (!isset($field['wrapper'])) {
+    if ($field['type'] == 'select_ajax') {
+        if (!isset($field['wrapper']) && $crud->getOperation() == 'list') {
             $field['wrapper'] = ['class' => 'form-group col-md-3'];
         }
 
-        if (!isset($field['attributes'])) {
-            $field['attributes'] = ['data-filter-type' => 'select2'];
+        if (!isset($field['attributes']['data-filter-type'])) {
+            $field['attributes']['data-filter-type'] = 'select2';
         }
 
         $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
@@ -111,7 +111,7 @@ if (!isset($field['options'])) {
         <script src="{{ basset('https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.full.min.js') }}">
         </script>
 
-        @if ($crud->getOperation() == 'list')
+        @if ($field['type'] == 'select_ajax')
             <script>
                 $(document).ready(function() {
                     var attr = 'select[data-filter-type=select2_ajax]';

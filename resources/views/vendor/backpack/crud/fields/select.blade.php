@@ -9,8 +9,8 @@
             $field['wrapper'] = ['class' => 'form-group col-md-' . $field['size']];
         }
 
-        if (!isset($field['attributes'])) {
-            $field['attributes'] = ['data-filter-type' => 'select2'];
+        if (!isset($field['attributes']['data-filter-type'])) {
+            $field['attributes']['data-filter-type'] = 'select2';
         }
 
         $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
@@ -45,6 +45,9 @@ if (!isset($field['options'])) {
     <span class="input-group-text">{!! $field['prefix'] !!}</span>
 @endif
 <select name="{{ $field['name'] }}" data-init-function="bpFieldInitSelect2Element"
+    data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '-' }}"
+    data-close-on-select="{{ isset($field['close_on_select']) ? $field['close_on_select'] : true }}"
+    data-allows-clear="{{ isset($field['allows_clear']) ? $field['allows_clear'] : true }}"
     @if ($crud->getOperation() == 'list') data-filter-type="select2" @endif @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
 
     @if ($field['allows_null'])
@@ -106,9 +109,16 @@ if (!isset($field['options'])) {
                 if (!element.hasClass("select2-hidden-accessible")) {
                     let $isFieldInline = element.data('field-is-inline');
 
+                    var placeholder = element.attr('data-placeholder');
+                    var allowClear = element.attr('data-allows-clear');
+                    var closeOnSelect = element.attr('data-close-on-select');
+
                     element.select2({
                         theme: "bootstrap",
-                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
+                        dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body,
+                        placeholder: placeholder,
+                        allowClear: allowClear,
+                        closeOnSelect: closeOnSelect,
                     });
                 }
             }
@@ -117,9 +127,17 @@ if (!isset($field['options'])) {
         @if ($crud->getOperation() == 'list')
             <script>
                 $(document).ready(function() {
-                    $('select[data-filter-type=select2]').select2({
+                    var attr = 'select[data-filter-type=select2]';
+                    var placeholder = $(attr).attr('data-placeholder');
+                    var allowClear = $(attr).attr('data-allows-clear');
+                    var closeOnSelect = $(attr).attr('data-close-on-select');
+
+                    $(attr).select2({
                         theme: "bootstrap",
-                        dropdownParent: document.body
+                        dropdownParent: document.body,
+                        allowClear: allowClear,
+                        placeholder: placeholder,
+                        closeOnSelect: closeOnSelect,
                     });
                 });
             </script>
