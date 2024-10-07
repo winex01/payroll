@@ -147,7 +147,7 @@ if (!isset($field['options'])) {
                                 };
                             },
                             processResults: function(data) {
-                                console.log(data);
+                                // console.log(data);
                                 return {
                                     results: $.map(data.data, function(item) {
                                         return {
