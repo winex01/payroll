@@ -109,7 +109,7 @@ class EmployeeCrudController extends CrudController
     private function input($input = 'field')
     {
         $this->employeePhoto($input, false);
-        $this->crud->{$input}('employee_no')->label('EMP NO');
+        $this->crud->{$input}('employee_no');
         $this->crud->{$input}('last_name');
         $this->crud->{$input}('first_name');
         $this->crud->{$input}('middle_name');
