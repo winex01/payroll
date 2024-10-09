@@ -60,6 +60,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'families_delete',
             'families_filters',
         ],
+
+        'companies' => [
+            'companies_list',
+            'companies_create',
+            'companies_show',
+            'companies_update',
+            'companies_delete',
+        ],
     ];
 
     /**
