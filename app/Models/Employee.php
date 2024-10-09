@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use ModelTraits;
     use SoftDeletes;
 
     /*
@@ -46,6 +44,11 @@ class Employee extends Model
         });
     }
 
+    // revise operation
+    public function identifiableName()
+    {
+        return $this->getFullNameAttribute();
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use ModelTraits;
 
     /*
     |--------------------------------------------------------------------------

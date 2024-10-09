@@ -8,6 +8,7 @@
         "php": "^8.2",
         "backpack/crud": "^6.7",
         "backpack/permissionmanager": "^7.2",
+        "backpack/revise-operation": "^2.0",
         "backpack/theme-coreuiv2": "^1.2",
         "backpack/theme-tabler": "^1.2",
         "laravel/framework": "^11.9",

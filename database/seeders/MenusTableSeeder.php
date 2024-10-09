@@ -149,7 +149,7 @@ class MenusTableSeeder extends Seeder
             array (
                 'id' => 10,
                 'label' => 'Family Data',
-                'icon' => 'las la-users',
+                'icon' => 'las la-clone',
                 'url' => 'family',
                 'permissions' => '["families_list"]',
                 'parent_id' => 11,
@@ -157,7 +157,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 8,
                 'depth' => 2,
                 'created_at' => '2024-09-29 15:26:53',
-                'updated_at' => '2024-09-29 15:26:53',
+                'updated_at' => '2024-10-09 13:55:14',
             ),
             10 => 
             array (
