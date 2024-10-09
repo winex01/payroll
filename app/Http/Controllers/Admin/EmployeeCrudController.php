@@ -99,11 +99,6 @@ class EmployeeCrudController extends CrudController
     {
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
-
-        // $this->crud->modifyColumn('photo', [
-        //     'height' => '100px',
-        //     'width' => '100px'
-        // ]);
     }
 
     private function input($input = 'field')

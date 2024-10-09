@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyRequest extends FormRequest
@@ -25,7 +26,12 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => [
+                'required',
+                'min:5',
+                'max:255',
+                Rule::unique('companies', 'name')->ignore($this->route('id')),
+            ],
         ];
     }
 

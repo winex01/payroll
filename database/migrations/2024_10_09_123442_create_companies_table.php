@@ -16,11 +16,11 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->string('contact_person')->nullable();
             $table->string('fax_number')->nullable();
-            $table->string('mobile_number')->nullable();
-            $table->string('telephone_number')->nullable();
-            $table->string('pagibig_number')->nullable();
-            $table->string('philhealth_number')->nullable();
-            $table->string('sss_number')->nullable();
+            $table->string('mobile_no')->nullable();
+            $table->string('telephone_no')->nullable();
+            $table->string('pagibig')->nullable();
+            $table->string('philhealth')->nullable();
+            $table->string('sss')->nullable();
             $table->string('tax_id_number')->nullable();
             $table->string('bir_rdo')->nullable();
             $table->timestamps();
