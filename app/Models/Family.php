@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
+use App\Models\Scopes\EmployeeScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Family extends Model
@@ -27,6 +28,10 @@ class Family extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new EmployeeScope);
+    }
 
     /*
     |--------------------------------------------------------------------------
