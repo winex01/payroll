@@ -9,8 +9,32 @@ trait EmployeeTrait
         $this->crud->query->whereHas('employee');
     }
 
+    public function employeePhoto($fieldOrColumn = 'column', $relationship = true)
+    {
+        $this->crud->{$fieldOrColumn}([
+            'name' => ($relationship) ? 'employee.photo' : 'photo',
+            'label' => 'Photo',
+            'type' => ($fieldOrColumn == 'field') ? 'upload' : 'image',
+            'height' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'width' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'withFiles' => [
+                'disk' => 'public',
+                'path' => 'photos',
+            ],
+            'orderable' => false,
+        ])->makeFirst();
+
+    }
+
     public function employeeColumn($column = 'employee', $linkTo = null)
     {
+        // if ($this->crud->getOperation() == 'list') {
+        //     $this->employeePhoto();
+        //     $this->crud->modifyColumn('employee.photo', [
+        //         'label' => null,
+        //     ]);
+        // }
+
         if (isset($this->crud->settings()['list.columns'][$column])) {
             $this->crud->column($column);
         }
@@ -23,6 +47,13 @@ trait EmployeeTrait
                     }
                     return backpack_url($column['name'] . '/' . $related_key . '/show');
                 },
+                'title' => function ($crud, $column, $entry, $related_key) {
+                    if (!$entry->employee->employee_no) {
+                        return;
+                    }
+
+                    return 'EMP NO: ' . $entry->employee->employee_no;
+                }
                 // 'target' => '_blank'
             ],
 

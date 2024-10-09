@@ -100,24 +100,16 @@ class EmployeeCrudController extends CrudController
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
 
-        $this->crud->modifyColumn('photo', [
-            'height' => '100px',
-            'width' => '100px'
-        ]);
+        // $this->crud->modifyColumn('photo', [
+        //     'height' => '100px',
+        //     'width' => '100px'
+        // ]);
     }
 
     private function input($input = 'field')
     {
-        $this->crud->{$input}([
-            'name' => 'photo',
-            'type' => ($input == 'field') ? 'upload' : 'image',
-            'withFiles' => [
-                'disk' => 'public',
-                'path' => 'photos',
-            ]
-        ]);
-
-        $this->crud->{$input}('employee_no');
+        $this->employeePhoto($input, false);
+        $this->crud->{$input}('employee_no')->label('EMP NO');
         $this->crud->{$input}('last_name');
         $this->crud->{$input}('first_name');
         $this->crud->{$input}('middle_name');
