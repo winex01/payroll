@@ -1,12 +1,12 @@
 {{-- select2 ajax --}}
 @php
-    if ($crud->getOperation() == 'list') {
-        if (!isset($field['wrapper'])) {
+    if ($field['type'] == 'select_ajax') {
+        if (!isset($field['wrapper']) && $crud->getOperation() == 'list') {
             $field['wrapper'] = ['class' => 'form-group col-md-3'];
         }
 
-        if (!isset($field['attributes'])) {
-            $field['attributes'] = ['data-filter-type' => 'select2'];
+        if (!isset($field['attributes']['data-filter-type'])) {
+            $field['attributes']['data-filter-type'] = 'select2';
         }
 
         $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
@@ -43,13 +43,14 @@ if (!isset($field['options'])) {
 <select name="{{ $field['name'] }}" data-filter-type="select2_ajax"
     data-select-key="{{ isset($field['key']) ? $field['key'] : 'id' }}"
     data-select-attribute="{{ $field['attribute'] ?? 'name' }}"
-    data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 2 }}"
+    data-minimum-input-length="{{ isset($field['minimum_input_length']) ? $field['minimum_input_length'] : 0 }}"
     data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : 'search...' }}"
     data-close-on-select="{{ isset($field['close_on_select']) ? $field['close_on_select'] : true }}"
     data-data-source="{{ $field['data_source'] }}"
     data-method="{{ isset($field['method']) ? $field['method'] : 'POST' }}"
     data-delay="{{ isset($field['delay']) ? $field['delay'] : 500 }}"
-    data-allow-clear="{{ isset($field['allow_clear']) ? $field['allow_clear'] : true }}" @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
+    data-allows-clear="{{ isset($field['allows_clear']) ? $field['allows_clear'] : true }}"
+    @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])>
 
     @if ($field['allows_null'])
         <option value="">-</option>
@@ -110,13 +111,13 @@ if (!isset($field['options'])) {
         <script src="{{ basset('https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.full.min.js') }}">
         </script>
 
-        @if ($crud->getOperation() == 'list')
+        @if ($field['type'] == 'select_ajax')
             <script>
                 $(document).ready(function() {
                     var attr = 'select[data-filter-type=select2_ajax]';
                     var selectAttribute = $(attr).attr('data-select-attribute');
                     var selectKey = $(attr).attr('data-select-key');
-                    var allowClear = $(attr).attr('data-allow-clear');
+                    var allowClear = $(attr).attr('data-allows-clear');
                     var minimumInputLength = $(attr).attr('data-minimum-input-length');
                     var placeholder = $(attr).attr('data-placeholder');
                     var closeOnSelect = $(attr).attr('data-close-on-select');

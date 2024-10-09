@@ -99,24 +99,11 @@ class EmployeeCrudController extends CrudController
     {
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
-
-        $this->crud->modifyColumn('photo', [
-            'height' => '100px',
-            'width' => '100px'
-        ]);
     }
 
     private function input($input = 'field')
     {
-        $this->crud->{$input}([
-            'name' => 'photo',
-            'type' => ($input == 'field') ? 'upload' : 'image',
-            'withFiles' => [
-                'disk' => 'public',
-                'path' => 'photos',
-            ]
-        ]);
-
+        $this->employeePhoto($input, false);
         $this->crud->{$input}('employee_no');
         $this->crud->{$input}('last_name');
         $this->crud->{$input}('first_name');
@@ -168,17 +155,19 @@ class EmployeeCrudController extends CrudController
         $page = request()->input('page', 1); // Get the current page or default to 1
         $results = null;
 
+        $query = \App\Models\Employee::select('id', 'first_name', 'last_name', 'middle_name'); // Base query
+
         if ($search_term) {
-            $results = \App\Models\Employee::where(function ($query) use ($search_term) {
+            $query->where(function ($query) use ($search_term) {
                 $query->where('last_name', 'LIKE', '%' . $search_term . '%')
                     ->orWhere('first_name', 'LIKE', '%' . $search_term . '%')
                     ->orWhere('middle_name', 'LIKE', '%' . $search_term . '%');
-            })
-                ->select('id', 'first_name', 'last_name', 'middle_name') // Select necessary fields
-                ->paginate(5, ['*'], 'page', $page); // Use the page parameter
-        } else {
-
+            });
         }
+
+        // Paginate the results
+        $results = $query->paginate(5, ['*'], 'page', $page);
+
 
         return response()->json($results);
     }

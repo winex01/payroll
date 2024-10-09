@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 
 class Family extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use ModelTraits;
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +28,10 @@ class Family extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new EmployeeNotSoftDeletedScope);
+    }
 
     /*
     |--------------------------------------------------------------------------

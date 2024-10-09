@@ -18,6 +18,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'billings_show',
             'users_update',
             'users_delete',
+            'users_revise',
         ],
 
         'roles' => [
@@ -25,6 +26,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'roles_create',
             'roles_update',
             'roles_delete',
+            'roles_revise',
         ],
 
         'permissions' => [
@@ -32,6 +34,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'permissions_create',
             'permissions_update',
             'permissions_delete',
+            'permissions_revise',
         ],
 
         'menus' => [
@@ -41,6 +44,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'menus_update',
             'menus_delete',
             'menus_reorder',
+            'menus_revise',
         ],
 
         'employees' => [
@@ -50,6 +54,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'employees_update',
             'employees_delete',
             'employees_filters',
+            'employees_revise',
         ],
 
         'families' => [
@@ -59,6 +64,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'families_update',
             'families_delete',
             'families_filters',
+            'families_revise',
+        ],
+
+        'companies' => [
+            'companies_list',
+            'companies_create',
+            'companies_show',
+            'companies_update',
+            'companies_delete',
+            'companies_revise',
         ],
     ];
 
