@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
-use App\Models\Scopes\EmployeeScope;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 
 class Family extends Model
 {
@@ -30,7 +30,7 @@ class Family extends Model
     */
     protected static function booted(): void
     {
-        static::addGlobalScope(new EmployeeScope);
+        static::addGlobalScope(new EmployeeNotSoftDeletedScope);
     }
 
     /*
