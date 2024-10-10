@@ -36,7 +36,6 @@ class FamilyCrudController extends CrudController
         CRUD::setEntityNameStrings('family', 'families');
 
         $this->userPermissions();
-        // $this->crud->query->whereHas('employee');
     }
 
     public function setupFilterOperation()
