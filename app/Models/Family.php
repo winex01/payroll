@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Scopes\EmployeeNotSoftDeletedScope;
+use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
 
 class Family extends Model
 {
     use ModelTraits;
+    use EmployeeNotSoftDeletedScopeTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -28,10 +29,7 @@ class Family extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new EmployeeNotSoftDeletedScope);
-    }
+
 
     /*
     |--------------------------------------------------------------------------
