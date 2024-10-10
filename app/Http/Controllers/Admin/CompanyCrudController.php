@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\CoreTraits;
-use App\Http\Requests\CompanyRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -55,7 +54,7 @@ class CompanyCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CompanyRequest::class);
+        CRUD::setValidation($this->validateUnique('name'));
         CRUD::setFromDb();
 
         $this->crud->modifyField('bir_rdo', [

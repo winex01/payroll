@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\CoreTraits;
-use App\Http\Requests\DivisionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -55,7 +54,7 @@ class DivisionCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(DivisionRequest::class);
+        CRUD::setValidation($this->validateUnique('name'));
         CRUD::setFromDb();
     }
 

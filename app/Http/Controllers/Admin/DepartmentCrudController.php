@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\DepartmentRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -55,7 +54,7 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(DepartmentRequest::class);
+        CRUD::setValidation($this->validateUnique('name'));
         CRUD::setFromDb();
     }
 
