@@ -28,7 +28,7 @@ class LocationRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'min:5',
+                'min:2',
                 'max:255',
                 Rule::unique('locations', 'name')->ignore($this->route('id')),
             ],

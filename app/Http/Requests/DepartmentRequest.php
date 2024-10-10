@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyRequest extends FormRequest
+class DepartmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +30,7 @@ class CompanyRequest extends FormRequest
                 'required',
                 'min:2',
                 'max:255',
-                Rule::unique('companies', 'name')->ignore($this->route('id')),
+                Rule::unique('departments', 'name')->ignore($this->route('id')),
             ],
         ];
     }

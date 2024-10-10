@@ -84,6 +84,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'locations_delete',
             'locations_revise',
         ],
+
+        'departments' => [
+            'departments_list',
+            'departments_create',
+            'departments_show',
+            'departments_update',
+            'departments_delete',
+            'departments_revise',
+        ],
     ];
 
     /**
