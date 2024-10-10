@@ -75,6 +75,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'companies_delete',
             'companies_revise',
         ],
+
+        'locations' => [
+            'locations_list',
+            'locations_create',
+            'locations_show',
+            'locations_update',
+            'locations_delete',
+            'locations_revise',
+        ],
     ];
 
     /**
