@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
 
-class Family extends Model
+class Location extends Model
 {
     use ModelTraits;
-    use EmployeeNotSoftDeletedScopeTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -17,7 +15,7 @@ class Family extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'families';
+    protected $table = 'locations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -30,21 +28,11 @@ class Family extends Model
     |--------------------------------------------------------------------------
     */
 
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function employee()
-    {
-        return $this->belongsTo(Employee::class);
-    }
-
-    public function familyType()
-    {
-        return $this->belongsTo(FamilyType::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

@@ -7,11 +7,11 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class CompanyCrudController
+ * Class LocationCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class CompanyCrudController extends CrudController
+class LocationCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -28,9 +28,9 @@ class CompanyCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Company::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/company');
-        CRUD::setEntityNameStrings('company', 'companies');
+        CRUD::setModel(\App\Models\Location::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/location');
+        CRUD::setEntityNameStrings('location', 'locations');
 
         $this->userPermissions();
     }
@@ -56,10 +56,6 @@ class CompanyCrudController extends CrudController
     {
         CRUD::setValidation($this->validateUnique('name'));
         CRUD::setFromDb();
-
-        $this->crud->modifyField('bir_rdo', [
-            'hint' => __('app.bir_rdo.hint')
-        ]);
     }
 
     /**
