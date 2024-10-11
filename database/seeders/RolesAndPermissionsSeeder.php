@@ -76,15 +76,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'companies_revise',
         ],
 
-        'locations' => [
-            'locations_list',
-            'locations_create',
-            'locations_show',
-            'locations_update',
-            'locations_delete',
-            'locations_revise',
-        ],
-
         'departments' => [
             'departments_list',
             'departments_create',
@@ -92,15 +83,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'departments_update',
             'departments_delete',
             'departments_revise',
-        ],
-
-        'divisions' => [
-            'divisions_list',
-            'divisions_create',
-            'divisions_show',
-            'divisions_update',
-            'divisions_delete',
-            'divisions_revise',
         ],
     ];
 
