@@ -203,20 +203,6 @@ class MenusTableSeeder extends Seeder
             ),
             13 => 
             array (
-                'id' => 14,
-                'label' => 'Locations',
-                'icon' => 'las la-map-marked-alt',
-                'url' => 'location',
-                'permissions' => '["locations_list"]',
-                'parent_id' => 13,
-                'lft' => 19,
-                'rgt' => 20,
-                'depth' => 2,
-                'created_at' => '2024-10-10 13:55:39',
-                'updated_at' => '2024-10-10 13:55:39',
-            ),
-            14 => 
-            array (
                 'id' => 15,
                 'label' => '201 Files',
                 'icon' => NULL,
@@ -229,7 +215,7 @@ class MenusTableSeeder extends Seeder
                 'created_at' => '2024-10-10 14:19:46',
                 'updated_at' => '2024-10-10 14:22:39',
             ),
-            15 => 
+            14 => 
             array (
                 'id' => 16,
                 'label' => 'Departments',
@@ -243,7 +229,7 @@ class MenusTableSeeder extends Seeder
                 'created_at' => '2024-10-10 14:49:27',
                 'updated_at' => '2024-10-10 14:49:27',
             ),
-            16 => 
+            15 => 
             array (
                 'id' => 17,
                 'label' => 'Divisions',
