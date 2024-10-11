@@ -229,20 +229,6 @@ class MenusTableSeeder extends Seeder
                 'created_at' => '2024-10-10 14:49:27',
                 'updated_at' => '2024-10-10 14:49:27',
             ),
-            15 => 
-            array (
-                'id' => 17,
-                'label' => 'Divisions',
-                'icon' => 'las la-star-half-alt',
-                'url' => 'division',
-                'permissions' => '["divisions_list"]',
-                'parent_id' => 13,
-                'lft' => 17,
-                'rgt' => 18,
-                'depth' => 2,
-                'created_at' => '2024-10-10 18:39:03',
-                'updated_at' => '2024-10-10 18:39:03',
-            ),
         ));
         
         
