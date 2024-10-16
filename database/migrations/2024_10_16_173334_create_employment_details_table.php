@@ -12,10 +12,9 @@ return new class extends Migration {
     {
         Schema::create('employment_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            // Polymorphic relationship columns
-            $table->unsignedBigInteger('detailable_id');
-            $table->string('detailable_type');
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->string('type');
+            $table->string('value');
             $table->date('effectivity_date');
             $table->timestamps();
         });
