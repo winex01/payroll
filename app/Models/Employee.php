@@ -49,6 +49,46 @@ class Employee extends Model
     {
         return $this->getFullNameAttribute();
     }
+
+    // Magic method to dynamically retrieve properties
+    public function __get($key)
+    {
+        // Check if the key ends with '_id' and skip it
+        if (str_ends_with($key, '_id')) {
+            return parent::__get($key);
+        }
+
+        // Attempt to find the latest employment detail for the requested key
+        $detail = $this->getEmploymentDetailByType($key);
+
+        if ($detail) {
+            // Check if the type corresponds to a relational model
+            if (class_exists($detail->type)) {
+                // Return the related model instance using the value as the ID
+                return $detail->value ? $detail->type::find($detail->value) : null;
+            }
+
+            // If not relational, return the direct value
+            return $detail->value;
+        }
+
+        // If it's not an employment detail, fall back to the parent's __get()
+        return parent::__get($key);
+    }
+
+
+
+    // Retrieve employment detail by type
+    public function getEmploymentDetailByType($type)
+    {
+        return $this->employmentDetails()
+            ->active()
+            ->where('type', $type)
+            ->orderBy('effectivity_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -57,6 +97,11 @@ class Employee extends Model
     public function civilStatus()
     {
         return $this->belongsTo(CivilStatus::class);
+    }
+
+    public function employmentDetails()
+    {
+        return $this->hasMany(EmploymentDetail::class);
     }
 
     public function families()

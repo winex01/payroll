@@ -31,5 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GendersTableSeeder::class);
         $this->call(CivilStatusesTableSeeder::class);
         $this->call(FamilyTypesTableSeeder::class);
+        $this->call(JobStatusesTableSeeder::class);
+        $this->call(EmploymentStatusesTableSeeder::class);
     }
 }

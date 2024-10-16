@@ -10,13 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('employment_details', function (Blueprint $table) {
+        Schema::create('job_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            // Polymorphic relationship columns
-            $table->unsignedBigInteger('detailable_id');
-            $table->string('detailable_type');
-            $table->date('effectivity_date');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('employment_details');
+        Schema::dropIfExists('job_statuses');
     }
 };
