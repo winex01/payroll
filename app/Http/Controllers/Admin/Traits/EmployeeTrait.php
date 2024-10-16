@@ -14,7 +14,8 @@ trait EmployeeTrait
             'width' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
             'withFiles' => [
                 'disk' => 'public',
-                'path' => 'photos',
+                // we use ternary below, bec. backpack will cause warning if path is not null if its a column.
+                'path' => ($fieldOrColumn == 'column') ? null : 'photos',
             ],
             'orderable' => false,
         ])->makeFirst();
