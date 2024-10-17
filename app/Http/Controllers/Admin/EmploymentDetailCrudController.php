@@ -45,6 +45,7 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::setFromDb();
+        $this->employeeColumn();
     }
 
     /**
@@ -57,6 +58,7 @@ class EmploymentDetailCrudController extends CrudController
     {
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
+        $this->employeeField();
     }
 
     /**
@@ -68,5 +70,10 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function setupShowOperation()
+    {
+        $this->setupListOperation();
     }
 }

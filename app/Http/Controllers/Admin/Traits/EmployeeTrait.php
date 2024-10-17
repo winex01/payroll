@@ -22,17 +22,21 @@ trait EmployeeTrait
 
     }
 
+    public function employeeField($column = 'employee')
+    {
+        $this->crud->removeField('employee_id');
+        $this->crud->field($column)->makeFirst();
+    }
+
     public function employeeColumn($column = 'employee', $linkTo = null)
     {
-        // if ($this->crud->getOperation() == 'list') {
-        //     $this->employeePhoto();
-        //     $this->crud->modifyColumn('employee.photo', [
-        //         'label' => null,
-        //     ]);
-        // }
-
-        if (isset($this->crud->settings()['list.columns'][$column])) {
-            $this->crud->column($column);
+        // if column not exist then we create it
+        if (!isset($this->crud->settings()['list.columns'][$column])) {
+            // if raw column or FK column exist then we remove it.
+            if (isset($this->crud->settings()['list.columns']['employee_id'])) {
+                $this->crud->removeColumn('employee_id');
+            }
+            $this->crud->column($column)->makeFirst();
         }
 
         $this->crud->modifyColumn($column, [
