@@ -27,10 +27,6 @@ class EmploymentDetail extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function scopeActive($query)
-    {
-        return $query->where('effectivity_date', '<=', now());
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -40,6 +36,11 @@ class EmploymentDetail extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function employmentDetailType()
+    {
+        return $this->belongsTo(EmploymentDetailType::class);
     }
 
     /*

@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('employment_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('type');
+            $table->foreignId('employment_detail_type_id')->constrained();
             $table->string('value');
             $table->date('effectivity_date');
             $table->timestamps();
