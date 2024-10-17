@@ -84,6 +84,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'departments_delete',
             'departments_revise',
         ],
+
+        'employment_details' => [
+            'employment_details_list',
+            'employment_details_create',
+            'employment_details_show',
+            'employment_details_update',
+            'employment_details_delete',
+            'employment_details_revise',
+        ],
     ];
 
     /**
