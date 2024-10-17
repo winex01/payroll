@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 
-class EmploymentDetail extends Model
+class EmploymentDetailType extends Model
 {
     use ModelTraits;
 
@@ -15,7 +15,7 @@ class EmploymentDetail extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'employment_details';
+    protected $table = 'employment_detail_types';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -27,20 +27,23 @@ class EmploymentDetail extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('orderByReorder', function (\Illuminate\Database\Eloquent\Builder $builder) {
+            $builder->orderBy('lft', 'asc');
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function employee()
+    public function employmentDetails()
     {
-        return $this->belongsTo(Employee::class);
-    }
-
-    public function employmentDetailType()
-    {
-        return $this->belongsTo(EmploymentDetailType::class);
+        return $this->hasMany(EmploymentDetail::class);
     }
 
     /*

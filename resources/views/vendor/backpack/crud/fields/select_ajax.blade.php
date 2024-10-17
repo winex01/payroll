@@ -8,9 +8,9 @@
         if (!isset($field['attributes']['data-filter-type'])) {
             $field['attributes']['data-filter-type'] = 'select2';
         }
-
-        $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
     }
+
+    $field['label'] = \App\Facades\HelperFacade::strToHumanReadable($field['label']);
 
     $current_value = old_empty_or_null($field['name'], '') ?? ($field['value'] ?? ($field['default'] ?? ''));
     $entity_model = $crud->getRelationModel($field['entity'], -1);
