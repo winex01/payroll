@@ -27,10 +27,6 @@ class EmploymentDetail extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function scopeActive($query)
-    {
-        return $query->where('effectivity_date', '<=', now());
-    }
 
     /*
     |--------------------------------------------------------------------------
