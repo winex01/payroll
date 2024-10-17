@@ -34,6 +34,8 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
+
+        // TODO:: type model class, validation
     }
 
     /**
@@ -45,6 +47,8 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::setFromDb();
+
+        $this->input('column');
         $this->employeeColumn();
     }
 
@@ -59,10 +63,7 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
 
-        $this->employeeField();
-
-        $this->crud->removeField('employment_detail_type_id');
-        $this->crud->field('employmentDetailType')->after('employee');
+        $this->input('field');
     }
 
     /**
@@ -79,5 +80,18 @@ class EmploymentDetailCrudController extends CrudController
     public function setupShowOperation()
     {
         $this->setupListOperation();
+    }
+
+    public function input($input = 'field')
+    {
+        $input = ucfirst($input);
+
+        $this->crud->{'remove' . $input . 's'}([
+            'employee_id',
+            'employment_detail_type_id',
+        ]);
+
+        $this->crud->{$input}('employee')->makeFirst();
+        $this->crud->{$input}('employmentDetailType')->after('employee');
     }
 }
