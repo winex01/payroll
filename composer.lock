@@ -310,16 +310,16 @@
         },
         {
             "name": "backpack/theme-coreuiv2",
-            "version": "1.2.5",
+            "version": "1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/theme-coreuiv2.git",
-                "reference": "e1bddfe5a43171fc5ac358906d27f331b1640d8c"
+                "reference": "11ec0cbaecefd3272601a7fb0d32457533a09ce6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/theme-coreuiv2/zipball/e1bddfe5a43171fc5ac358906d27f331b1640d8c",
-                "reference": "e1bddfe5a43171fc5ac358906d27f331b1640d8c",
+                "url": "https://api.github.com/repos/Laravel-Backpack/theme-coreuiv2/zipball/11ec0cbaecefd3272601a7fb0d32457533a09ce6",
+                "reference": "11ec0cbaecefd3272601a7fb0d32457533a09ce6",
                 "shasum": ""
             },
             "require": {
@@ -364,22 +364,22 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/theme-coreuiv2/issues",
-                "source": "https://github.com/Laravel-Backpack/theme-coreuiv2/tree/1.2.5"
+                "source": "https://github.com/Laravel-Backpack/theme-coreuiv2/tree/1.2.6"
             },
-            "time": "2024-07-15T07:57:25+00:00"
+            "time": "2024-10-17T15:49:04+00:00"
         },
         {
             "name": "backpack/theme-tabler",
-            "version": "1.2.13",
+            "version": "1.2.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/theme-tabler.git",
-                "reference": "82303e72c82fcced5b48708e2208e439ec7317d3"
+                "reference": "2a8bb2118d11d8b97589ce3434c410c468b96975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/theme-tabler/zipball/82303e72c82fcced5b48708e2208e439ec7317d3",
-                "reference": "82303e72c82fcced5b48708e2208e439ec7317d3",
+                "url": "https://api.github.com/repos/Laravel-Backpack/theme-tabler/zipball/2a8bb2118d11d8b97589ce3434c410c468b96975",
+                "reference": "2a8bb2118d11d8b97589ce3434c410c468b96975",
                 "shasum": ""
             },
             "require": {
@@ -437,9 +437,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/theme-tabler/issues",
-                "source": "https://github.com/Laravel-Backpack/theme-tabler/tree/1.2.13"
+                "source": "https://github.com/Laravel-Backpack/theme-tabler/tree/1.2.14"
             },
-            "time": "2024-09-06T13:24:48+00:00"
+            "time": "2024-10-17T15:50:41+00:00"
         },
         {
             "name": "brick/math",
@@ -1649,16 +1649,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8"
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
                 "shasum": ""
             },
             "require": {
@@ -1712,7 +1712,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.3"
+                "source": "https://github.com/guzzle/promises/tree/2.0.4"
             },
             "funding": [
                 {
@@ -1728,7 +1728,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T10:29:17+00:00"
+            "time": "2024-10-17T10:06:22+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1934,16 +1934,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.28.0",
+            "version": "v11.28.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "80843d20cf9337b94fb71e7f25f33f4b1e6c7c5f"
+                "reference": "3ef5c8a85b4c598d5ffaf98afd72f6a5d6a0be2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/80843d20cf9337b94fb71e7f25f33f4b1e6c7c5f",
-                "reference": "80843d20cf9337b94fb71e7f25f33f4b1e6c7c5f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3ef5c8a85b4c598d5ffaf98afd72f6a5d6a0be2c",
+                "reference": "3ef5c8a85b4c598d5ffaf98afd72f6a5d6a0be2c",
                 "shasum": ""
             },
             "require": {
@@ -2139,7 +2139,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-10-15T14:14:58+00:00"
+            "time": "2024-10-16T16:32:21+00:00"
         },
         {
             "name": "laravel/prompts",
