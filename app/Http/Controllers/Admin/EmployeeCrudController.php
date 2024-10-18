@@ -77,9 +77,9 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(EmployeeRequest::class);
+        $this->widgetBladeScript('crud::scripts.employee');
 
-        $this->widgetScript('assets/js/admin/forms/employee.js');
+        CRUD::setValidation(EmployeeRequest::class);
 
         $this->input('field');
     }

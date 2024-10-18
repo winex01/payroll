@@ -34,8 +34,6 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
-
-        // TODO:: type model class, validation
     }
 
     /**
@@ -60,6 +58,8 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        $this->widgetBladeScript('crud::scripts.employment-detail');
+
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
 
@@ -93,5 +93,9 @@ class EmploymentDetailCrudController extends CrudController
 
         $this->crud->{$input}('employee')->makeFirst();
         $this->crud->{$input}('employmentDetailType')->after('employee');
+
+        // TODO:: add all modelValue here
+
+
     }
 }
