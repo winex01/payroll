@@ -86,22 +86,4 @@ class EmploymentDetailTypeCrudController extends CrudController
         // you can also enable it globally in config/backpack/operations/reorder.php
         CRUD::set('reorder.escaped', true);
     }
-
-    protected function setupCustomRoutes($segment, $routeName, $controller)
-    {
-        \Illuminate\Support\Facades\Route::post($segment . '/find', [
-            'as' => $routeName . '.find',
-            'uses' => $controller . '@find',
-            'operation' => 'find',
-        ]);
-    }
-
-    public function find()
-    {
-        $this->crud->hasAccessToAny(['create', 'update']);
-
-        debug(request()->all());
-
-        return response()->json(request()->all());
-    }
 }
