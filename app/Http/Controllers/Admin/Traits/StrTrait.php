@@ -20,4 +20,9 @@ trait StrTrait
 
         return $capitalizeAllWords ? ucwords($snakeCase) : ucfirst($snakeCase); // Use ucwords() or ucfirst() based on the second parameter
     }
+
+    public function strToModelName($string, $modelPath = 'App\Models\\')
+    {
+        return $modelPath . Str::studly($string);
+    }
 }

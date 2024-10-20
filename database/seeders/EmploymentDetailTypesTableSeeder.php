@@ -33,24 +33,24 @@ class EmploymentDetailTypesTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'JobStatus',
+                'name' => 'Job Status',
                 'parent_id' => NULL,
                 'lft' => 4,
                 'rgt' => 5,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:48:58',
-                'updated_at' => '2024-10-17 19:48:58',
+                'updated_at' => '2024-10-18 18:54:35',
             ),
             2 => 
             array (
                 'id' => 3,
-                'name' => 'EmploymentStatus',
+                'name' => 'Employment Status',
                 'parent_id' => NULL,
                 'lft' => 6,
                 'rgt' => 7,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:49:10',
-                'updated_at' => '2024-10-17 19:49:10',
+                'updated_at' => '2024-10-18 15:18:26',
             ),
             3 => 
             array (
@@ -88,35 +88,35 @@ class EmploymentDetailTypesTableSeeder extends Seeder
             6 => 
             array (
                 'id' => 7,
-                'name' => 'DaysPerYear',
+                'name' => 'Days Per Year',
                 'parent_id' => NULL,
                 'lft' => 14,
                 'rgt' => 15,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:55:51',
-                'updated_at' => '2024-10-17 19:55:51',
+                'updated_at' => '2024-10-18 15:18:37',
             ),
             7 => 
             array (
                 'id' => 8,
-                'name' => 'PayBasis',
+                'name' => 'Pay Basis',
                 'parent_id' => NULL,
                 'lft' => 16,
                 'rgt' => 17,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:56:00',
-                'updated_at' => '2024-10-17 19:56:00',
+                'updated_at' => '2024-10-18 15:18:47',
             ),
             8 => 
             array (
                 'id' => 9,
-                'name' => 'PaymentMethod',
+                'name' => 'Payment Method',
                 'parent_id' => NULL,
                 'lft' => 18,
                 'rgt' => 19,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:56:06',
-                'updated_at' => '2024-10-17 19:56:06',
+                'updated_at' => '2024-10-18 15:18:53',
             ),
             9 => 
             array (
@@ -143,13 +143,13 @@ class EmploymentDetailTypesTableSeeder extends Seeder
             11 => 
             array (
                 'id' => 12,
-                'name' => 'PayrollGroup',
+                'name' => 'Payroll Group',
                 'parent_id' => NULL,
                 'lft' => 24,
                 'rgt' => 25,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:56:31',
-                'updated_at' => '2024-10-17 19:56:31',
+                'updated_at' => '2024-10-18 18:18:20',
             ),
         ));
         

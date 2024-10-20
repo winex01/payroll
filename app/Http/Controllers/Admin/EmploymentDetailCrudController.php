@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
+use App\Models\EmploymentDetailType;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -34,8 +36,6 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
-
-        // TODO:: type model class, validation
     }
 
     /**
@@ -60,6 +60,8 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        $this->widgetBladeScript('crud::scripts.employment-detail');
+
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
 
@@ -77,11 +79,6 @@ class EmploymentDetailCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
-    public function setupShowOperation()
-    {
-        $this->setupListOperation();
-    }
-
     public function input($input = 'field')
     {
         $input = ucfirst($input);
@@ -92,6 +89,71 @@ class EmploymentDetailCrudController extends CrudController
         ]);
 
         $this->crud->{$input}('employee')->makeFirst();
-        $this->crud->{$input}('employmentDetailType')->after('employee');
+        $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
+        $this->crud->field('value')->size(6);
+
+
+        $valueInputs = EmploymentDetailType::pluck('name');
+
+        foreach ($valueInputs as $valueInput) {
+            $temp = $this->strToModelName($valueInput);
+            if (class_exists($temp)) {
+                $this->crud->{$input}([
+                    'name' => Str::snake($valueInput),
+                    'label' => ucfirst(strtolower($valueInput)),
+                    'type' => 'select_from_array',
+                    'options' => $temp::pluck('name', 'id'),
+                    'wrapper' => [
+                        'class' => 'form-group col-sm-6 mb-3 d-none',
+                    ]
+                ])->after('employmentDetailType');
+            }
+        }
+    }
+
+    protected function setupCustomRoutes($segment, $routeName, $controller)
+    {
+        \Illuminate\Support\Facades\Route::post($segment . '/valueField', [
+            'as' => $routeName . '.valueField',
+            'uses' => $controller . '@valueField',
+            'operation' => 'valueField',
+        ]);
+    }
+
+    public function valueField()
+    {
+        $this->crud->hasAccessToAny(['create', 'update']);
+
+        $id = request('id');
+
+        // TODO::validation
+
+        $inputType = EmploymentDetailType::findOrFail($id);
+
+        $temp = $this->strToModelName($inputType->name);
+
+        $isModel = false;
+        $fieldName = $inputType->name;
+
+        if (class_exists($temp)) {
+            $isModel = true;
+            $fieldName = Str::snake($fieldName);
+        }
+
+        $allFieldNames = EmploymentDetailType::pluck('name');
+
+        // filter
+        $allFieldNames = $allFieldNames->filter(function ($name) {
+            return class_exists($this->strToModelName($name));
+        });
+
+        // Transform the names using map() first
+        $allFieldNames = $allFieldNames->map(function ($name) {
+            return Str::snake($name);
+        });
+
+        $allFieldNames->push('value'); // append
+
+        return response()->json(compact('isModel', 'fieldName', 'allFieldNames'));
     }
 }
