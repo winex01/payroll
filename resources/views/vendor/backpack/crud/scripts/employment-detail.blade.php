@@ -9,18 +9,25 @@
                         id: field.value,
                     },
                     success: function(response) {
-                        // console.log(response);
+                        console.log(response);
 
-                        var fieldNamesArray = Object.values(response.allFieldNames);
+                        if (response) {
+                            var fieldNamesArray = Object.values(response.allFieldNames);
 
-                        crud.fields(fieldNamesArray).forEach(function(field) {
-                            field.hide();
-                        });
+                            crud.fields(fieldNamesArray).forEach(function(field) {
+                                field.hide();
+                            });
 
-                        if (response.isModel == true) {
-                            crud.field(response.fieldName).show();
+                            if (response.isModel == true) {
+                                crud.field(response.fieldName).show();
+                            } else {
+                                crud.field('value').show();
+                            }
                         } else {
-                            crud.field('value').show();
+                            new Noty({
+                                type: "danger",
+                                text: "<strong>Error</strong><br>The selected item is invalid."
+                            }).show();
                         }
                     }
                 });
