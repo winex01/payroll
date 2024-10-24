@@ -2,10 +2,15 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Str;
+use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\Admin\Traits\StrTrait;
 
 class EmploymentDetailRequest extends FormRequest
 {
+    use StrTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,10 +29,25 @@ class EmploymentDetailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 'name' => 'required|min:5|max:255'
-            // TODO::
+        $rules = [
+            'employee' => 'required|exists:employees,id',
+            'employmentDetailType' => 'required|exists:employment_detail_types,id',
+            'effectivity_date' => 'required|date',
         ];
+
+        if (request('employmentDetailType')) {
+            $type = EmploymentDetailType::findOrFail(request('employmentDetailType'));
+            if ($type) {
+                if (class_exists($this->strToModelName($type->name))) {
+                    $field = Str::snake($type->name);
+                    $rules[$field] = $type->validation;
+                } else {
+                    $rules['value'] = $type->validation;
+                }
+            }
+        }
+
+        return $rules;
     }
 
     /**

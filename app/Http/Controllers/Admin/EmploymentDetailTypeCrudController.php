@@ -47,6 +47,7 @@ class EmploymentDetailTypeCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->column('name');
+        $this->crud->column('validation');
     }
 
     /**
@@ -60,6 +61,7 @@ class EmploymentDetailTypeCrudController extends CrudController
         CRUD::setValidation($this->validateUnique('name'));
 
         $this->crud->field('name');
+        $this->crud->field('validation')->validationRules('required');
     }
 
     /**

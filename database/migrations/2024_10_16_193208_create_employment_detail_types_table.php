@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('employment_detail_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-
+            $table->string('validation')->nullable();
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('lft')->unsigned()->nullable();
             $table->integer('rgt')->unsigned()->nullable();

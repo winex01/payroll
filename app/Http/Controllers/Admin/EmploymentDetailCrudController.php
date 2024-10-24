@@ -124,11 +124,11 @@ class EmploymentDetailCrudController extends CrudController
     {
         $this->crud->hasAccessToAny(['create', 'update']);
 
-        $id = request('id');
+        $inputType = EmploymentDetailType::find(request('id'));
 
-        // TODO::validation
-
-        $inputType = EmploymentDetailType::findOrFail($id);
+        if (!$inputType) {
+            return false;
+        }
 
         $temp = $this->strToModelName($inputType->name);
 
