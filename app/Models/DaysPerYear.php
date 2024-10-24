@@ -39,12 +39,20 @@ class DaysPerYear extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
+    public function scopeWithName($query)
+    {
+        return $query->select('id', 'days_per_year', 'days_per_week', 'hours_per_day');
+    }
 
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getNameAttribute()
+    {
+        return "{$this->days_per_year}/{$this->days_per_week}/{$this->hours_per_day}";
+    }
 
     /*
     |--------------------------------------------------------------------------
