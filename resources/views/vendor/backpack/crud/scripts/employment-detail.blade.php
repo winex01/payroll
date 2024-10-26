@@ -9,8 +9,6 @@
                         id: field.value,
                     },
                     success: function(response) {
-                        console.log(response);
-
                         if (response) {
                             var fieldNamesArray = Object.values(response.allFieldNames);
 
@@ -20,7 +18,11 @@
 
                             if (response.isModel == true) {
                                 crud.field(response.fieldName).show();
+                                crud.field(response.fieldName).onChange(function(field) {
+                                    crud.field('value').input.value = field.value;
+                                }).change();
                             } else {
+                                crud.field('value').input.value = null;
                                 crud.field('value').show();
                             }
                         } else {

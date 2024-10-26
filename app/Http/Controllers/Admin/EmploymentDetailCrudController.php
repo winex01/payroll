@@ -48,8 +48,12 @@ class EmploymentDetailCrudController extends CrudController
     {
         CRUD::setFromDb();
 
-        $this->input('column');
+        $this->crud->removeColumns([
+            'employment_detail_type_id',
+        ]);
+
         $this->employeeColumn();
+        $this->crud->column('employmentDetailType')->after('employee');
     }
 
     /**
@@ -66,6 +70,37 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setFromDb();
 
         $this->input('field');
+    }
+
+    public function store()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
+
+        $request = $this->crud->getStrippedSaveRequest($request);
+
+
+        $type = EmploymentDetailType::findOrFail($request['employmentDetailType']);
+        // dd($type);
+
+
+        // insert item in the db
+        $item = $this->crud->create($request);
+        $this->data['entry'] = $this->crud->entry = $item;
+
+        // show a success message
+        \Alert::success(trans('backpack::crud.insert_success'))->flash();
+
+        // save the redirect choice for next time
+        $this->crud->setSaveAction();
+
+        return $this->crud->performSaveAction($item->getKey());
     }
 
     /**
