@@ -101,6 +101,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'employment_detail_types_revise',
             'employment_detail_types_reorder',
         ],
+
+        'payroll_groups' => [
+            'payroll_groups_list',
+            'payroll_groups_create',
+            'payroll_groups_update',
+            'payroll_groups_delete',
+            'payroll_groups_revise',
+        ],
     ];
 
     /**

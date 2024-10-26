@@ -92,17 +92,23 @@ class EmploymentDetailCrudController extends CrudController
         $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
         $this->crud->field('value')->size(6);
 
-
         $valueInputs = EmploymentDetailType::pluck('name');
 
         foreach ($valueInputs as $valueInput) {
             $temp = $this->strToModelName($valueInput);
             if (class_exists($temp)) {
+                $data = [];
+                if (\Illuminate\Support\Facades\Schema::hasColumn((new $temp)->getTable(), 'name')) {
+                    $data = $temp::pluck('name', 'id');
+                } else {
+                    $data = $temp::withName()->get()->pluck('name', 'id');
+                }
+
                 $this->crud->{$input}([
                     'name' => Str::snake($valueInput),
                     'label' => ucfirst(strtolower($valueInput)),
                     'type' => 'select_from_array',
-                    'options' => $temp::pluck('name', 'id'),
+                    'options' => $data,
                     'wrapper' => [
                         'class' => 'form-group col-sm-6 mb-3 d-none',
                     ]

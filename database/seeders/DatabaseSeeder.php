@@ -34,5 +34,8 @@ class DatabaseSeeder extends Seeder
         $this->call(JobStatusesTableSeeder::class);
         $this->call(EmploymentStatusesTableSeeder::class);
         $this->call(EmploymentDetailTypesTableSeeder::class);
+        $this->call(PayBasesTableSeeder::class);
+        $this->call(PaymentMethodsTableSeeder::class);
+        $this->call(DaysPerYearsTableSeeder::class);
     }
 }
