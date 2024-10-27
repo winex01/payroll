@@ -48,8 +48,35 @@ class EmploymentDetailCrudController extends CrudController
     {
         CRUD::setFromDb();
 
-        $this->input('column');
+        $this->crud->removeColumns([
+            'employment_detail_type_id',
+        ]);
+
         $this->employeeColumn();
+        $this->crud->column('employmentDetailType')->after('employee');
+
+        $this->crud->modifyColumn('value', [
+            'type' => 'closure',
+            'function' => function ($entry) {
+                $model = $this->strToModelName($entry->employmentDetailType->name);
+                if (class_exists($model)) {
+                    $value = $model::find($entry->value)->name;
+
+                    if ($value) {
+                        return $value;
+                    }
+                }
+
+                $value = $entry->value;
+
+                if (is_numeric($value)) {
+                    return $this->numberToDecimals($value);
+                }
+
+                return $value;
+            },
+            'escaped' => false,
+        ]);
     }
 
     /**
@@ -90,10 +117,13 @@ class EmploymentDetailCrudController extends CrudController
 
         $this->crud->{$input}('employee')->makeFirst();
         $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
-        $this->crud->field('value')->size(6);
+        $this->crud->field('value')->wrapper([
+            'class' => 'form-group col-sm-6 mb-3 d-none',
+        ])->hint('Value for the detail type.');
 
         $valueInputs = EmploymentDetailType::pluck('name');
 
+        // TODO:: dates
         foreach ($valueInputs as $valueInput) {
             $temp = $this->strToModelName($valueInput);
             if (class_exists($temp)) {
