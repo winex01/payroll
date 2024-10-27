@@ -11,6 +11,7 @@ trait CoreTraits
     use ReviseOperation;
     use UserPermissions;
     use StrTrait;
+    use NumberTrait;
     use WidgetTrait;
     use EmployeeTrait;
     use ValidateUniqueTrait;
