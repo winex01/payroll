@@ -9,9 +9,7 @@
                         id: field.value,
                     },
                     success: function(response) {
-                        // console.log(response);
                         if (response) {
-                            // console.log(response.fieldName);
                             var fieldNamesArray = Object.values(response.allFieldNames);
 
                             // hide all available fields when load
@@ -26,7 +24,13 @@
                                     field.input.value = '';
                                     field.hide();
                                 }
+
                             });
+
+                            // event set value for the specific field to copy value to value field.
+                            crud.field(response.fieldName).onChange(function(field) {
+                                crud.field('value').input.value = field.value;
+                            }).change();
 
                         } else {
                             new Noty({
