@@ -138,9 +138,11 @@ class EmploymentDetailCrudController extends CrudController
                 $data = [];
                 $model = $this->strToModelName($fieldName);
 
+                // if model has column name
                 if (Schema::hasColumn((new $model)->getTable(), 'name')) {
                     $data = $model::pluck('name', 'id');
                 } else {
+                    // if model has no column name, then create custom attr name and use local scope, check DaysPerYear model
                     $data = $model::withName()->get()->pluck('name', 'id');
                 }
 
@@ -182,35 +184,17 @@ class EmploymentDetailCrudController extends CrudController
             return false;
         }
 
-        $temp = $this->strToModelName($inputType->name);
-
-        $isModel = false;
         $fieldName = Str::snake($inputType->name);
 
-        if (class_exists($temp)) {
-            $isModel = true;
+        $types = EmploymentDetailType::all();
+
+        $allFieldNames = [];
+        foreach ($types as $type) {
+            $allFieldNames[] = Str::snake($type->name);
         }
 
-        $allFieldNames = EmploymentDetailType::pluck('name');
+        $allFieldNames[] = 'value';
 
-        // filter model/select
-        $allFieldNames = $allFieldNames->filter(function ($name) {
-            return class_exists($this->strToModelName($name));
-        });
-
-        // Transform the names using map() first
-        $allFieldNames = $allFieldNames->map(function ($name) {
-            return Str::snake($name);
-        });
-
-        // date fields
-        $dateFields = EmploymentDetailType::where('name', 'like', '%date%')->pluck('name');
-        foreach ($dateFields as $date) {
-            $allFieldNames->push(Str::snake($date)); // append
-        }
-
-        $allFieldNames->push('value'); // append
-
-        return response()->json(compact('isModel', 'fieldName', 'allFieldNames'));
+        return response()->json(compact('fieldName', 'allFieldNames'));
     }
 }

@@ -11,32 +11,23 @@
                     success: function(response) {
                         // console.log(response);
                         if (response) {
+                            // console.log(response.fieldName);
                             var fieldNamesArray = Object.values(response.allFieldNames);
 
+                            // hide all available fields when load
                             crud.fields(fieldNamesArray).forEach(function(field) {
-                                field.hide();
+                                if (response.fieldName == field.name) {
+                                    crud.field(response.fieldName).input.value = crud.field(
+                                            'value').input
+                                        .value;
+                                    field.show();
+                                } else {
+                                    // set to empty string and not null so the default value would be "-" if it's a select
+                                    field.input.value = '';
+                                    field.hide();
+                                }
                             });
 
-                            if (response.isModel == true) {
-                                crud.field(response.fieldName).input.value = crud.field('value').input
-                                    .value;
-                                crud.field(response.fieldName).show();
-                                // crud.field(response.fieldName).onChange(function(field) {
-                                //     crud.field('value').input.value = field.value;
-                                // }).change();
-                            }
-                            // else {
-                            //     if ("{{ $crud->getOperation() }}" == 'create') {
-                            //         crud.field('value').input.value = null;
-                            //     }
-
-                            //     console.log(response.fieldName);
-
-                            // }
-
-                            crud.field('value').input.value = crud.field(response.fieldName).input
-                            .value;
-                            crud.field(response.fieldName).show();
                         } else {
                             new Noty({
                                 type: "danger",
