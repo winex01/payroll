@@ -38,12 +38,8 @@ class EmploymentDetailRequest extends FormRequest
         if (request('employmentDetailType')) {
             $type = EmploymentDetailType::findOrFail(request('employmentDetailType'));
             if ($type) {
-                if (class_exists($this->strToModelName($type->name))) {
-                    $field = Str::snake($type->name);
-                    $rules[$field] = $type->validation;
-                } else {
-                    $rules['value'] = $type->validation;
-                }
+                $field = Str::snake($type->name);
+                $rules[$field] = $type->validation;
             }
         }
 

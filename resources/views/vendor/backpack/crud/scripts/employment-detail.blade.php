@@ -12,28 +12,26 @@
                         if (response) {
                             var fieldNamesArray = Object.values(response.allFieldNames);
 
+                            // hide all available fields when load
                             crud.fields(fieldNamesArray).forEach(function(field) {
-                                field.hide();
-                            });
-
-                            if (response.isModel == true) {
-                                crud.field(response.fieldName).input.value = crud.field('value').input
-                                    .value;
-                                crud.field(response.fieldName).show();
-                                crud.field(response.fieldName).onChange(function(field) {
-                                    if ("{{ $crud->getOperation() }}" == 'create') {
-                                        crud.field('value').input.value = field.value;
-                                    } else {
-                                        crud.field('value').input.value = null;
-                                    }
-                                }).change();
-                            } else {
-                                if ("{{ $crud->getOperation() }}" == 'create') {
-                                    crud.field('value').input.value = null;
+                                if (response.fieldName == field.name) {
+                                    crud.field(response.fieldName).input.value = crud.field(
+                                            'value').input
+                                        .value;
+                                    field.show();
+                                } else {
+                                    // set to empty string and not null so the default value would be "-" if it's a select
+                                    field.input.value = '';
+                                    field.hide();
                                 }
 
-                                crud.field('value').show();
-                            }
+                            });
+
+                            // event set value for the specific field to copy value to value field.
+                            crud.field(response.fieldName).onChange(function(field) {
+                                crud.field('value').input.value = field.value;
+                            }).change();
+
                         } else {
                             new Noty({
                                 type: "danger",

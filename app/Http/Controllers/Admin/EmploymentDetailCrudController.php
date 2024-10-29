@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Str;
 use App\Models\EmploymentDetailType;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -53,7 +54,7 @@ class EmploymentDetailCrudController extends CrudController
         ]);
 
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')->after('employee');
+        $this->crud->column('employmentDetailType')->label(__('app.employment_detail_type'))->after('employee');
 
         $this->crud->modifyColumn('value', [
             'type' => 'closure',
@@ -77,6 +78,12 @@ class EmploymentDetailCrudController extends CrudController
             },
             'escaped' => false,
         ]);
+    }
+
+    public function setupShowOperation()
+    {
+        $this->crud->removeColumn('employee_id');
+        $this->setupListOperation();
     }
 
     /**
@@ -117,33 +124,50 @@ class EmploymentDetailCrudController extends CrudController
 
         $this->crud->{$input}('employee')->makeFirst();
         $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
-        $this->crud->field('value')->wrapper([
-            'class' => 'form-group col-sm-6 mb-3 d-none',
-        ])->hint('Value for the detail type.');
+        $this->crud->field('value')->type('hidden');
 
-        $valueInputs = EmploymentDetailType::pluck('name');
+        $types = EmploymentDetailType::all();
 
-        // TODO:: dates
-        foreach ($valueInputs as $valueInput) {
-            $temp = $this->strToModelName($valueInput);
-            if (class_exists($temp)) {
+        foreach ($types as $type) {
+            $fieldName = Str::snake($type->name);
+            $this->crud->{$input}([
+                'name' => $fieldName,
+                'wrapper' => [
+                    'class' => 'form-group col-sm-6 mb-3 d-none',
+                ]
+            ])->after('employmentDetailType');
+
+            $modifiedAttributes = [];
+
+            // model/select
+            if (str_contains($type->validation, 'exists')) {
                 $data = [];
-                if (\Illuminate\Support\Facades\Schema::hasColumn((new $temp)->getTable(), 'name')) {
-                    $data = $temp::pluck('name', 'id');
+                $model = $this->strToModelName($fieldName);
+
+                // if model has column name
+                if (Schema::hasColumn((new $model)->getTable(), 'name')) {
+                    $data = $model::pluck('name', 'id');
                 } else {
-                    $data = $temp::withName()->get()->pluck('name', 'id');
+                    // if model has no column name, then create custom attr name and use local scope, check DaysPerYear model
+                    $data = $model::withName()->get()->pluck('name', 'id');
                 }
 
-                $this->crud->{$input}([
-                    'name' => Str::snake($valueInput),
-                    'label' => ucfirst(strtolower($valueInput)),
+                $modifiedAttributes = [
                     'type' => 'select_from_array',
                     'options' => $data,
-                    'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 d-none',
-                    ]
-                ])->after('employmentDetailType');
+                ];
+
+            } elseif (str_contains($type->validation, 'date')) {
+                $modifiedAttributes = [
+                    'type' => 'date',
+                ];
+            } elseif (str_contains($type->validation, 'numeric')) {
+                $modifiedAttributes = [
+                    'type' => 'number',
+                ];
             }
+
+            $this->crud->{"modify" . ucfirst($input)}($fieldName, $modifiedAttributes);
         }
     }
 
@@ -166,30 +190,26 @@ class EmploymentDetailCrudController extends CrudController
             return false;
         }
 
-        $temp = $this->strToModelName($inputType->name);
+        $fieldName = Str::snake($inputType->name);
 
-        $isModel = false;
-        $fieldName = $inputType->name;
+        $types = EmploymentDetailType::all();
 
-        if (class_exists($temp)) {
-            $isModel = true;
-            $fieldName = Str::snake($fieldName);
+        $allFieldNames = [];
+        foreach ($types as $type) {
+            $allFieldNames[] = Str::snake($type->name);
         }
 
-        $allFieldNames = EmploymentDetailType::pluck('name');
+        $allFieldNames[] = 'value';
 
-        // filter
-        $allFieldNames = $allFieldNames->filter(function ($name) {
-            return class_exists($this->strToModelName($name));
-        });
-
-        // Transform the names using map() first
-        $allFieldNames = $allFieldNames->map(function ($name) {
-            return Str::snake($name);
-        });
-
-        $allFieldNames->push('value'); // append
-
-        return response()->json(compact('isModel', 'fieldName', 'allFieldNames'));
+        return response()->json(compact('fieldName', 'allFieldNames'));
     }
 }
+
+
+/*
+TODO:: filters
+TODO:: all operation(all details)
+TODO:: validations
+        - dont allow create, update/edit, delete to record if effectivity_date is lessthan the current date or today
+        -
+*/
