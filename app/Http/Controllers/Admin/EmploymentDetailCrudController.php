@@ -54,7 +54,7 @@ class EmploymentDetailCrudController extends CrudController
         ]);
 
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')->after('employee');
+        $this->crud->column('employmentDetailType')->label(__('app.employment_detail_type'))->after('employee');
 
         $this->crud->modifyColumn('value', [
             'type' => 'closure',
@@ -78,6 +78,12 @@ class EmploymentDetailCrudController extends CrudController
             },
             'escaped' => false,
         ]);
+    }
+
+    public function setupShowOperation()
+    {
+        $this->crud->removeColumn('employee_id');
+        $this->setupListOperation();
     }
 
     /**
@@ -199,4 +205,11 @@ class EmploymentDetailCrudController extends CrudController
     }
 }
 
-// TODO:: fix edit/update error
+
+/*
+TODO:: filters
+TODO:: all operation(all details)
+TODO:: validations
+        - dont allow create, update/edit, delete to record if effectivity_date is lessthan the current date or today
+        -
+*/
