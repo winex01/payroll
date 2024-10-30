@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\EmploymentDetailRequest;
@@ -37,6 +38,15 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
+
+        // only allow modify if effectivity_date >= today
+        $this->crud->operation(['list', 'update', 'delete'], function () {
+            $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
+                $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
+                $today = now()->startOfDay(); // Set today’s date to midnight as well
+                return $date >= $today;
+            });
+        });
     }
 
     /**
@@ -209,6 +219,4 @@ class EmploymentDetailCrudController extends CrudController
 /*
 TODO:: filters
 TODO:: all operation(all details)
-TODO:: validations
-        - dont allow create, update/edit, delete to record if effectivity_date is lessthan the current date or today
 */
