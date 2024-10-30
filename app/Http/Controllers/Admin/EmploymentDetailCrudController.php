@@ -211,5 +211,4 @@ TODO:: filters
 TODO:: all operation(all details)
 TODO:: validations
         - dont allow create, update/edit, delete to record if effectivity_date is lessthan the current date or today
-        -
 */

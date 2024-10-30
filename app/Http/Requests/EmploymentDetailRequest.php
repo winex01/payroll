@@ -32,7 +32,7 @@ class EmploymentDetailRequest extends FormRequest
         $rules = [
             'employee' => 'required|exists:employees,id',
             'employmentDetailType' => 'required|exists:employment_detail_types,id',
-            'effectivity_date' => 'required|date',
+            'effectivity_date' => 'required|date|after_or_equal:today',
         ];
 
         if (request('employmentDetailType')) {
