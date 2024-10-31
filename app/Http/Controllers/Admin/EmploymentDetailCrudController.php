@@ -63,7 +63,7 @@ class EmploymentDetailCrudController extends CrudController
         $this->crud->removeColumns(['employment_detail_type_id']);
 
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')->label(__('app.employment_detail_type'))->after('employee');
+        $this->crud->column('employmentDetailType')->label('Employment detail type.')->after('employee');
 
         $this->crud->modifyColumn('value', [
             'type' => 'closure',

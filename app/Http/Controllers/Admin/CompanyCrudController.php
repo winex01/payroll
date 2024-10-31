@@ -58,7 +58,7 @@ class CompanyCrudController extends CrudController
         CRUD::setFromDb();
 
         $this->crud->modifyField('bir_rdo', [
-            'hint' => __('app.bir_rdo.hint')
+            'hint' => 'Enter BIR revenue district office code.'
         ]);
     }
 
