@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\EmploymentDetail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetailType;
@@ -59,12 +60,10 @@ class EmploymentDetailCrudController extends CrudController
     {
         CRUD::setFromDb();
 
-        $this->crud->removeColumns([
-            'employment_detail_type_id',
-        ]);
+        $this->crud->removeColumns(['employment_detail_type_id']);
 
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')->label(__('app.employment_detail_type'))->after('employee');
+        $this->crud->column('employmentDetailType')->label('Employment detail type.')->after('employee');
 
         $this->crud->modifyColumn('value', [
             'type' => 'closure',
@@ -121,16 +120,52 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        $this->crud->modifyField('employee', [
+            'hint' => 'If you change the employee, a new record will be created for that employee,
+                        while this record or item will remain the same and won’t be deleted or updated.'
+        ]);
+    }
+
+    // overrided: updateOrCreate new base on employee, emp detail type and effectivity date
+    public function update()
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
+        // update the row in the db
+        $item = $this->crud->model::updateOrCreate(
+            [
+                'employee_id' => request('employee'),
+                'employment_detail_type_id' => request('employmentDetailType'),
+                'effectivity_date' => request('effectivity_date'),
+            ],
+            [
+                'value' => request('value'),
+            ],
+        );
+
+        $this->data['entry'] = $this->crud->entry = $item;
+
+        // show a success message
+        \Alert::success(trans('backpack::crud.update_success'))->flash();
+
+        // save the redirect choice for next time
+        $this->crud->setSaveAction();
+
+        return $this->crud->performSaveAction($item->getKey());
     }
 
     public function input($input = 'field')
     {
         $input = ucfirst($input);
 
-        $this->crud->{'remove' . $input . 's'}([
-            'employee_id',
-            'employment_detail_type_id',
-        ]);
+        $this->crud->{'remove' . $input . 's'}(['employee_id', 'employment_detail_type_id']);
 
         $this->crud->{$input}('employee')->makeFirst();
         $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
@@ -140,12 +175,14 @@ class EmploymentDetailCrudController extends CrudController
 
         foreach ($types as $type) {
             $fieldName = Str::snake($type->name);
-            $this->crud->{$input}([
-                'name' => $fieldName,
-                'wrapper' => [
-                    'class' => 'form-group col-sm-6 mb-3 d-none',
-                ]
-            ])->after('employmentDetailType');
+            $this->crud
+                ->{$input}([
+                    'name' => $fieldName,
+                    'wrapper' => [
+                        'class' => 'form-group col-sm-6 mb-3 d-none',
+                    ],
+                ])
+                    ->after('employmentDetailType');
 
             $modifiedAttributes = [];
 
@@ -155,7 +192,7 @@ class EmploymentDetailCrudController extends CrudController
                 $model = $this->strToModelName($fieldName);
 
                 // if model has column name
-                if (Schema::hasColumn((new $model)->getTable(), 'name')) {
+                if (Schema::hasColumn((new $model())->getTable(), 'name')) {
                     $data = $model::pluck('name', 'id');
                 } else {
                     // if model has no column name, then create custom attr name and use local scope, check DaysPerYear model
@@ -166,7 +203,6 @@ class EmploymentDetailCrudController extends CrudController
                     'type' => 'select_from_array',
                     'options' => $data,
                 ];
-
             } elseif (str_contains($type->validation, 'date')) {
                 $modifiedAttributes = [
                     'type' => 'date',
@@ -177,7 +213,7 @@ class EmploymentDetailCrudController extends CrudController
                 ];
             }
 
-            $this->crud->{"modify" . ucfirst($input)}($fieldName, $modifiedAttributes);
+            $this->crud->{'modify' . ucfirst($input)}($fieldName, $modifiedAttributes);
         }
     }
 
@@ -214,7 +250,6 @@ class EmploymentDetailCrudController extends CrudController
         return response()->json(compact('fieldName', 'allFieldNames'));
     }
 }
-
 
 /*
 TODO:: filters
