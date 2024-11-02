@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\EmploymentDetail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\EmploymentDetailRequest;
@@ -34,7 +34,7 @@ class EmploymentDetailCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\EmploymentDetail::class);
+        CRUD::setModel(EmploymentDetail::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/employment-detail');
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
