@@ -121,9 +121,20 @@ class EmploymentDetailCrudController extends CrudController
     {
         $this->setupCreateOperation();
 
+        $entry = EmploymentDetail::findOrFail(request('id'));
+
+        // make field employee and employmentDetailType not editable so we add where clause in select options to display only 1
+        // we also added it in requeset file so the validation would be the same with this field to not allow employee and type to be edit.
         $this->crud->modifyField('employee', [
-            'hint' => 'If you change the employee, a new record will be created for that employee,
-                        while this record or item will remain the same and won’t be deleted or updated.'
+            'options' => (function ($query) use ($entry) {
+                return $query->where('id', $entry->employee_id)->get();
+            }),
+        ]);
+
+        $this->crud->modifyField('employmentDetailType', [
+            'options' => (function ($query) use ($entry) {
+                return $query->where('id', $entry->employment_detail_type_id)->get();
+            }),
         ]);
     }
 

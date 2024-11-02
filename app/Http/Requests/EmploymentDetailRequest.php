@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
+use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\Admin\Traits\StrTrait;
@@ -41,6 +42,13 @@ class EmploymentDetailRequest extends FormRequest
                 $field = Str::snake($type->name);
                 $rules[$field] = $type->validation;
             }
+        }
+
+        // in edit, dont allow to edit employee select field and employmentType select field
+        if (request()->method() == 'PUT' && request('id')) {
+            $entry = EmploymentDetail::findOrFail(request('id'));
+            $rules['employee'] = 'required|in:' . $entry->employee_id . '|exists:employees,id';
+            $rules['employmentDetailType'] = 'required|in:' . $entry->employment_detail_type_id . '|exists:employment_detail_types,id';
         }
 
         return $rules;
