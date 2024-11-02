@@ -40,11 +40,7 @@ class FamilyCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->crud->field('employee')
-            ->type('select_ajax')
-            ->size(4)
-            ->data_source(route('employee.fetch'));
-
+        $this->employeeRelationshipFilter();
         $this->crud->field('familyType');
     }
 

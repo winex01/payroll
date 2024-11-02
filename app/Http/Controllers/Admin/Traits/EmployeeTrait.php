@@ -78,4 +78,21 @@ trait EmployeeTrait
             },
         ]);
     }
+
+    public function employeeRelationshipFilter()
+    {
+        $this->crud->field('employee')
+            ->type('select_ajax')
+            ->size(4)
+            ->data_source(route('employee.fetch'));
+
+        /*  NOTE:: dont forget to add this code in setupListOperation
+            $this->filterQueries(function ($query) {
+                $employee = request('employee');
+                if ($employee) {
+                    $query->where('employee_id', $employee);
+                }
+            });
+        */
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class EmploymentDetailCrudController
@@ -26,6 +27,7 @@ class EmploymentDetailCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -50,6 +52,11 @@ class EmploymentDetailCrudController extends CrudController
         });
     }
 
+    public function setupFilterOperation()
+    {
+        $this->employeeRelationshipFilter();
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -58,7 +65,14 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $this->filterQueries(function ($query) {
+            $employee = request('employee');
+            if ($employee) {
+                $query->where('employee_id', $employee);
+            }
+        });
+
+        CRUD::setFromDb(false, true);
 
         $this->crud->removeColumns(['employment_detail_type_id']);
 
