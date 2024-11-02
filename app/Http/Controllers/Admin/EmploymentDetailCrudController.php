@@ -138,40 +138,6 @@ class EmploymentDetailCrudController extends CrudController
         ]);
     }
 
-    // overrided: updateOrCreate new base on employee, emp detail type and effectivity date
-    public function update()
-    {
-        $this->crud->hasAccessOrFail('update');
-
-        // execute the FormRequest authorization and validation, if one is required
-        $request = $this->crud->validateRequest();
-
-        // register any Model Events defined on fields
-        $this->crud->registerFieldEvents();
-
-        // update the row in the db
-        $item = $this->crud->model::updateOrCreate(
-            [
-                'employee_id' => request('employee'),
-                'employment_detail_type_id' => request('employmentDetailType'),
-                'effectivity_date' => request('effectivity_date'),
-            ],
-            [
-                'value' => request('value'),
-            ],
-        );
-
-        $this->data['entry'] = $this->crud->entry = $item;
-
-        // show a success message
-        \Alert::success(trans('backpack::crud.update_success'))->flash();
-
-        // save the redirect choice for next time
-        $this->crud->setSaveAction();
-
-        return $this->crud->performSaveAction($item->getKey());
-    }
-
     public function input($input = 'field')
     {
         $input = ucfirst($input);
