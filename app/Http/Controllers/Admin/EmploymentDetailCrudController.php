@@ -55,6 +55,7 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
+        $this->crud->field('employmentDetailType');
     }
 
     /**
@@ -69,6 +70,11 @@ class EmploymentDetailCrudController extends CrudController
             $employee = request('employee');
             if ($employee) {
                 $query->where('employee_id', $employee);
+            }
+
+            $type = request('employmentDetailType');
+            if ($type) {
+                $query->where('employment_detail_type_id', $type);
             }
         });
 
@@ -243,6 +249,5 @@ class EmploymentDetailCrudController extends CrudController
 }
 
 /*
-TODO:: filters
 TODO:: all operation(all details)
 */
