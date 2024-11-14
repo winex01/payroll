@@ -55,7 +55,29 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
-        $this->crud->field('employmentDetailType');
+        $this->crud->field('employmentDetailType')->size(4);
+
+        $valueOptions = [];
+
+        if (request('employmentDetailType') && request('value')) {
+            $type = EmploymentDetailType::find(request('employmentDetailType'));
+            if ($type) {
+                $tempModel = $this->strToModelName($type->name);
+                if (class_exists($tempModel)) {
+                    $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
+                }
+            }
+        }
+
+        $this->crud->field([
+            'name' => 'value',
+            'type' => 'select_from_array',
+            'options' => $valueOptions,
+            'allows_null' => true,
+            'wrapper' => [
+                'class' => 'form-group col-sm-4 mb-3 d-none',
+            ],
+        ]);
     }
 
     /**
@@ -246,10 +268,20 @@ class EmploymentDetailCrudController extends CrudController
 
         $allFieldNames[] = 'value';
 
-        return response()->json(compact('fieldName', 'allFieldNames'));
+        // use in list opt, filters.
+        $selectOptions = null;
+        $tempModel = $this->strToModelName($fieldName);
+        if (class_exists($tempModel)) {
+            $selectOptions = $tempModel::all();
+        }
+
+        return response()->json(compact('fieldName', 'allFieldNames', 'selectOptions'));
     }
 }
 
 /*
 TODO:: all operation(all details)
+ - add options - in filters value select
+ - add filter queries for values field
+ - check select model that dont have name attribute ex. DaysPerYear
 */

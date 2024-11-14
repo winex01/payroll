@@ -14,7 +14,27 @@
                         success: function(response) {
                             if (response) {
                                 console.log(response);
-                                // TODO:: show select field class model
+                                var valueSelector = '[name="value"]';
+
+                                if (response.selectOptions) {
+                                    console.log('hello');
+                                    $(valueSelector).parent().removeClass('d-none');
+
+                                    // Clear existing options
+                                    $(valueSelector).empty();
+
+                                    // Append each option from the response
+                                    response.selectOptions.forEach(function(item) {
+                                        const option = $('<option>', {
+                                            value: item.id,
+                                            text: item.name
+                                        });
+                                        $(valueSelector).append(option);
+                                    });
+
+                                } else {
+                                    $(valueSelector).parent().addClass('d-none');
+                                }
 
                             } else {
                                 new Noty({
