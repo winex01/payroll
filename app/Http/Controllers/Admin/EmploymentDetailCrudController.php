@@ -298,7 +298,5 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
- - add options - in filters value select
- - add filter queries for values field
  - check select model that dont have name attribute ex. DaysPerYear
 */
