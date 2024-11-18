@@ -78,9 +78,6 @@
                             id: field.value,
                         },
                         success: function(response) {
-                            // crud.field('value').input.value =
-                            //     0; // every event change set this to null default
-
                             if (response) {
                                 var fieldNamesArray = Object.values(response.allFieldNames);
 
@@ -112,9 +109,6 @@
                             }
                         }
                     });
-                } else {
-                    // hide value field
-                    $(valueSelector).parent().addClass('d-none');
                 }
             }).change();
         </script>
