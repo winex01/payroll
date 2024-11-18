@@ -1,37 +1,51 @@
 @push('after_scripts')
     @if ($crud->getOperation() == 'list')
         <script>
-            function handleSelectTypeChange() {
-                let selectedValue = $('[name="employmentDetailType"]').val();
+            var valueSelector = '[name="value"]';
 
-                if (selectedValue) {
+            function handleSelectTypeChange() {
+                let selectedTypeValue = $('[name="employmentDetailType"]').val();
+
+                if (selectedTypeValue) {
                     $.ajax({
                         type: "post",
                         url: "{{ route('employment-detail.valueField') }}",
                         data: {
-                            id: selectedValue,
+                            id: selectedTypeValue,
                         },
                         success: function(response) {
+                            // console.log(response);
                             if (response) {
-                                console.log(response);
-                                var valueSelector = '[name="value"]';
-
                                 if (response.selectOptions) {
-                                    console.log('hello');
                                     $(valueSelector).parent().removeClass('d-none');
+
+                                    // Get the value from the URL
+                                    var params = new URLSearchParams(window.location.search);
+                                    var queryParamsValue = params.get(
+                                        'value'); // Url query parameter
+                                    var queryParamsDetailType = params.get(
+                                        'employmentDetailType');
 
                                     // Clear existing options
                                     $(valueSelector).empty();
+
+                                    // Add a default placeholder option
+                                    $(valueSelector).append("<option value='0'>-</option>");
 
                                     // Append each option from the response
                                     response.selectOptions.forEach(function(item) {
                                         const option = $('<option>', {
                                             value: item.id,
-                                            text: item.name
+                                            text: item.name,
+                                            selected: item.id.toString() ===
+                                                queryParamsValue // convert item.id to string to compare it to url params value string
                                         });
                                         $(valueSelector).append(option);
                                     });
 
+                                    if (selectedTypeValue != queryParamsDetailType) {
+                                        $(valueSelector).val(0);
+                                    }
                                 } else {
                                     $(valueSelector).parent().addClass('d-none');
                                 }
@@ -64,6 +78,9 @@
                             id: field.value,
                         },
                         success: function(response) {
+                            // crud.field('value').input.value =
+                            //     0; // every event change set this to null default
+
                             if (response) {
                                 var fieldNamesArray = Object.values(response.allFieldNames);
 
@@ -95,6 +112,9 @@
                             }
                         }
                     });
+                } else {
+                    // hide value field
+                    $(valueSelector).parent().addClass('d-none');
                 }
             }).change();
         </script>

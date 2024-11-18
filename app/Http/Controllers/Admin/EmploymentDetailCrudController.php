@@ -69,11 +69,15 @@ class EmploymentDetailCrudController extends CrudController
             }
         }
 
+        // i added this, to trick the validation from package so it wont fired the invalid bec. it check the value from options in
+        // select from array if not exist then it will return failed validation, so we added it here instead of overriding the
+        // package validation. check blade file if you want to see the selected option event employment-detal.blade.php
+        $valueOptions = array_merge(['0' => '-'], $valueOptions); // append
+
         $this->crud->field([
             'name' => 'value',
             'type' => 'select_from_array',
             'options' => $valueOptions,
-            'allows_null' => true,
             'wrapper' => [
                 'class' => 'form-group col-sm-4 mb-3 d-none',
             ],
@@ -99,6 +103,11 @@ class EmploymentDetailCrudController extends CrudController
             $type = request('employmentDetailType');
             if ($type) {
                 $query->where('employment_detail_type_id', $type);
+            }
+
+            $value = request('value');
+            if ($value && $value != 0) {
+                $query->where('value', $value);
             }
         });
 
