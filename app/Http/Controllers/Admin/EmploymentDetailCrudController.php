@@ -267,6 +267,7 @@ class EmploymentDetailCrudController extends CrudController
         }
 
         $fieldName = Str::snake($inputType->name);
+        $fieldNameHumanReadable = $this->strToHumanReadable($inputType->name);
 
         $types = EmploymentDetailType::all();
 
@@ -284,7 +285,14 @@ class EmploymentDetailCrudController extends CrudController
             $selectOptions = $tempModel::all();
         }
 
-        return response()->json(compact('fieldName', 'allFieldNames', 'selectOptions'));
+        return response()->json(
+            compact(
+                'fieldName',
+                'fieldNameHumanReadable',
+                'allFieldNames',
+                'selectOptions'
+            )
+        );
     }
 }
 
