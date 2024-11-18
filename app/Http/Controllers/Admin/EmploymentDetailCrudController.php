@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\EmploymentDetail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class EmploymentDetailCrudController
@@ -26,6 +27,7 @@ class EmploymentDetailCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -34,7 +36,7 @@ class EmploymentDetailCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\EmploymentDetail::class);
+        CRUD::setModel(EmploymentDetail::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/employment-detail');
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
@@ -50,6 +52,38 @@ class EmploymentDetailCrudController extends CrudController
         });
     }
 
+    public function setupFilterOperation()
+    {
+        $this->employeeRelationshipFilter();
+        $this->crud->field('employmentDetailType')->size(4);
+
+        $valueOptions = [];
+
+        if (request('employmentDetailType') && request('value')) {
+            $type = EmploymentDetailType::find(request('employmentDetailType'));
+            if ($type) {
+                $tempModel = $this->strToModelName($type->name);
+                if (class_exists($tempModel)) {
+                    $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
+                }
+            }
+        }
+
+        // i added this, to trick the validation from package so it wont fired the invalid bec. it check the value from options in
+        // select from array if not exist then it will return failed validation, so we added it here instead of overriding the
+        // package validation. check blade file if you want to see the selected option event employment-detal.blade.php
+        $valueOptions = array_merge(['0' => '-'], $valueOptions); // append
+
+        $this->crud->field([
+            'name' => 'value',
+            'type' => 'select_from_array',
+            'options' => $valueOptions,
+            'wrapper' => [
+                'class' => 'form-group col-sm-4 mb-3 d-none',
+            ],
+        ]);
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -58,7 +92,26 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $this->widgetBladeScript('crud::scripts.employment-detail');
+
+        $this->filterQueries(function ($query) {
+            $employee = request('employee');
+            if ($employee) {
+                $query->where('employee_id', $employee);
+            }
+
+            $type = request('employmentDetailType');
+            if ($type) {
+                $query->where('employment_detail_type_id', $type);
+            }
+
+            $value = request('value');
+            if ($value && $value != 0) {
+                $query->where('value', $value);
+            }
+        });
+
+        CRUD::setFromDb(false, true);
 
         $this->crud->removeColumns(['employment_detail_type_id']);
 
@@ -224,11 +277,20 @@ class EmploymentDetailCrudController extends CrudController
 
         $allFieldNames[] = 'value';
 
-        return response()->json(compact('fieldName', 'allFieldNames'));
+        // use in list opt, filters.
+        $selectOptions = null;
+        $tempModel = $this->strToModelName($fieldName);
+        if (class_exists($tempModel)) {
+            $selectOptions = $tempModel::all();
+        }
+
+        return response()->json(compact('fieldName', 'allFieldNames', 'selectOptions'));
     }
 }
 
 /*
-TODO:: filters
 TODO:: all operation(all details)
+ - add options - in filters value select
+ - add filter queries for values field
+ - check select model that dont have name attribute ex. DaysPerYear
 */
