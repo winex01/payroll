@@ -296,5 +296,4 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
-    - in create check and TBD if we should reset the option if type is chhange, ex: if we should make it default choice the null or the -
 */
