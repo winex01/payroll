@@ -22,6 +22,9 @@ class DaysPerYear extends Model
     // protected $fillable = [];
     // protected $hidden = [];
 
+    // append custom attr to always in clude in eloquent query
+    protected $appends = ['name'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -39,10 +42,6 @@ class DaysPerYear extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    public function scopeWithName($query)
-    {
-        return $query->select('id', 'days_per_year', 'days_per_week', 'hours_per_day');
-    }
 
     /*
     |--------------------------------------------------------------------------

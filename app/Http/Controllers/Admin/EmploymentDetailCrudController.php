@@ -218,16 +218,12 @@ class EmploymentDetailCrudController extends CrudController
 
             // model/select
             if (str_contains($type->validation, 'exists')) {
-                $data = [];
                 $model = $this->strToModelName($fieldName);
+                $data = $model::all();
 
-                // if model has column name
-                if (Schema::hasColumn((new $model())->getTable(), 'name')) {
-                    $data = $model::pluck('name', 'id');
-                } else {
-                    // if model has no column name, then create custom attr name and use local scope, check DaysPerYear model
-                    $data = $model::withName()->get()->pluck('name', 'id');
-                }
+                $data = $data->mapWithKeys(function ($item) {
+                    return [$item->id => $item->name];
+                });
 
                 $modifiedAttributes = [
                     'type' => 'select_from_array',
@@ -267,6 +263,7 @@ class EmploymentDetailCrudController extends CrudController
         }
 
         $fieldName = Str::snake($inputType->name);
+        $fieldNameHumanReadable = $this->strToHumanReadable($inputType->name);
 
         $types = EmploymentDetailType::all();
 
@@ -276,6 +273,7 @@ class EmploymentDetailCrudController extends CrudController
         }
 
         $allFieldNames[] = 'value';
+        $temp = null;
 
         // use in list opt, filters.
         $selectOptions = null;
@@ -284,13 +282,19 @@ class EmploymentDetailCrudController extends CrudController
             $selectOptions = $tempModel::all();
         }
 
-        return response()->json(compact('fieldName', 'allFieldNames', 'selectOptions'));
+        return response()->json(
+            compact(
+                'temp',
+                'fieldName',
+                'fieldNameHumanReadable',
+                'allFieldNames',
+                'selectOptions'
+            )
+        );
     }
 }
 
 /*
 TODO:: all operation(all details)
- - add options - in filters value select
- - add filter queries for values field
- - check select model that dont have name attribute ex. DaysPerYear
+    - in create check and TBD if we should reset the option if type is chhange, ex: if we should make it default choice the null or the -
 */

@@ -17,6 +17,10 @@
                             // console.log(response);
                             if (response) {
                                 if (response.selectOptions) {
+                                    // change label value into the corresponding field model
+                                    $(valueSelector).closest('.form-group').find('label').text(response
+                                        .fieldNameHumanReadable);
+
                                     $(valueSelector).parent().removeClass('d-none');
 
                                     // Get the value from the URL
