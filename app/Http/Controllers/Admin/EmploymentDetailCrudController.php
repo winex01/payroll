@@ -92,6 +92,16 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $currentTable = $this->crud->model->getTable();
+        $detailsTypeTable = 'employment_detail_types';
+
+        // default order on details type column, if sort is active wther asc/desc check button modify column orderLogic
+        if (!CRUD::getRequest()->has('order')) {
+            $this->crud->query->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
+                ->orderBy($detailsTypeTable . '.lft', 'asc')
+                ->select($currentTable . '.*');
+        }
+
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         $this->filterQueries(function ($query) {
@@ -139,6 +149,23 @@ class EmploymentDetailCrudController extends CrudController
                 return $value;
             },
             'escaped' => false,
+        ]);
+
+        // details type column
+        $this->crud->modifyColumn('employmentDetailType', [
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%');
+                });
+            },
+
+            'orderable' => true,
+            'orderLogic' => function ($query, $column, $columnDirection) use ($currentTable, $detailsTypeTable) {
+                return $query
+                    ->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
+                    ->orderBy($detailsTypeTable . '.name', $columnDirection)
+                    ->select($currentTable . '.*');
+            },
         ]);
     }
 
