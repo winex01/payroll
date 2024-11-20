@@ -74,6 +74,11 @@
     @else
         <script>
             crud.field('employmentDetailType').onChange(function(field) {
+                // reset select value to -
+                if (crud.action == 'create') {
+                    crud.field('value').input.value = '';
+                }
+
                 if (field.value) {
                     $.ajax({
                         type: "post",
