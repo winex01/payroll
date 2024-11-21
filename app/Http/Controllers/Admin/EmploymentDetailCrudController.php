@@ -6,9 +6,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Models\Scopes\EmploymentDetailsActiveScope;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -82,6 +83,12 @@ class EmploymentDetailCrudController extends CrudController
                 'class' => 'form-group col-sm-4 mb-3 d-none',
             ],
         ]);
+
+        $this->crud->field([
+            'name' => 'history',
+            'type' => 'checkbox',
+            'label' => 'Show All History',
+        ]);
     }
 
     /**
@@ -92,16 +99,6 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $currentTable = $this->crud->model->getTable();
-        $detailsTypeTable = 'employment_detail_types';
-
-        // default order on details type column, if sort is active wther asc/desc check button modify column orderLogic
-        if (!CRUD::getRequest()->has('order')) {
-            $this->crud->query->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
-                ->orderBy($detailsTypeTable . '.lft', 'asc')
-                ->select($currentTable . '.*');
-        }
-
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         $this->filterQueries(function ($query) {
@@ -119,9 +116,23 @@ class EmploymentDetailCrudController extends CrudController
             if ($value && $value != 0) {
                 $query->where('value', $value);
             }
+
+            if (request('history')) {
+                $query->withoutGlobalScope(EmploymentDetailsActiveScope::class);
+            }
         });
 
         CRUD::setFromDb(false, true);
+
+        $currentTable = $this->crud->model->getTable();
+        $detailsTypeTable = 'employment_detail_types';
+
+        // default order on details type column, if sort is active wther asc/desc check button modify column orderLogic
+        if (!CRUD::getRequest()->has('order')) {
+            $this->crud->query->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
+                ->orderBy($detailsTypeTable . '.lft', 'asc')
+                ->select($currentTable . '.*');
+        }
 
         $this->crud->removeColumns(['employment_detail_type_id']);
 
@@ -272,7 +283,7 @@ class EmploymentDetailCrudController extends CrudController
 
     protected function setupCustomRoutes($segment, $routeName, $controller)
     {
-        \Illuminate\Support\Facades\Route::post($segment . '/valueField', [
+        Route::post($segment . '/valueField', [
             'as' => $routeName . '.valueField',
             'uses' => $controller . '@valueField',
             'operation' => 'valueField',

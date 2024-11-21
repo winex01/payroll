@@ -27,6 +27,10 @@ class EmploymentDetail extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new \App\Models\Scopes\EmploymentDetailsActiveScope);
+    }
 
     /*
     |--------------------------------------------------------------------------
