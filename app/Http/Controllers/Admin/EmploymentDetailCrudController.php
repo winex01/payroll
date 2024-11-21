@@ -9,7 +9,6 @@ use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Route;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
-use App\Models\Scopes\EmploymentDetailsActiveScope;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -117,8 +116,10 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('value', $value);
             }
 
-            if (request('history')) {
-                $query->withoutGlobalScope(EmploymentDetailsActiveScope::class);
+            $history = request('history');
+            if (!$history || $history == false || $history == 0) {
+                // show only active records emp details in defaults
+                $query->active();
             }
         });
 
