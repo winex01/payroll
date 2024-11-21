@@ -6,8 +6,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Models\Scopes\EmploymentDetailsActiveScope;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -53,8 +55,6 @@ class EmploymentDetailCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->crud->field('history')->type('checkbox')->label('Show All History');
-
         $this->employeeRelationshipFilter();
         $this->crud->field('employmentDetailType')->size(4);
 
@@ -82,6 +82,12 @@ class EmploymentDetailCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-sm-4 mb-3 d-none',
             ],
+        ]);
+
+        $this->crud->field([
+            'name' => 'history',
+            'type' => 'checkbox',
+            'label' => 'Show All History',
         ]);
     }
 
@@ -111,7 +117,9 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('value', $value);
             }
 
-            debug(request()->all());
+            if (request('history')) {
+                $query->withoutGlobalScope(EmploymentDetailsActiveScope::class);
+            }
         });
 
         CRUD::setFromDb(false, true);
@@ -275,7 +283,7 @@ class EmploymentDetailCrudController extends CrudController
 
     protected function setupCustomRoutes($segment, $routeName, $controller)
     {
-        \Illuminate\Support\Facades\Route::post($segment . '/valueField', [
+        Route::post($segment . '/valueField', [
             'as' => $routeName . '.valueField',
             'uses' => $controller . '@valueField',
             'operation' => 'valueField',
@@ -325,7 +333,5 @@ class EmploymentDetailCrudController extends CrudController
 }
 
 /*
-TODO:: fix filter checkbox not checking
 TODO:: all operation(all details)
-TODO:: default orderby type and then effectivity date
 */
