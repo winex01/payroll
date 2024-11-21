@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
-use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -54,6 +53,8 @@ class EmploymentDetailCrudController extends CrudController
 
     public function setupFilterOperation()
     {
+        $this->crud->field('history')->type('checkbox')->label('Show All History');
+
         $this->employeeRelationshipFilter();
         $this->crud->field('employmentDetailType')->size(4);
 
@@ -92,16 +93,6 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $currentTable = $this->crud->model->getTable();
-        $detailsTypeTable = 'employment_detail_types';
-
-        // default order on details type column, if sort is active wther asc/desc check button modify column orderLogic
-        if (!CRUD::getRequest()->has('order')) {
-            $this->crud->query->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
-                ->orderBy($detailsTypeTable . '.lft', 'asc')
-                ->select($currentTable . '.*');
-        }
-
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         $this->filterQueries(function ($query) {
@@ -119,9 +110,21 @@ class EmploymentDetailCrudController extends CrudController
             if ($value && $value != 0) {
                 $query->where('value', $value);
             }
+
+            debug(request()->all());
         });
 
         CRUD::setFromDb(false, true);
+
+        $currentTable = $this->crud->model->getTable();
+        $detailsTypeTable = 'employment_detail_types';
+
+        // default order on details type column, if sort is active wther asc/desc check button modify column orderLogic
+        if (!CRUD::getRequest()->has('order')) {
+            $this->crud->query->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
+                ->orderBy($detailsTypeTable . '.lft', 'asc')
+                ->select($currentTable . '.*');
+        }
 
         $this->crud->removeColumns(['employment_detail_type_id']);
 
@@ -322,5 +325,7 @@ class EmploymentDetailCrudController extends CrudController
 }
 
 /*
+TODO:: fix filter checkbox not checking
 TODO:: all operation(all details)
+TODO:: default orderby type and then effectivity date
 */
