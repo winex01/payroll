@@ -180,8 +180,8 @@ class EmploymentDetailCrudController extends CrudController
 
     public function setupShowOperation()
     {
-        $this->crud->removeColumn('employee_id');
         $this->setupListOperation();
+        $this->crud->removeColumn('employee_id');
     }
 
     /**
@@ -332,6 +332,5 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
-TODO:: remove extra column employee in preview
 TODO:: check or try if possible we remove and allow edit for records employee and type.
 */
