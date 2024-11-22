@@ -53,14 +53,11 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
+            $this->employeeQueriesFilter($query);
+
             $familyType = request('familyType');
             if ($familyType) {
                 $query->where('family_type_id', $familyType);
-            }
-
-            $employee = request('employee');
-            if ($employee) {
-                $query->where('employee_id', $employee);
             }
         });
 

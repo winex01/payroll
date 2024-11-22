@@ -101,10 +101,7 @@ class EmploymentDetailCrudController extends CrudController
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         $this->filterQueries(function ($query) {
-            $employee = request('employee');
-            if ($employee) {
-                $query->where('employee_id', $employee);
-            }
+            $this->employeeQueriesFilter($query);
 
             $type = request('employmentDetailType');
             if ($type) {
@@ -335,4 +332,6 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
+TODO:: remove extra column employee in preview
+TODO:: check or try if possible we remove and allow edit for records employee and type.
 */
