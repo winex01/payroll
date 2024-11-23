@@ -43,7 +43,7 @@ class EmploymentDetailCrudController extends CrudController
         $this->userPermissions();
 
         // only allow modify if effectivity_date >= today
-        $this->crud->operation(['list', 'update', 'delete'], function () {
+        $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
             $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
                 $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
                 $today = now()->startOfDay(); // Set today’s date to midnight as well
@@ -180,8 +180,8 @@ class EmploymentDetailCrudController extends CrudController
 
     public function setupShowOperation()
     {
-        $this->crud->removeColumn('employee_id');
         $this->setupListOperation();
+        $this->crud->removeColumn('employee_id');
     }
 
     /**
@@ -210,21 +210,21 @@ class EmploymentDetailCrudController extends CrudController
     {
         $this->setupCreateOperation();
 
-        $entry = EmploymentDetail::findOrFail(request('id'));
+        // TODO:: remove this if we finalize that we allow employee and type to be editable
+        // $entry = EmploymentDetail::findOrFail(request('id'));
+        // // make field employee and employmentDetailType not editable so we add where clause in select options to display only 1
+        // // we also added it in request file so the validation would be the same with this field to not allow employee and type to be edit.
+        // $this->crud->modifyField('employee', [
+        //     'options' => (function ($query) use ($entry) {
+        //         return $query->where('id', $entry->employee_id)->get();
+        //     }),
+        // ]);
 
-        // make field employee and employmentDetailType not editable so we add where clause in select options to display only 1
-        // we also added it in request file so the validation would be the same with this field to not allow employee and type to be edit.
-        $this->crud->modifyField('employee', [
-            'options' => (function ($query) use ($entry) {
-                return $query->where('id', $entry->employee_id)->get();
-            }),
-        ]);
-
-        $this->crud->modifyField('employmentDetailType', [
-            'options' => (function ($query) use ($entry) {
-                return $query->where('id', $entry->employment_detail_type_id)->get();
-            }),
-        ]);
+        // $this->crud->modifyField('employmentDetailType', [
+        //     'options' => (function ($query) use ($entry) {
+        //         return $query->where('id', $entry->employment_detail_type_id)->get();
+        //     }),
+        // ]);
     }
 
     public function input($input = 'field')
@@ -332,6 +332,4 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
-TODO:: remove extra column employee in preview
-TODO:: check or try if possible we remove and allow edit for records employee and type.
 */
