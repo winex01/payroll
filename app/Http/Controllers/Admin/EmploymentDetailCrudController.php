@@ -332,5 +332,4 @@ class EmploymentDetailCrudController extends CrudController
 
 /*
 TODO:: all operation(all details)
-TODO:: check or try if possible we remove and allow edit for records employee and type.
 */
