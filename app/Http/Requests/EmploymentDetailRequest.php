@@ -36,20 +36,20 @@ class EmploymentDetailRequest extends FormRequest
             'effectivity_date' => 'required|date|after_or_equal:today',
         ];
 
-        if (request('employmentDetailType')) {
+        // TODO:: remove this if we finalize that we allow employee and type to be editable
+        /* if (request('employmentDetailType')) {
             $type = EmploymentDetailType::findOrFail(request('employmentDetailType'));
             if ($type) {
                 $field = Str::snake($type->name);
                 $rules[$field] = $type->validation;
             }
         }
-
         // in edit, dont allow to edit employee select field and employmentType select field
         if (request()->method() == 'PUT' && request('id')) {
             $entry = EmploymentDetail::findOrFail(request('id'));
             $rules['employee'] = 'required|in:' . $entry->employee_id . '|exists:employees,id';
             $rules['employmentDetailType'] = 'required|in:' . $entry->employment_detail_type_id . '|exists:employment_detail_types,id';
-        }
+        } */
 
         return $rules;
     }
