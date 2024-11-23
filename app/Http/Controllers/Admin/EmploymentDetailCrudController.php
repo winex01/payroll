@@ -43,7 +43,7 @@ class EmploymentDetailCrudController extends CrudController
         $this->userPermissions();
 
         // only allow modify if effectivity_date >= today
-        $this->crud->operation(['list', 'update', 'delete'], function () {
+        $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
             $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
                 $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
                 $today = now()->startOfDay(); // Set today’s date to midnight as well
