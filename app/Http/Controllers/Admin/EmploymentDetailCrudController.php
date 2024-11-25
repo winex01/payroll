@@ -25,6 +25,7 @@ class EmploymentDetailCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \App\Http\Controllers\Admin\Operations\NewHireOperation;
 
     use CoreTraits;
     use FilterOperation;
@@ -237,6 +238,11 @@ class EmploymentDetailCrudController extends CrudController
         $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
         $this->crud->field('value')->type('hidden');
 
+        $this->employmentDetailTypes($input);
+    }
+
+    public function employmentDetailTypes($input = 'field', $hidden = true)
+    {
         $types = EmploymentDetailType::all();
 
         foreach ($types as $type) {
@@ -245,7 +251,7 @@ class EmploymentDetailCrudController extends CrudController
                 ->{$input}([
                     'name' => $fieldName,
                     'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 d-none',
+                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
                     ],
                 ])
                     ->after('employmentDetailType');
