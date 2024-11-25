@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Operations;
 
+use App\Http\Requests\NewHireRequest;
 use Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasForm;
 
 trait NewHireOperation
@@ -44,12 +45,11 @@ trait NewHireOperation
         );
 
         $this->crud->operation('newHire', function () {
-            // TODO: request file for new hire
-            // $this->crud->setValidation(\App\Http\Requests\EmploymentDetailRequest::class);
-
+            $this->crud->setValidation(NewHireRequest::class);
             $this->crud->field('employee');
             $this->employmentDetailTypes(hidden: false);
             $this->crud->field('effectivity_date');
+
         });
     }
 
@@ -77,6 +77,7 @@ trait NewHireOperation
             // You logic goes here...
             // dd('got to ' . __METHOD__, $inputs, $entry);
             // TODO
+
 
 
             // show a success message
