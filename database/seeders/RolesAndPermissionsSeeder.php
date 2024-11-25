@@ -92,6 +92,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'employment_details_delete',
             'employment_details_revise',
             'employment_details_filters',
+            'employment_details_new_hire',
         ],
 
         'employment_detail_types' => [
