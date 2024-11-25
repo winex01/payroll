@@ -210,22 +210,6 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-
-        // TODO:: remove this if we finalize that we allow employee and type to be editable
-        // $entry = EmploymentDetail::findOrFail(request('id'));
-        // // make field employee and employmentDetailType not editable so we add where clause in select options to display only 1
-        // // we also added it in request file so the validation would be the same with this field to not allow employee and type to be edit.
-        // $this->crud->modifyField('employee', [
-        //     'options' => (function ($query) use ($entry) {
-        //         return $query->where('id', $entry->employee_id)->get();
-        //     }),
-        // ]);
-
-        // $this->crud->modifyField('employmentDetailType', [
-        //     'options' => (function ($query) use ($entry) {
-        //         return $query->where('id', $entry->employment_detail_type_id)->get();
-        //     }),
-        // ]);
     }
 
     public function input($input = 'field')
