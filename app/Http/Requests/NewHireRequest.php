@@ -3,15 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
-use App\Models\EmploymentDetail;
-use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Admin\Traits\StrTrait;
 
-class EmploymentDetailRequest extends FormRequest
+class NewHireRequest extends FormRequest
 {
-    use StrTrait;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,18 +18,19 @@ class EmploymentDetailRequest extends FormRequest
         return backpack_auth()->check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'employee' => 'required|exists:employees,id',
-            'employmentDetailType' => 'required|exists:employment_detail_types,id',
             'effectivity_date' => 'required|date|after_or_equal:today',
         ];
+
+        $types = \App\Models\EmploymentDetailType::all();
+
+        foreach ($types as $type) {
+            $fieldName = Str::snake($type->name);
+            $rules[$fieldName] = $type->validation;
+        }
 
         return $rules;
     }
