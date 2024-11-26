@@ -78,10 +78,8 @@ trait NewHireOperation
             // dd('got to ' . __METHOD__, $inputs, $entry);
             // TODO
 
-
-
             // show a success message
-            \Alert::success('Something was done!')->flash();
+            \Alert::success(trans('backpack::crud.insert_success'))->flash();
         });
     }
 }

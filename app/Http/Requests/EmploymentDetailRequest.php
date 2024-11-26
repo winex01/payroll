@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
-use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\Admin\Traits\StrTrait;
@@ -34,7 +33,16 @@ class EmploymentDetailRequest extends FormRequest
             'employee' => 'required|exists:employees,id',
             'employmentDetailType' => 'required|exists:employment_detail_types,id',
             'effectivity_date' => 'required|date|after_or_equal:today',
+
         ];
+
+        if (request('employmentDetailType')) {
+            $type = EmploymentDetailType::findOrFail(request('employmentDetailType'));
+            if ($type) {
+                $field = Str::snake($type->name);
+                $rules[$field] = $type->validation;
+            }
+        }
 
         return $rules;
     }
