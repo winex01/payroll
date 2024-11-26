@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Operations;
 
+use Illuminate\Support\Str;
+use App\Models\EmploymentDetail;
+use App\Models\EmploymentDetailType;
 use App\Http\Requests\NewHireRequest;
 use Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasForm;
 
@@ -74,9 +77,20 @@ trait NewHireOperation
         $this->crud->hasAccessOrFail('newHire');
 
         return $this->formAction(id: null, formLogic: function ($inputs, $entry) {
-            // You logic goes here...
-            // dd('got to ' . __METHOD__, $inputs, $entry);
-            // TODO
+            $types = EmploymentDetailType::pluck('name', 'id');
+
+            foreach ($types as $typeId => $type) {
+                $fieldName = Str::snake($type);
+
+                EmploymentDetail::firstOrCreate(
+                    [
+                        'employee_id' => $inputs['employee'],
+                        'employment_detail_type_id' => $typeId,
+                        'effectivity_date' => $inputs['effectivity_date'],
+                        'value' => $inputs[$fieldName],
+                    ]
+                );
+            }
 
             // show a success message
             \Alert::success(trans('backpack::crud.insert_success'))->flash();
