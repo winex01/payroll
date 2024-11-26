@@ -319,7 +319,3 @@ class EmploymentDetailCrudController extends CrudController
         );
     }
 }
-
-/*
-TODO:: all operation(all details)
-*/
