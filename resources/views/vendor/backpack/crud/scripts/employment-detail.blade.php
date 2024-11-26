@@ -83,8 +83,6 @@
                     crud.field('value').input.value = '';
                 }
 
-                console.log("{{ $errors->any() }}");
-
                 if (field.value) {
                     $.ajax({
                         type: "post",
