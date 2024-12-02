@@ -99,7 +99,7 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->setDefaultPageLength(EmploymentDetailType::count());
+        $this->crud->setDefaultPageLength(25);
 
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
