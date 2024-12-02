@@ -47,13 +47,6 @@ class PayBasesTableSeeder extends Seeder
                     'created_at' => '2024-10-24 13:18:20',
                     'updated_at' => '2024-10-24 13:18:20',
                 ),
-            4 =>
-                array(
-                    'id' => 5,
-                    'name' => 'Semi-Monthly Paid',
-                    'created_at' => '2024-10-24 13:18:20',
-                    'updated_at' => '2024-10-24 13:18:20',
-                ),
         ));
 
 

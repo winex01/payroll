@@ -111,6 +111,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'payroll_groups_delete',
             'payroll_groups_revise',
         ],
+
+        'shift_schedules' => [
+            'shift_schedules_list',
+            'shift_schedules_create',
+            'shift_schedules_show',
+            'shift_schedules_update',
+            'shift_schedules_delete',
+            'shift_schedules_revise',
+        ],
     ];
 
     /**
