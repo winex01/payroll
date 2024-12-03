@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Traits\ValidateUniqueTrait;
 
 class ShiftScheduleRequest extends FormRequest
 {
+    use ValidateUniqueTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,9 +27,19 @@ class ShiftScheduleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 'name' => 'required|min:5|max:255'
-        ];
+        $rules = $this->validateUnique(table: 'shift_schedules');
+
+        $rules = array_merge($rules, [
+            'open_time' => 'boolean',
+            'early_login_overtime' => 'boolean',
+            'after_shift_overtime' => 'boolean',
+            'night_differential' => 'boolean',
+            'working_hours' => 'required|json',
+            'day_start' => 'required|date_format:H:i',
+            'description' => 'nullable|string',
+        ]);
+
+        return $rules;
     }
 
     /**

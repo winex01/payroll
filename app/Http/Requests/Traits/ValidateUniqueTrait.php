@@ -8,7 +8,9 @@ trait ValidateUniqueTrait
 {
     public function validateUnique($attribute = 'name', $column = 'name', $table = null)
     {
-        $table = $table ?? $this->crud->model->getTable();
+        if (!$table) {
+            $table = $this->crud->model->getTable();
+        }
 
         return [
             $attribute => [
