@@ -45,6 +45,7 @@ class ShiftScheduleCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::setFromDb();
+        $this->input('column');
     }
 
     /**
@@ -57,6 +58,8 @@ class ShiftScheduleCrudController extends CrudController
     {
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
+
+        $this->input();
     }
 
     /**
@@ -68,5 +71,38 @@ class ShiftScheduleCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function input($input = 'field')
+    {
+        $this->crud->{$input}('open_time')->type('boolean')->size(3);
+        $this->crud->{$input}('early_login_overtime')->type('boolean')->size(3);
+        $this->crud->{$input}('after_shift_overtime')->type('boolean')->size(3);
+        $this->crud->{$input}('night_differential')->type('boolean')->size(3);
+
+        $this->crud->{$input}([   // repeatable
+            'name' => 'working_hours',
+            'type' => 'repeat',
+            'fields' => [ // also works as: "fields"
+                [
+                    'name' => 'start',
+                    'type' => 'time',
+                    'wrapper' => ['class' => 'form-group col-sm-6'],
+                ],
+                [
+                    'name' => 'end',
+                    'type' => 'time',
+                    'wrapper' => ['class' => 'form-group col-sm-6'],
+                ],
+            ],
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' => 1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            'new_item_label' => 'Add working hours', // customize the text of the button
+        ]);
+
+        $this->crud->{$input}([
+            'name' => 'day_start',
+            'type' => 'time',
+        ]);
     }
 }
