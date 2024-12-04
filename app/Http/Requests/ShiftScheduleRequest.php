@@ -34,9 +34,9 @@ class ShiftScheduleRequest extends FormRequest
             'early_login_overtime' => 'boolean',
             'after_shift_overtime' => 'boolean',
             'night_differential' => 'boolean',
-            'working_hours' => 'required|json',
-            'day_start' => 'required|date_format:H:i',
             'description' => 'nullable|string',
+            'day_start' => 'required|date_format:H:i',
+            'working_hours' => 'required|json',
         ]);
 
         return $rules;

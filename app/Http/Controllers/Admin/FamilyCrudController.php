@@ -112,7 +112,7 @@ class FamilyCrudController extends CrudController
 
     public function input($input = 'field')
     {
-        $input = ucfirst($input);
+    $input = ucfirst($input);
 
         $this->crud->{'remove' . $input . 's'}([
             'employee_id',

@@ -15,6 +15,7 @@ return new class extends Migration {
 
             $table->string('name')->unique();
             $table->boolean('open_time')->default(0);
+            $table->boolean('open_time_overtime')->default(1);
             $table->boolean('early_login_overtime')->default(0);
             $table->boolean('after_shift_overtime')->default(1);
             $table->boolean('night_differential')->default(1);
