@@ -44,7 +44,21 @@ class ShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        CRUD::setFromDb(false, true);
+        $this->input('column');
+
+        $this->crud->modifyColumn('working_hours', [
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return 'test 123';
+            },
+            'escaped' => false
+        ]);
+    }
+
+    public function setupShowOperation()
+    {
+        $this->setupListOperation();
     }
 
     /**
@@ -55,8 +69,22 @@ class ShiftScheduleCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        $this->widgetBladeScript('crud::scripts.shift-schedule');
+
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
+
+        $this->input();
+
+        $this->crud->field([
+            'name' => 'separator',
+            'type' => 'custom_html',
+            'value' => 'Allow if check:',
+            'wrapper' => ['class' => 'mb-n-5']
+        ])->after('open_time');
+
+        // dd($this->crud->fields());
+        // dd(request()->all());
     }
 
     /**
@@ -69,4 +97,44 @@ class ShiftScheduleCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function input($input = 'field')
+    {
+        $this->crud->{$input}('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
+        $this->crud->{$input}('open_time');
+        $this->crud->{$input}('open_time_overtime')->size(3);
+        $this->crud->{$input}('early_login_overtime')->size(3);
+        $this->crud->{$input}('after_shift_overtime')->size(3);
+        $this->crud->{$input}('night_differential')->size(3);
+
+        $this->crud->{$input}([   // repeatable
+            'name' => 'working_hours',
+            'type' => 'repeat',
+            'fields' => [ // also works as: "fields"
+                [
+                    'name' => 'start',
+                    'type' => 'time',
+                    'wrapper' => ['class' => 'form-group col-sm-6'],
+                ],
+                [
+                    'name' => 'end',
+                    'type' => 'time',
+                    'wrapper' => ['class' => 'form-group col-sm-6'],
+                ],
+            ],
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' => 1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            'new_item_label' => 'Add working hours', // customize the text of the button
+        ]);
+
+        $this->crud->{$input}([
+            'name' => 'day_start',
+            'type' => 'time',
+        ]);
+    }
 }
+
+/* TODO::
+    validation for working hours repeat start and end
+    validation for day start
+*/

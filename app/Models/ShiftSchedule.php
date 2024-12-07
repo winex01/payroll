@@ -22,6 +22,10 @@ class ShiftSchedule extends Model
     // protected $fillable = [];
     // protected $hidden = [];
 
+    protected $casts = [
+        'working_hours' => 'array',
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

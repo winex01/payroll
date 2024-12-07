@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "backpack/crud": "^6.7",
+        "backpack/crud": "6.7.37",
         "backpack/permissionmanager": "^7.2",
         "backpack/revise-operation": "^2.0",
         "backpack/theme-coreuiv2": "^1.2",
