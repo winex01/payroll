@@ -102,7 +102,6 @@ class ShiftScheduleCrudController extends CrudController
     {
         $this->crud->{$input}('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
         $this->crud->{$input}('open_time');
-        $this->crud->{$input}('open_time_overtime')->size(3);
         $this->crud->{$input}('early_login_overtime')->size(3);
         $this->crud->{$input}('after_shift_overtime')->size(3);
         $this->crud->{$input}('night_differential')->size(3);
@@ -133,8 +132,3 @@ class ShiftScheduleCrudController extends CrudController
         ]);
     }
 }
-
-/* TODO::
-    validation for working hours repeat start and end
-    validation for day start
-*/
