@@ -100,6 +100,7 @@ class ShiftScheduleCrudController extends CrudController
 
     public function input($input = 'field')
     {
+        $this->crud->{$input}('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
         $this->crud->{$input}('open_time');
         $this->crud->{$input}('open_time_overtime')->size(3);
         $this->crud->{$input}('early_login_overtime')->size(3);

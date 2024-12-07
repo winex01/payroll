@@ -3,13 +3,12 @@
         crud.field('open_time').onChange(function(field) {
             var openTimeTrueHide = [
                 'early_login_overtime',
-                'after_shift_overtime',
                 'working_hours',
                 'day_start',
             ];
 
             var openTimeFalseHide = [
-                'open_time_overtime'
+                //
             ];
 
             if (field.value == true) {
