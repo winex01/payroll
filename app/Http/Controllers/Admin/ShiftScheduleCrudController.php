@@ -44,20 +44,16 @@ class ShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // CRUD::setFromDb();
-        // CRUD::setFromDb(false, true);
-        // $this->input('column');
+        CRUD::setFromDb(false, true);
+        $this->input('column');
 
-        // // TODO::
-        // $this->crud->modifyColumn('working_hours', [
-        //     'type' => 'closure',
-        //     'function' => function ($entry) {
-        //         return 'test 123';
-        //     },
-        //     'escaped' => false
-        // ]);
-
-        // dd($this->crud->columns());
+        $this->crud->modifyColumn('working_hours', [
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return 'test 123';
+            },
+            'escaped' => false
+        ]);
     }
 
     public function setupShowOperation()
