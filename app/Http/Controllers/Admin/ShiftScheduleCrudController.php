@@ -45,20 +45,36 @@ class ShiftScheduleCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->column('name');
+
         $this->crud->column([
             'name' => 'working_hours',
+            'type' => 'closure',
             'function' => function ($entry) {
-                return json_decode($entry->working_hours);
+                return $entry->working_hours_details;
+            },
+            'orderable' => false,
+            'escaped' => false,
+        ]);
+
+        $this->crud->column([
+            'name' => 'day_start',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->day_start_details;
             },
         ]);
 
-        $this->crud->column('day_start');
         $this->crud->column([
             'name' => 'shift_policies',
             'type' => 'closure',
             'function' => function ($entry) {
-                return 'Shift Policies';
+                // TODO::
+                return 'test123';
             },
+        ]);
+
+        $this->crud->modifyColumn('day_start', [
+
         ]);
 
         $this->crud->column('description')->limit(999);
@@ -81,7 +97,6 @@ class ShiftScheduleCrudController extends CrudController
 
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
-
 
         $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
         $this->crud->field('open_time');
