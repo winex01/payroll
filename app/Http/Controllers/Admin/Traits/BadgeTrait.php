@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Traits;
 
 trait BadgeTrait
 {
-    public function booleanBadge(bool $bool)
+    public function badgeBoolean(bool $bool)
     {
         if ($bool) {
             return '<span class="badge badge-success bg-success">Yes</span>';

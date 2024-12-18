@@ -85,13 +85,13 @@ class ShiftSchedule extends Model
         $text = '';
 
         if (!$this->open_time) {
-            $text .= $this->booleanBadge($this->early_login_overtime) . ' - Early login overtime';
+            $text .= $this->badgeBoolean($this->early_login_overtime) . ' - Early login overtime';
             $text .= '<br><div class="mb-1"></div>';
         }
 
-        $text .= $this->booleanBadge($this->after_shift_overtime) . ' - After shift overtime';
+        $text .= $this->badgeBoolean($this->after_shift_overtime) . ' - After shift overtime';
         $text .= '<br><div class="mb-1"></div>';
-        $text .= $this->booleanBadge($this->night_differential) . ' - Night differential';
+        $text .= $this->badgeBoolean($this->night_differential) . ' - Night differential';
         $text .= '<br>';
 
         return $text;
