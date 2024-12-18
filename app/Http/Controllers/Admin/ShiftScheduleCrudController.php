@@ -73,9 +73,9 @@ class ShiftScheduleCrudController extends CrudController
             'escaped' => false,
         ]);
 
-        $this->crud->modifyColumn('day_start', [
+        // $this->crud->modifyColumn('day_start', [
 
-        ]);
+        // ]);
 
         $this->crud->column('description')->limit(999);
     }
@@ -130,10 +130,10 @@ class ShiftScheduleCrudController extends CrudController
         ]);
 
         $this->crud->field([
-            'name' => 'separator',
+            'name' => 'temp',
             'type' => 'custom_html',
             'value' => 'Shift Policies:',
-            'wrapper' => ['class' => 'mb-n-5']
+            'wrapper' => ['class' => 'form-group col-sm-12 mb-1']// this wrapper supports: bs4, bs5
         ])->after('day_start');
     }
 
@@ -148,3 +148,6 @@ class ShiftScheduleCrudController extends CrudController
         $this->setupCreateOperation();
     }
 }
+
+// TODO:: validation for day start
+// TODO:: TBD, make day_start default 3 or 2 hours before start

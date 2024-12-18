@@ -19,6 +19,7 @@ return [
     // if it exists, otherwise it will load it from the fallback namespace.
 
     // 'view_namespace' => 'backpack.theme-coreuiv2::',
+    // 'view_namespace' => 'backpack.theme-coreuiv4::',
     'view_namespace' => 'backpack.theme-tabler::',
     'view_namespace_fallback' => 'backpack.theme-tabler::',
 
