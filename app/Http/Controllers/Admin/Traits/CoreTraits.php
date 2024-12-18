@@ -17,4 +17,5 @@ trait CoreTraits
     use WidgetTrait;
     use EmployeeTrait;
     use ValidateUniqueTrait;
+    use BadgeTrait;
 }

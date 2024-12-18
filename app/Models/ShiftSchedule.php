@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Admin\Traits\BadgeTrait;
 use App\Http\Controllers\Admin\Traits\TimeFormatTrait;
 
 class ShiftSchedule extends Model
 {
     use ModelTraits;
     use TimeFormatTrait;
+    use BadgeTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -76,6 +78,23 @@ class ShiftSchedule extends Model
         }
 
         return $this->hourDisplayFormat($this->day_start);
+    }
+
+    public function getShiftPoliciesDetailsAttribute()
+    {
+        $text = '';
+
+        if (!$this->open_time) {
+            $text .= $this->booleanBadge($this->early_login_overtime) . ' - Early login overtime';
+            $text .= '<br><div class="mb-1"></div>';
+        }
+
+        $text .= $this->booleanBadge($this->after_shift_overtime) . ' - After shift overtime';
+        $text .= '<br><div class="mb-1"></div>';
+        $text .= $this->booleanBadge($this->night_differential) . ' - Night differential';
+        $text .= '<br>';
+
+        return $text;
     }
 
     /*

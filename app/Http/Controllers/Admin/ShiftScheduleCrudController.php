@@ -68,9 +68,9 @@ class ShiftScheduleCrudController extends CrudController
             'name' => 'shift_policies',
             'type' => 'closure',
             'function' => function ($entry) {
-                // TODO::
-                return 'test123';
+                return $entry->shift_policies_details;
             },
+            'escaped' => false,
         ]);
 
         $this->crud->modifyColumn('day_start', [
