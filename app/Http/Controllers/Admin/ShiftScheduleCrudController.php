@@ -44,16 +44,40 @@ class ShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(false, true);
-        $this->input('column');
+        $this->crud->column('name');
 
-        $this->crud->modifyColumn('working_hours', [
+        $this->crud->column([
+            'name' => 'working_hours',
             'type' => 'closure',
             'function' => function ($entry) {
-                return 'test 123';
+                return $entry->working_hours_details;
             },
-            'escaped' => false
+            'orderable' => false,
+            'escaped' => false,
         ]);
+
+        $this->crud->column([
+            'name' => 'day_start',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->day_start_details;
+            },
+        ]);
+
+        $this->crud->column([
+            'name' => 'shift_policies',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->shift_policies_details;
+            },
+            'escaped' => false,
+        ]);
+
+        // $this->crud->modifyColumn('day_start', [
+
+        // ]);
+
+        $this->crud->column('description')->limit(999);
     }
 
     public function setupShowOperation()
@@ -74,40 +98,13 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
 
-        $this->input();
+        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
+        $this->crud->field('open_time');
+        $this->crud->field('early_login_overtime')->size(3);
+        $this->crud->field('after_shift_overtime')->size(3);
+        $this->crud->field('night_differential')->size(3);
 
-        $this->crud->field([
-            'name' => 'separator',
-            'type' => 'custom_html',
-            'value' => 'Allow if check:',
-            'wrapper' => ['class' => 'mb-n-5']
-        ])->after('open_time');
-
-        // dd($this->crud->fields());
-        // dd(request()->all());
-    }
-
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
-    }
-
-    public function input($input = 'field')
-    {
-        $this->crud->{$input}('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
-        $this->crud->{$input}('open_time');
-        $this->crud->{$input}('open_time_overtime')->size(3);
-        $this->crud->{$input}('early_login_overtime')->size(3);
-        $this->crud->{$input}('after_shift_overtime')->size(3);
-        $this->crud->{$input}('night_differential')->size(3);
-
-        $this->crud->{$input}([   // repeatable
+        $this->crud->field([   // repeatable
             'name' => 'working_hours',
             'type' => 'repeat',
             'fields' => [ // also works as: "fields"
@@ -127,14 +124,31 @@ class ShiftScheduleCrudController extends CrudController
             'new_item_label' => 'Add working hours', // customize the text of the button
         ]);
 
-        $this->crud->{$input}([
+        $this->crud->field([
             'name' => 'day_start',
             'type' => 'time',
         ]);
+
+        $this->crud->field([
+            'name' => 'temp',
+            'type' => 'custom_html',
+            'value' => 'Shift Policies:',
+            'wrapper' => ['class' => 'form-group col-sm-12 mb-1']// this wrapper supports: bs4, bs5
+        ])->after('day_start');
+    }
+
+    /**
+     * Define what happens when the Update operation is loaded.
+     *
+     * @see https://backpackforlaravel.com/docs/crud-operation-update
+     * @return void
+     */
+    protected function setupUpdateOperation()
+    {
+        $this->setupCreateOperation();
     }
 }
 
-/* TODO::
-    validation for working hours repeat start and end
-    validation for day start
-*/
+// TODO:: validation for day start
+// TODO:: TBD, make day_start default 3 or 2 hours before start
+// TODO:: hour picker

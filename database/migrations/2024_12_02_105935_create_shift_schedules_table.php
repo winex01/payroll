@@ -15,11 +15,11 @@ return new class extends Migration {
 
             $table->string('name')->unique();
             $table->boolean('open_time')->default(0);
+            $table->json('working_hours')->nullable();
+            $table->string('day_start')->nullable();
             $table->boolean('early_login_overtime')->default(0);
             $table->boolean('after_shift_overtime')->default(1);
             $table->boolean('night_differential')->default(1);
-            $table->json('working_hours')->nullable();
-            $table->string('day_start')->nullable();
             $table->text('description')->nullable();
 
             $table->timestamps();
