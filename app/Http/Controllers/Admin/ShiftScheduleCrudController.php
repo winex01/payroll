@@ -151,3 +151,4 @@ class ShiftScheduleCrudController extends CrudController
 
 // TODO:: validation for day start
 // TODO:: TBD, make day_start default 3 or 2 hours before start
+// TODO:: hour picker
