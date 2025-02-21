@@ -126,7 +126,15 @@ class ShiftScheduleCrudController extends CrudController
 
         $this->crud->field([
             'name' => 'day_start',
-            'type' => 'time',
+            'type' => 'number',
+            'default' => 2,
+            'attributes' => [
+                'step' => 1,
+                'min' => 1,
+                'max' => 5,
+            ],
+            'prefix' => 'Hours',
+            'hint' => "Enter the number of hours before an employee's first IN time that the workday should start. This value will be added to the first clock-in time to determine the official start of the workday"
         ]);
 
         $this->crud->field([
@@ -148,7 +156,3 @@ class ShiftScheduleCrudController extends CrudController
         $this->setupCreateOperation();
     }
 }
-
-// TODO:: validation for day start
-// TODO:: TBD, make day_start default 3 or 2 hours before start
-// TODO:: hour picker
