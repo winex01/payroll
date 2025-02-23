@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Admin\Traits\StrTrait;
 use App\Http\Controllers\Admin\Traits\BadgeTrait;
 use App\Http\Controllers\Admin\Traits\TimeFormatTrait;
 
@@ -12,6 +13,7 @@ class ShiftSchedule extends Model
     use ModelTraits;
     use TimeFormatTrait;
     use BadgeTrait;
+    use StrTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -82,19 +84,14 @@ class ShiftSchedule extends Model
 
     public function getShiftPoliciesDetailsAttribute()
     {
-        $text = '';
-
-        if (!$this->open_time) {
-            $text .= $this->badgeBoolean($this->early_login_overtime) . ' - Early login overtime';
-            $text .= '<br><div class="mb-1"></div>';
+        $enabledPolicies = [];
+        foreach (['early_login_overtime', 'after_shift_overtime', 'night_differential', 'late', 'undertime',] as $policy) {
+            if ($this->{$policy} == true) {
+                $enabledPolicies[] = $this->strToHumanReadable($policy);
+            }
         }
 
-        $text .= $this->badgeBoolean($this->after_shift_overtime) . ' - After shift overtime';
-        $text .= '<br><div class="mb-1"></div>';
-        $text .= $this->badgeBoolean($this->night_differential) . ' - Night differential';
-        $text .= '<br>';
-
-        return $text;
+        return implode('<br>', $enabledPolicies);
     }
 
     /*

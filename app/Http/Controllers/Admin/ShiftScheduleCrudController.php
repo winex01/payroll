@@ -57,20 +57,20 @@ class ShiftScheduleCrudController extends CrudController
         ]);
 
         $this->crud->column([
-            'name' => 'day_start',
-            'type' => 'closure',
-            'function' => function ($entry) {
-                return $entry->day_start_details;
-            },
-        ]);
-
-        $this->crud->column([
             'name' => 'shift_policies',
             'type' => 'closure',
             'function' => function ($entry) {
                 return $entry->shift_policies_details;
             },
             'escaped' => false,
+        ]);
+
+        $this->crud->column([
+            'name' => 'day_start',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->day_start_details;
+            },
         ]);
 
         $this->crud->column('description')->limit(999);
@@ -142,7 +142,7 @@ class ShiftScheduleCrudController extends CrudController
             ],
             'wrapper' => ['class' => 'form-group col-sm-12 mt-2'],
             'prefix' => 'Hours',
-            'hint' => "Enter the number of hours before an employee's first IN time that the workday should start. This value will be added to the first clock-in time to determine the official start of the workday"
+            'hint' => "This value will be added to the first clock-in time to determine the official start of the workday"
         ]);
 
 
