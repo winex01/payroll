@@ -77,7 +77,7 @@ class ShiftSchedule extends Model
             return;
         }
 
-        return $this->hourDisplayFormat($this->day_start);
+        return $this->day_start;
     }
 
     public function getShiftPoliciesDetailsAttribute()

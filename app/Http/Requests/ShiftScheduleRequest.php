@@ -35,6 +35,8 @@ class ShiftScheduleRequest extends FormRequest
             'early_login_overtime' => 'boolean',
             'after_shift_overtime' => 'boolean',
             'night_differential' => 'boolean',
+            'late' => 'boolean',
+            'undertime' => 'boolean',
             'description' => 'nullable|string',
 
             'day_start' => $openTime ? 'nullable|integer|between:1,5' : 'required|integer|between:1,5',
