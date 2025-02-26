@@ -65,6 +65,11 @@ class Employee extends Model
         return $this->hasMany(EmploymentDetail::class);
     }
 
+    public function employeeShiftSchedules()
+    {
+        return $this->hasMany(EmployeeShiftSchedule::class);
+    }
+
     public function families()
     {
         return $this->hasMany(Family::class);

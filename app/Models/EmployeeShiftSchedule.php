@@ -33,6 +33,45 @@ class EmployeeShiftSchedule extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function monday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'monday_id');
+    }
+
+    public function tuesday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'tuesday_id');
+    }
+
+    public function wednesday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'wednesday_id');
+    }
+
+    public function thursday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'thursday_id');
+    }
+
+    public function friday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'friday_id');
+    }
+
+    public function saturday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'saturday_id');
+    }
+
+    public function sunday()
+    {
+        return $this->belongsTo(ShiftSchedule::class, 'sunday_id');
+    }
 
     /*
     |--------------------------------------------------------------------------

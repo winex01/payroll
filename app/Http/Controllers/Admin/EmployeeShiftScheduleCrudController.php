@@ -57,7 +57,29 @@ class EmployeeShiftScheduleCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeShiftScheduleRequest::class);
         CRUD::setFromDb();
+
+        $daysOfWeek = [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+            'sunday',
+        ];
+
+        $this->crud->removeFields(['employee_id',]);
+
+        foreach ($daysOfWeek as $day) {
+            $this->crud->removeField($day . '_id');
+            $this->crud->field($day);
+        }
+
+        $this->crud->field('employee')->makeFirst();
+
+        // TODO:: validation naku
     }
+
 
     /**
      * Define what happens when the Update operation is loaded.

@@ -38,7 +38,7 @@ class ShiftSchedulesTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 3,
-                'name' => '09:00AM-6:00PM,',
+                'name' => '09:00AM-6:00PM',
                 'open_time' => 0,
                 'working_hours' => '[{"end": "12:00", "start": "09:00"}, {"end": "18:00", "start": "13:00"}]',
                 'early_login_overtime' => 0,
@@ -49,7 +49,7 @@ class ShiftSchedulesTableSeeder extends Seeder
                 'day_start' => 2,
                 'description' => NULL,
                 'created_at' => '2025-02-26 13:11:03',
-                'updated_at' => '2025-02-26 13:11:03',
+                'updated_at' => '2025-02-27 07:33:48',
             ),
         ));
         
