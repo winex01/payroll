@@ -5,6 +5,7 @@
                 'early_login_overtime',
                 'working_hours',
                 'day_start',
+                'late',
             ];
 
             var openTimeFalseHide = [
