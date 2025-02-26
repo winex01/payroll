@@ -200,47 +200,23 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
 
-        $this->input('field');
-    }
+        $this->crud->removeFields(['employee_id', 'employment_detail_type_id']);
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
-    }
-
-    public function input($input = 'field')
-    {
-        $input = ucfirst($input);
-
-        $this->crud->{'remove' . $input . 's'}(['employee_id', 'employment_detail_type_id']);
-
-        $this->crud->{$input}('employee')->makeFirst();
-        $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
+        $this->crud->field('employee')->makeFirst();
+        $this->crud->field('employmentDetailType')->size(6)->after('employee');
         $this->crud->field('value')->type('hidden');
 
-        $this->employmentDetailTypes($input);
-    }
-
-    public function employmentDetailTypes($input = 'field', $hidden = true)
-    {
         $types = EmploymentDetailType::all();
-
         foreach ($types as $type) {
             $fieldName = Str::snake($type->name);
             $this->crud
-                ->{$input}([
+                ->field([
                     'name' => $fieldName,
                     'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
+                        'class' => 'form-group col-sm-6 mb-3 d-none',
                     ],
                 ])
-                    ->after('employmentDetailType');
+                ->after('employmentDetailType');
 
             $modifiedAttributes = [];
 
@@ -267,8 +243,19 @@ class EmploymentDetailCrudController extends CrudController
                 ];
             }
 
-            $this->crud->{'modify' . ucfirst($input)}($fieldName, $modifiedAttributes);
+            $this->crud->modifyField($fieldName, $modifiedAttributes);
         }
+    }
+
+    /**
+     * Define what happens when the Update operation is loaded.
+     *
+     * @see https://backpackforlaravel.com/docs/crud-operation-update
+     * @return void
+     */
+    protected function setupUpdateOperation()
+    {
+        $this->setupCreateOperation();
     }
 
     protected function setupCustomRoutes($segment, $routeName, $controller)
