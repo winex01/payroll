@@ -162,7 +162,7 @@ class MenusTableSeeder extends Seeder
             10 => 
             array (
                 'id' => 11,
-                'label' => '201 Files',
+                'label' => 'Employee Records',
                 'icon' => 'las la-archive',
                 'url' => NULL,
                 'permissions' => NULL,
@@ -171,7 +171,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 11,
                 'depth' => 1,
                 'created_at' => '2024-10-07 12:39:04',
-                'updated_at' => '2024-10-07 12:39:04',
+                'updated_at' => '2025-02-26 13:20:13',
             ),
             11 => 
             array (
@@ -204,7 +204,7 @@ class MenusTableSeeder extends Seeder
             13 => 
             array (
                 'id' => 15,
-                'label' => '201 Files',
+                'label' => 'Employee Records',
                 'icon' => NULL,
                 'url' => NULL,
                 'permissions' => NULL,
@@ -213,7 +213,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 20,
                 'depth' => 2,
                 'created_at' => '2024-10-10 14:19:46',
-                'updated_at' => '2024-10-10 14:22:39',
+                'updated_at' => '2025-02-26 13:20:19',
             ),
             14 => 
             array (
@@ -302,7 +302,7 @@ class MenusTableSeeder extends Seeder
             20 => 
             array (
                 'id' => 22,
-                'label' => 'Daily Time Records',
+                'label' => 'DTR and Shifts',
                 'icon' => 'las la-hourglass-half',
                 'url' => NULL,
                 'permissions' => NULL,
@@ -311,7 +311,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 17,
                 'depth' => 1,
                 'created_at' => '2024-12-02 14:03:56',
-                'updated_at' => '2024-12-02 14:03:56',
+                'updated_at' => '2025-02-26 13:24:47',
             ),
             21 => 
             array (
