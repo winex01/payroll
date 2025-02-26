@@ -67,6 +67,7 @@ class ShiftScheduleCrudController extends CrudController
 
         $this->crud->column([
             'name' => 'day_start',
+            'label' => 'Day start (hrs)',
             'type' => 'closure',
             'function' => function ($entry) {
                 return $entry->day_start_details;
@@ -142,7 +143,11 @@ class ShiftScheduleCrudController extends CrudController
             ],
             'wrapper' => ['class' => 'form-group col-sm-12 mt-2'],
             'prefix' => 'Hours',
-            'hint' => "This value will be added to the first clock-in time to determine the official start of the workday"
+            'hint' => "This value will be subtracted from the employee's working hours start time to determine
+                         the official start of the workday. For example, if an employee's shift schedule is from
+                         7 AM to 12 PM and 1 PM to 5 PM, the system will use 7 AM as the base time. If this value
+                         is set to 2, the workday will start at 5 AM. This adjustment helps prevent overtime from
+                         overlapping into the next day."
         ]);
 
 
