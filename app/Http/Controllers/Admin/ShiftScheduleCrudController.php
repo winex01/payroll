@@ -95,7 +95,7 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
 
-        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
+        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, Morning Shift, Graveyard Shift, Etc.');
         $this->crud->field('open_time');
 
         $this->crud->field([   // repeatable

@@ -120,6 +120,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'shift_schedules_delete',
             'shift_schedules_revise',
         ],
+
+        'employee_shift_schedules' => [
+            'employee_shift_schedules_list',
+            'employee_shift_schedules_create',
+            'employee_shift_schedules_show',
+            'employee_shift_schedules_update',
+            'employee_shift_schedules_delete',
+            'employee_shift_schedules_revise',
+        ],
     ];
 
     /**
