@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\CoreTraits;
-use App\Http\Requests\EmployeeShiftSchedulesRequest;
+use App\Http\Requests\EmployeeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class EmployeeShiftSchedulesCrudController
+ * Class EmployeeShiftScheduleCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class EmployeeShiftSchedulesCrudController extends CrudController
+class EmployeeShiftScheduleCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -29,9 +29,9 @@ class EmployeeShiftSchedulesCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\EmployeeShiftSchedules::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/employee-shift-schedules');
-        CRUD::setEntityNameStrings('employee shift schedules', 'employee shift schedules');
+        CRUD::setModel(\App\Models\EmployeeShiftSchedule::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/employee-shift-schedule');
+        CRUD::setEntityNameStrings('employee shift schedule', 'employee shift schedules');
 
         $this->userPermissions();
     }
@@ -55,7 +55,7 @@ class EmployeeShiftSchedulesCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(EmployeeShiftSchedulesRequest::class);
+        CRUD::setValidation(EmployeeShiftScheduleRequest::class);
         CRUD::setFromDb();
     }
 

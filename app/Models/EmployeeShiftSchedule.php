@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeShiftSchedules extends Model
+class EmployeeShiftSchedule extends Model
 {
     use ModelTraits;
 

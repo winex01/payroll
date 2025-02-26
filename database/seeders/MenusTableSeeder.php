@@ -316,16 +316,16 @@ class MenusTableSeeder extends Seeder
             21 => 
             array (
                 'id' => 23,
-                'label' => 'Employee Shift Schedules',
+                'label' => 'Employee Shift Schedule',
                 'icon' => 'las la-business-time',
-                'url' => 'employee-shift-schedules',
+                'url' => 'employee-shift-schedule',
                 'permissions' => '["employee_shift_schedules_list"]',
                 'parent_id' => 22,
                 'lft' => 13,
                 'rgt' => 14,
                 'depth' => 2,
                 'created_at' => '2025-02-26 12:58:11',
-                'updated_at' => '2025-02-26 13:00:00',
+                'updated_at' => '2025-02-27 07:12:24',
             ),
         ));
         
