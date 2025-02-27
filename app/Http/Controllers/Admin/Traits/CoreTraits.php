@@ -18,4 +18,5 @@ trait CoreTraits
     use EmployeeTrait;
     use ValidateUniqueTrait;
     use BadgeTrait;
+    use CalendarTrait;
 }

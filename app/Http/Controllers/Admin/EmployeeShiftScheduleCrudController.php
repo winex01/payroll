@@ -36,20 +36,6 @@ class EmployeeShiftScheduleCrudController extends CrudController
         $this->userPermissions();
     }
 
-    // TODO:: transfer this to trait
-    public function daysOfWeeek()
-    {
-        return [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday',
-            'sunday',
-        ];
-    }
-
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -59,7 +45,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->employeeColumn();
-        foreach ($this->daysOfWeeek() as $day) {
+        foreach ($this->daysOfWeek() as $day) {
             $this->crud->column($day);
         }
     }
@@ -81,7 +67,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
 
         $this->crud->field('employee');
         $this->crud->field('effectivity_date');
-        $this->crud->addFields($this->daysOfWeeek());
+        $this->crud->addFields($this->daysOfWeek());
     }
 
     /**

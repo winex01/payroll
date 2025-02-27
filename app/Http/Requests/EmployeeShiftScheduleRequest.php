@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Controllers\Admin\Traits\CalendarTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EmployeeShiftScheduleRequest extends FormRequest
 {
+    use CalendarTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,11 +27,16 @@ class EmployeeShiftScheduleRequest extends FormRequest
      */
     public function rules()
     {
-        // TODO::
-        return [
+        $rules = [
             'employee' => 'required|exists:employees,id',
             'effectivity_date' => 'required|date|after_or_equal:today',
         ];
+
+        foreach ($this->daysOfWeek() as $day) {
+            $rules[$day] = 'nullable|exists:shift_schedules,id';
+        }
+
+        return $rules;
     }
 
     /**
