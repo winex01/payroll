@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Traits\CoreTraits;
 use App\Http\Requests\EmployeeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class EmployeeShiftScheduleCrudController
@@ -21,6 +22,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -34,6 +36,13 @@ class EmployeeShiftScheduleCrudController extends CrudController
         CRUD::setEntityNameStrings('employee shift schedule', 'employee shift schedules');
 
         $this->userPermissions();
+        // $this->effectivityDatePermissions();
+    }
+
+    public function setupFilterOperation()
+    {
+        $this->employeeRelationshipFilter();
+        $this->historyFilter();
     }
 
     /**
@@ -44,7 +53,13 @@ class EmployeeShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->filterQueries(function ($query) {
+            $this->employeeQueriesFilter($query);
+            $this->historyQueriesFilter($query);
+        });
+
         $this->employeeColumn();
+        $this->crud->column('effectivity_date')->type('date');
         foreach ($this->daysOfWeek() as $day) {
             $this->crud->column($day);
         }
@@ -81,4 +96,3 @@ class EmployeeShiftScheduleCrudController extends CrudController
         $this->setupCreateOperation();
     }
 }
-// TODO:: filter
