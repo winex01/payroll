@@ -36,6 +36,20 @@ class EmployeeShiftScheduleCrudController extends CrudController
         $this->userPermissions();
     }
 
+    // TODO:: transfer this to trait
+    public function daysOfWeeek()
+    {
+        return [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+            'sunday',
+        ];
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -44,7 +58,15 @@ class EmployeeShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $this->employeeColumn();
+        foreach ($this->daysOfWeeek() as $day) {
+            $this->crud->column($day);
+        }
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
     }
 
     /**
@@ -56,30 +78,11 @@ class EmployeeShiftScheduleCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(EmployeeShiftScheduleRequest::class);
-        CRUD::setFromDb();
 
-        $daysOfWeek = [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday',
-            'sunday',
-        ];
-
-        $this->crud->removeFields(['employee_id',]);
-
-        foreach ($daysOfWeek as $day) {
-            $this->crud->removeField($day . '_id');
-            $this->crud->field($day);
-        }
-
-        $this->crud->field('employee')->makeFirst();
-
-        // TODO:: validation naku
+        $this->crud->field('employee');
+        $this->crud->field('effectivity_date');
+        $this->crud->addFields($this->daysOfWeeek());
     }
-
 
     /**
      * Define what happens when the Update operation is loaded.

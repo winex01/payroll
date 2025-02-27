@@ -24,8 +24,10 @@ class EmployeeShiftScheduleRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO::
         return [
-            // 'name' => 'required|min:5|max:255'
+            'employee' => 'required|exists:employees,id',
+            'effectivity_date' => 'required|date|after_or_equal:today',
         ];
     }
 
