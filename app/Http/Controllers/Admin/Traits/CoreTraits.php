@@ -19,4 +19,5 @@ trait CoreTraits
     use ValidateUniqueTrait;
     use BadgeTrait;
     use CalendarTrait;
+    use EffectivityDateTrait;
 }

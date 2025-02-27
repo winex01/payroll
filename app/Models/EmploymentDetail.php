@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
 
 class EmploymentDetail extends Model
 {
     use ModelTraits;
+    use EmployeeNotSoftDeletedScopeTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -49,7 +51,6 @@ class EmploymentDetail extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    // Local scope for active employment details
     public function scopeActive(Builder $query): Builder
     {
         // Filter for records where effectivity_date is less than or equal to today

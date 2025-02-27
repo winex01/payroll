@@ -42,15 +42,7 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
-
-        // only allow modify if effectivity_date >= today
-        $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
-            $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
-                $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
-                $today = now()->startOfDay(); // Set today’s date to midnight as well
-                return $date >= $today;
-            });
-        });
+        $this->effectivityDatePermissions();
     }
 
     public function setupFilterOperation()
@@ -84,11 +76,7 @@ class EmploymentDetailCrudController extends CrudController
             ],
         ]);
 
-        $this->crud->field([
-            'name' => 'history',
-            'type' => 'checkbox',
-            'label' => 'Show All History',
-        ]);
+        $this->historyFilter();
     }
 
     /**
@@ -116,11 +104,7 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('value', $value);
             }
 
-            $history = request('history');
-            if (!$history || $history == false || $history == 0) {
-                // show only active records emp details in defaults
-                $query->active();
-            }
+            $this->historyQueriesFilter($query);
         });
 
         CRUD::setFromDb(false, true);
