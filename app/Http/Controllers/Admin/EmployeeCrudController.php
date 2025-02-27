@@ -168,9 +168,6 @@ class EmployeeCrudController extends CrudController
         // Paginate the results
         $results = $query->paginate(5, ['*'], 'page', $page);
 
-
         return response()->json($results);
     }
-
-
 }
