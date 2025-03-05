@@ -81,16 +81,16 @@ class EmployeeShiftSchedule extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    public function scopeActive(Builder $query): Builder
+    public function scopeActive(Builder $query, $date = null): Builder
     {
-        // Filter for records where effectivity_date is less than or equal to today
-        $query->where('effectivity_date', '<=', now()->toDateString());
+        if ($date == null) {
+            $date = now()->toDateString();
+        }
 
-        // Subquery to select the latest record for each employee_id
-        $query->whereIn('employee_shift_schedules.id', function ($query) {
+        $query->whereIn('employee_shift_schedules.id', function ($query) use ($date) {
             $query->selectRaw('MAX(employee_shift_schedules.id)') // Get the latest record (MAX(id)) for each combination
                 ->from('employee_shift_schedules')
-                ->where('effectivity_date', '<=', now()->toDateString()) // Only consider records where effectivity_date <= today
+                ->where('effectivity_date', '<=', $date) // Only consider records where effectivity_date <= today
                 ->groupBy('employee_id'); // Group by employee_id
         });
 

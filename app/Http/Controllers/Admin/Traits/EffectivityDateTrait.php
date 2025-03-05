@@ -11,6 +11,7 @@ trait EffectivityDateTrait
     // CRUD controller access condition
     public function effectivityDatePermissions()
     {
+        // Hide or show action buttons
         // only allow modify if effectivity_date >= today
         $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
             $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
@@ -19,6 +20,12 @@ trait EffectivityDateTrait
                 return $date >= $today;
             });
         });
+    }
+
+    // field
+    public function effectivityDateFilter()
+    {
+        $this->crud->field('effectivity_date')->label('Date')->type('date')->size(4);
     }
 
     // field
@@ -35,9 +42,20 @@ trait EffectivityDateTrait
     public function historyQueriesFilter($query)
     {
         $history = request('history');
+        $effectivityDate = request('effectivity_date');
+
         if (!$history || $history == false || $history == 0) {
-            // show only active records emp details in defaults
             $query->active();
+        } else {
+            if ($effectivityDate != null && $effectivityDate != '') {
+                $query->active($effectivityDate);
+            }
         }
+
+        // TODO:: refactor above if statement
+        if ($effectivityDate != null && $effectivityDate != '') {
+            $query->active($effectivityDate);
+        }
+
     }
 }

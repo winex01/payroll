@@ -42,6 +42,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
+        $this->effectivityDateFilter();
         $this->historyFilter();
     }
 
@@ -98,4 +99,3 @@ class EmployeeShiftScheduleCrudController extends CrudController
         $this->setupCreateOperation();
     }
 }
-// TODO::

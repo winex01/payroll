@@ -54,7 +54,7 @@ class EmploymentDetail extends Model
     public function scopeActive(Builder $query): Builder
     {
         // Filter for records where effectivity_date is less than or equal to today
-        $query->where('effectivity_date', '<=', now()->toDateString());
+        // $query->where('effectivity_date', '<=', now()->toDateString());
 
         // Subquery to select the latest record for each employee_id and employment_detail_type_id
         $query->whereIn('employment_details.id', function ($query) {
