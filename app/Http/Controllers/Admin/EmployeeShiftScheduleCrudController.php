@@ -60,10 +60,10 @@ class EmployeeShiftScheduleCrudController extends CrudController
         });
 
         $this->employeeColumn();
+        $this->crud->column('effectivity_date')->type('date');
         foreach ($this->daysOfWeek() as $day) {
             $this->crud->column($day);
         }
-        $this->crud->column('effectivity_date')->type('date');
     }
 
     protected function setupShowOperation()
@@ -82,10 +82,10 @@ class EmployeeShiftScheduleCrudController extends CrudController
         CRUD::setValidation(EmployeeShiftScheduleRequest::class);
 
         $this->crud->field('employee');
+        $this->crud->field('effectivity_date');
         foreach ($this->daysOfWeek() as $day) {
             $this->crud->field($day)->size(6);
         }
-        $this->crud->field('effectivity_date');
     }
 
     /**

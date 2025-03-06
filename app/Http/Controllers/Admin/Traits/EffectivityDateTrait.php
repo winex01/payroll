@@ -44,18 +44,18 @@ trait EffectivityDateTrait
         $history = request('history');
         $effectivityDate = request('effectivity_date');
 
-        if (!$history || $history == false || $history == 0) {
-            $query->active();
-        } else {
-            if ($effectivityDate != null && $effectivityDate != '') {
-                $query->active($effectivityDate);
-            }
-        }
-
-        // TODO:: refactor above if statement
-        if ($effectivityDate != null && $effectivityDate != '') {
+        if ($history && $effectivityDate) {
+            // no groupBy and only effectivity_date
+            $query->whereDate('effectivity_date', '<=', $effectivityDate);
+        } elseif ($effectivityDate) {
+            // groupBy and using effectivity date filter
             $query->active($effectivityDate);
+        } elseif ($history) {
+            // no groupBy
+            // do nothing / or no query / show all records
+        } else {
+            // groupBy and using current date
+            $query->active();
         }
-
     }
 }

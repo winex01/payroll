@@ -76,6 +76,7 @@ class EmploymentDetailCrudController extends CrudController
             ],
         ]);
 
+        $this->effectivityDateFilter();
         $this->historyFilter();
     }
 
