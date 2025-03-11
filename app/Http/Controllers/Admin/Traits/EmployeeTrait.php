@@ -22,12 +22,6 @@ trait EmployeeTrait
 
     }
 
-    public function employeeField($column = 'employee')
-    {
-        $this->crud->removeField('employee_id');
-        $this->crud->field($column)->makeFirst();
-    }
-
     public function employeeColumn($column = 'employee', $linkTo = null)
     {
         // if column not exist then we create it

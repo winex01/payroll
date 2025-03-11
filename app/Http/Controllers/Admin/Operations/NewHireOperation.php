@@ -96,4 +96,47 @@ trait NewHireOperation
             \Alert::success(trans('backpack::crud.insert_success'))->flash();
         });
     }
+
+    public function employmentDetailTypes($hidden = true)
+    {
+        $types = EmploymentDetailType::all();
+        foreach ($types as $type) {
+            $fieldName = Str::snake($type->name);
+            $this->crud
+                ->field([
+                    'name' => $fieldName,
+                    'wrapper' => [
+                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
+                    ],
+                ])
+                ->after('employmentDetailType');
+
+            $modifiedAttributes = [];
+
+            // model/select
+            if (str_contains($type->validation, 'exists')) {
+                $model = $this->strToModelName($fieldName);
+                $data = $model::all();
+
+                $data = $data->mapWithKeys(function ($item) {
+                    return [$item->id => $item->name];
+                });
+
+                $modifiedAttributes = [
+                    'type' => 'select_from_array',
+                    'options' => $data,
+                ];
+            } elseif (str_contains($type->validation, 'date')) {
+                $modifiedAttributes = [
+                    'type' => 'date',
+                ];
+            } elseif (str_contains($type->validation, 'numeric')) {
+                $modifiedAttributes = [
+                    'type' => 'number',
+                ];
+            }
+
+            $this->crud->modifyField($fieldName, $modifiedAttributes);
+        }
+    }
 }

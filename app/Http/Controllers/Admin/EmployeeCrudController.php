@@ -65,7 +65,9 @@ class EmployeeCrudController extends CrudController
             }
         });
 
-        $this->input('column');
+        CRUD::setFromDb(false, true);
+        $this->crud->removeColumn('photo');
+        $this->employeePhoto('column', false);
     }
 
     /**
@@ -81,7 +83,39 @@ class EmployeeCrudController extends CrudController
 
         CRUD::setValidation(EmployeeRequest::class);
 
-        $this->input('field');
+        $this->employeePhoto('field', false);
+        $this->crud->field('employee_no');
+        $this->crud->field('last_name');
+        $this->crud->field('first_name');
+        $this->crud->field('middle_name');
+
+        $tab = 'Personal Details';
+        $this->crud->field('gender')->tab($tab);
+        $this->crud->field('birth_date')->tab($tab);
+        $this->crud->field('birth_place')->tab($tab);
+        $name = 'civilStatus';
+        $this->crud->field($name)->label($this->strToHumanReadable($name))->tab($tab);
+        $this->crud->field('date_of_marriage')->tab($tab);
+
+        $this->crud->field('mobile_no')->tab($tab);
+        $this->crud->field('telephone_no')->tab($tab);
+        $this->crud->field('personal_email')->tab($tab);
+        $this->crud->field('company_email')->tab($tab);
+
+        $this->crud->field('current_address')->tab($tab);
+        $this->crud->field('home_address')->tab($tab);
+        $this->crud->field('house_no')->tab($tab);
+        $this->crud->field('street')->tab($tab);
+        $this->crud->field('brgy')->tab($tab);
+        $this->crud->field('city')->tab($tab);
+        $this->crud->field('province')->tab($tab);
+        $this->crud->field('zip_code')->tab($tab);
+
+        $tab = 'Tin, Sss, Phil...';
+        $this->crud->field('tin')->tab($tab);
+        $this->crud->field('sss')->tab($tab);
+        $this->crud->field('philhealth')->tab($tab);
+        $this->crud->field('pagibig')->tab($tab);
     }
 
     /**
@@ -99,45 +133,6 @@ class EmployeeCrudController extends CrudController
     {
         $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
-    }
-
-    private function input($input = 'field')
-    {
-        $this->employeePhoto($input, false);
-        $this->crud->{$input}('employee_no');
-        $this->crud->{$input}('last_name');
-        $this->crud->{$input}('first_name');
-        $this->crud->{$input}('middle_name');
-
-        $tab = 'Personal Details';
-        $this->crud->{$input}('gender')->tab($tab);
-        $this->crud->{$input}('birth_date')->tab($tab);
-        $this->crud->{$input}('birth_place')->tab($tab);
-        $name = 'civilStatus';
-        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->tab($tab);
-        $this->crud->{$input}('date_of_marriage')->tab($tab);
-
-        $this->crud->{$input}('mobile_no')->tab($tab);
-        $this->crud->{$input}('telephone_no')->tab($tab);
-        $this->crud->{$input}('personal_email')->tab($tab);
-        $this->crud->{$input}('company_email')->tab($tab);
-
-        $this->crud->{$input}('current_address')->tab($tab);
-        $this->crud->{$input}('home_address')->tab($tab);
-        $this->crud->{$input}('house_no')->tab($tab);
-        $this->crud->{$input}('street')->tab($tab);
-        $this->crud->{$input}('brgy')->tab($tab);
-        $this->crud->{$input}('city')->tab($tab);
-        $this->crud->{$input}('province')->tab($tab);
-        $this->crud->{$input}('zip_code')->tab($tab);
-
-
-
-        $tab = 'Tin, Sss, Phil...';
-        $this->crud->{$input}('tin')->tab($tab);
-        $this->crud->{$input}('sss')->tab($tab);
-        $this->crud->{$input}('philhealth')->tab($tab);
-        $this->crud->{$input}('pagibig')->tab($tab);
     }
 
     protected function setupEmployeeFetchRoutes($segment, $routeName, $controller)
@@ -168,9 +163,6 @@ class EmployeeCrudController extends CrudController
         // Paginate the results
         $results = $query->paginate(5, ['*'], 'page', $page);
 
-
         return response()->json($results);
     }
-
-
 }

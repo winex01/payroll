@@ -42,15 +42,7 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
-
-        // only allow modify if effectivity_date >= today
-        $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
-            $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
-                $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
-                $today = now()->startOfDay(); // Set today’s date to midnight as well
-                return $date >= $today;
-            });
-        });
+        $this->effectivityDatePermissions();
     }
 
     public function setupFilterOperation()
@@ -84,11 +76,8 @@ class EmploymentDetailCrudController extends CrudController
             ],
         ]);
 
-        $this->crud->field([
-            'name' => 'history',
-            'type' => 'checkbox',
-            'label' => 'Show All History',
-        ]);
+        $this->effectivityDateFilter();
+        $this->historyFilter();
     }
 
     /**
@@ -116,11 +105,7 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('value', $value);
             }
 
-            $history = request('history');
-            if (!$history || $history == false || $history == 0) {
-                // show only active records emp details in defaults
-                $query->active();
-            }
+            $this->historyQueriesFilter($query);
         });
 
         CRUD::setFromDb(false, true);
@@ -200,7 +185,13 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setValidation(EmploymentDetailRequest::class);
         CRUD::setFromDb();
 
-        $this->input('field');
+        $this->crud->removeFields(['employee_id', 'employment_detail_type_id']);
+
+        $this->crud->field('employee')->makeFirst();
+        $this->crud->field('employmentDetailType')->size(6)->after('employee');
+        $this->crud->field('value')->type('hidden');
+
+        $this->employmentDetailTypes();
     }
 
     /**
@@ -212,63 +203,6 @@ class EmploymentDetailCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    public function input($input = 'field')
-    {
-        $input = ucfirst($input);
-
-        $this->crud->{'remove' . $input . 's'}(['employee_id', 'employment_detail_type_id']);
-
-        $this->crud->{$input}('employee')->makeFirst();
-        $this->crud->{$input}('employmentDetailType')->size(6)->after('employee');
-        $this->crud->field('value')->type('hidden');
-
-        $this->employmentDetailTypes($input);
-    }
-
-    public function employmentDetailTypes($input = 'field', $hidden = true)
-    {
-        $types = EmploymentDetailType::all();
-
-        foreach ($types as $type) {
-            $fieldName = Str::snake($type->name);
-            $this->crud
-                ->{$input}([
-                    'name' => $fieldName,
-                    'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
-                    ],
-                ])
-                    ->after('employmentDetailType');
-
-            $modifiedAttributes = [];
-
-            // model/select
-            if (str_contains($type->validation, 'exists')) {
-                $model = $this->strToModelName($fieldName);
-                $data = $model::all();
-
-                $data = $data->mapWithKeys(function ($item) {
-                    return [$item->id => $item->name];
-                });
-
-                $modifiedAttributes = [
-                    'type' => 'select_from_array',
-                    'options' => $data,
-                ];
-            } elseif (str_contains($type->validation, 'date')) {
-                $modifiedAttributes = [
-                    'type' => 'date',
-                ];
-            } elseif (str_contains($type->validation, 'numeric')) {
-                $modifiedAttributes = [
-                    'type' => 'number',
-                ];
-            }
-
-            $this->crud->{'modify' . ucfirst($input)}($fieldName, $modifiedAttributes);
-        }
     }
 
     protected function setupCustomRoutes($segment, $routeName, $controller)

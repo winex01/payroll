@@ -57,14 +57,6 @@ class ShiftScheduleCrudController extends CrudController
         ]);
 
         $this->crud->column([
-            'name' => 'day_start',
-            'type' => 'closure',
-            'function' => function ($entry) {
-                return $entry->day_start_details;
-            },
-        ]);
-
-        $this->crud->column([
             'name' => 'shift_policies',
             'type' => 'closure',
             'function' => function ($entry) {
@@ -73,9 +65,14 @@ class ShiftScheduleCrudController extends CrudController
             'escaped' => false,
         ]);
 
-        // $this->crud->modifyColumn('day_start', [
-
-        // ]);
+        $this->crud->column([
+            'name' => 'day_start',
+            'label' => 'Day start (hrs)',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return $entry->day_start_details;
+            },
+        ]);
 
         $this->crud->column('description')->limit(999);
     }
@@ -98,11 +95,8 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
 
-        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, AM, PM, Graveyard Shift, Etc.');
+        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, Morning Shift, Graveyard Shift, Etc.');
         $this->crud->field('open_time');
-        $this->crud->field('early_login_overtime')->size(3);
-        $this->crud->field('after_shift_overtime')->size(3);
-        $this->crud->field('night_differential')->size(3);
 
         $this->crud->field([   // repeatable
             'name' => 'working_hours',
@@ -124,17 +118,39 @@ class ShiftScheduleCrudController extends CrudController
             'new_item_label' => 'Add working hours', // customize the text of the button
         ]);
 
-        $this->crud->field([
-            'name' => 'day_start',
-            'type' => 'time',
-        ]);
-
+        // label: Shift Policies
         $this->crud->field([
             'name' => 'temp',
             'type' => 'custom_html',
             'value' => 'Shift Policies:',
-            'wrapper' => ['class' => 'form-group col-sm-12 mb-1']// this wrapper supports: bs4, bs5
-        ])->after('day_start');
+            'wrapper' => ['class' => 'form-group col-sm-12']// this wrapper supports: bs4, bs5
+        ])->after('working_hours');
+
+        $this->crud->field('early_login_overtime')->size(4);
+        $this->crud->field('after_shift_overtime')->size(4);
+        $this->crud->field('night_differential')->size(4);
+        $this->crud->field('late')->size(4);
+        $this->crud->field('undertime')->size(4);
+
+        $this->crud->field([
+            'name' => 'day_start',
+            'type' => 'number',
+            'default' => 2,
+            'attributes' => [
+                'step' => 1,
+                'min' => 1,
+                'max' => 5,
+            ],
+            'wrapper' => ['class' => 'form-group col-sm-12 mt-2'],
+            'prefix' => 'Hours',
+            'hint' => "This value will be subtracted from the employee's working hours start time to determine
+                         the official start of the workday. For example, if an employee's shift schedule is from
+                         7 AM to 12 PM and 1 PM to 5 PM, the system will use 7 AM as the base time. If this value
+                         is set to 2, the workday will start at 5 AM. This adjustment helps prevent overtime from
+                         overlapping into the next day."
+        ]);
+
+
     }
 
     /**
@@ -148,7 +164,3 @@ class ShiftScheduleCrudController extends CrudController
         $this->setupCreateOperation();
     }
 }
-
-// TODO:: validation for day start
-// TODO:: TBD, make day_start default 3 or 2 hours before start
-// TODO:: hour picker

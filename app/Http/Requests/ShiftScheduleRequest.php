@@ -35,10 +35,11 @@ class ShiftScheduleRequest extends FormRequest
             'early_login_overtime' => 'boolean',
             'after_shift_overtime' => 'boolean',
             'night_differential' => 'boolean',
+            'late' => 'boolean',
+            'undertime' => 'boolean',
             'description' => 'nullable|string',
 
-            // Conditional validation for day_start based on open_time
-            'day_start' => $openTime ? 'nullable|date_format:H:i' : 'required|date_format:H:i',
+            'day_start' => $openTime ? 'nullable|integer|between:1,5' : 'required|integer|between:1,5',
 
             // Apply conditional validation for working_hours based on open_time
             'working_hours' => $openTime ? 'nullable|array' : 'required|array', // since we convert the json field in prepareForValidation method we use array here
