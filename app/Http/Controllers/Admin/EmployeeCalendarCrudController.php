@@ -39,7 +39,7 @@ class EmployeeCalendarCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //
+        CRUD::setOperationSetting('searchableTable', false); // hide datatable search
     }
 
     /**
