@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
+use Illuminate\Support\Facades\App;
 use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\EmploymentDetailRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -141,6 +143,14 @@ class EmploymentDetailCrudController extends CrudController
 
                 if (is_numeric($value)) {
                     return $this->numberToDecimals($value);
+                }
+
+                $validator = Validator::make(['date' => $value], [
+                    'date' => 'required|date',
+                ]);
+
+                if ($validator->passes()) {
+                    $value = $this->dateFormat($value);
                 }
 
                 return $value;
