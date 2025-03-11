@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class EmployeeCalendarCrudController
@@ -16,6 +17,7 @@ class EmployeeCalendarCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -29,6 +31,20 @@ class EmployeeCalendarCrudController extends CrudController
         CRUD::setEntityNameStrings('employee calendar', 'employee calendars');
 
         $this->userPermissions();
+    }
+
+    public function setupFilterOperation()
+    {
+        $this->employeeRelationshipFilter();
+    }
+
+    protected function setupListOperation()
+    {
+        CRUD::setOperationSetting('searchableTable', false);
+
+        $this->filterQueries(function ($query) {
+            $this->employeeQueriesFilter($query);
+        });
     }
 
     public function index()

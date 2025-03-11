@@ -22,10 +22,11 @@ if (is_object($current_value) && is_subclass_of(get_class($current_value), 'Illu
 }
 
 if (!isset($field['options'])) {
+    // dd($field);
     $options = $field['model']::all();
 } else {
     $options = call_user_func($field['options'], $field['model']::query());
-    }
+}
 
 @endphp
 
