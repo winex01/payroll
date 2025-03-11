@@ -31,36 +31,14 @@ class EmployeeCalendarCrudController extends CrudController
         $this->userPermissions();
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
-    protected function setupListOperation()
+    public function index()
     {
-        CRUD::setOperationSetting('searchableTable', false); // hide datatable search
-    }
+        $this->crud->hasAccessOrFail('list');
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
-    protected function setupCreateOperation()
-    {
-        //
-    }
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
+        // loast custom calendar view instead of default list.blade.php
+        return view('crud::calendar', $this->data);
     }
 }
