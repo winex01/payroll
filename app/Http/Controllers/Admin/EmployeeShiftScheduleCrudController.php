@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use App\Http\Requests\EmployeeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Http\Controllers\Admin\Operations\CalendarOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
@@ -24,7 +23,6 @@ class EmployeeShiftScheduleCrudController extends CrudController
 
     use CoreTraits;
     use FilterOperation;
-    use CalendarOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
