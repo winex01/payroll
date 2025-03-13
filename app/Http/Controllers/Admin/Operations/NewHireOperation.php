@@ -133,6 +133,7 @@ trait NewHireOperation
             } elseif (str_contains($type->validation, 'numeric')) {
                 $modifiedAttributes = [
                     'type' => 'number',
+                    'default' => 0,
                 ];
             }
 
