@@ -497,22 +497,19 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'toggleView' // Add the toggle button
         },
         events: [
-            { id: '1', title: 'Meeting with Team A', start: '2025-03-10', color: '#FF5733' },
-            { id: '2', title: 'Lunch with Client', start: '2025-03-10', color: '#33FF57' },
-            { id: '3', title: 'Project Deadline', start: '2025-03-10', color: '#3357FF' },
-            { id: '4', title: 'Conference Call', start: '2025-03-10', color: '#FF33A1' },
-            { id: '5', title: 'Final Review', start: '2025-03-10', color: '#FF9900' },
-            { id: '6', title: 'Lorem Ipsum', start: '2025-03-10', color: '#3357FF' },
-            { id: '7', title: 'Dolor New Sa', start: '2025-03-10', color: '#3357FF' },
-            { id: '8', title: 'Last Mariblis', start: '2025-03-10', color: '#3357FF' },
-            { id: '9', title: 'New Rat Lorem', start: '2025-03-10', color: '#3357FF' }
+            { id: '1', title: 'Employee Shift', start: '2025-03-10', color: '#0d6efd' },
+            { id: '2', title: 'Change Shift', start: '2025-03-10', color: '#198754' },
+            { id: '3', title: 'Leave', start: '2025-03-10', color: '#FF9900' },
+            { id: '4', title: 'Absent', start: '2025-03-10', color: '#dc3545' },
+            { id: '5', title: 'Regular Holiday', start: '2025-03-10', color: '#6c757d' },
+            { id: '6', title: 'Special Holiday', start: '2025-03-10', color: '#9933cc' }
         ],
         dayCellDidMount: function (info) {
             let date = info.date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
 
             // Example: Shade March 10 and March 15
             if (date === '2025-03-09' || date === '2025-03-15') {
-                info.el.style.backgroundColor = '#ffebcc'; // Light Orange Shade
+                // info.el.style.backgroundColor = '#ffebcc'; // Light Orange Shade
                 // info.el.style.backgroundColor = '#3357FF';
             }
         }
