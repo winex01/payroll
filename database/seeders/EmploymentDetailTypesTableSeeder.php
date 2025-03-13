@@ -130,26 +130,26 @@ class EmploymentDetailTypesTableSeeder extends Seeder
             9 => 
             array (
                 'id' => 10,
-                'name' => 'Date Started',
+                'name' => 'Date Hired',
                 'validation' => 'required|date',
                 'parent_id' => NULL,
                 'lft' => 20,
                 'rgt' => 21,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:56:14',
-                'updated_at' => '2025-03-13 09:05:47',
+                'updated_at' => '2025-03-13 09:29:47',
             ),
             10 => 
             array (
                 'id' => 11,
-                'name' => 'Date Hired',
+                'name' => 'Date Started',
                 'validation' => 'required|date',
                 'parent_id' => NULL,
                 'lft' => 22,
                 'rgt' => 23,
                 'depth' => 1,
                 'created_at' => '2024-10-17 19:56:21',
-                'updated_at' => '2024-11-25 18:52:36',
+                'updated_at' => '2025-03-13 09:29:39',
             ),
             11 => 
             array (
