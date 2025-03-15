@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
+use App\Http\Controllers\Admin\FetchRoutes\SetupCalendarCrudFetchRoutes;
 
 /**
  * Class EmployeeCalendarCrudController
@@ -18,6 +19,7 @@ class EmployeeCalendarCrudController extends CrudController
 
     use CoreTraits;
     use FilterOperation;
+    use SetupCalendarCrudFetchRoutes;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.

@@ -50,7 +50,7 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
-        $this->crud->field('employmentDetailType')->size(4);
+        $this->crud->field('employmentDetailType')->attribute('formatted_name')->size(4);
 
         $valueOptions = [];
 
@@ -125,7 +125,10 @@ class EmploymentDetailCrudController extends CrudController
         $this->crud->removeColumns(['employment_detail_type_id']);
 
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')->label('Employment detail type.')->after('employee');
+        $this->crud->column('employmentDetailType')
+            ->label('Employment detail type.')
+            ->attribute('formatted_name')
+            ->after('employee');
 
         $this->crud->modifyColumn('value', [
             'type' => 'closure',
@@ -198,7 +201,10 @@ class EmploymentDetailCrudController extends CrudController
         $this->crud->removeFields(['employee_id', 'employment_detail_type_id']);
 
         $this->crud->field('employee')->makeFirst();
-        $this->crud->field('employmentDetailType')->size(6)->after('employee');
+        $this->crud->field('employmentDetailType')
+            ->attribute('formatted_name')
+            ->size(6)
+            ->after('employee');
         $this->crud->field('value')->type('hidden');
 
         $this->employmentDetailTypes();

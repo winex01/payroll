@@ -459,7 +459,6 @@
 //     calendar.render();
 // });
 
-
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var toggleButtonText = 'Year View'; // Initial button text
@@ -496,14 +495,32 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'toggleView' // Add the toggle button
         },
-        events: [
-            { id: '1', title: 'Employee Shift', start: '2025-03-10', color: '#0d6efd' },
-            { id: '2', title: 'Change Shift', start: '2025-03-10', color: '#198754' },
-            { id: '3', title: 'Leave', start: '2025-03-10', color: '#FF9900' },
-            { id: '4', title: 'Absent', start: '2025-03-10', color: '#dc3545' },
-            { id: '5', title: 'Regular Holiday', start: '2025-03-10', color: '#6c757d' },
-            { id: '6', title: 'Special Holiday', start: '2025-03-10', color: '#9933cc' }
-        ],
+        events: function(fetchInfo, successCallback, failureCallback) {
+            // Fetch events via AJAX
+            @if (request()->employee)
+                $.ajax({
+                    url: "{{ route('employee-calendar.fetchEmployeeShift') }}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        employee : "{{ request()->employee }}"
+                    },
+                    success: function(response) {
+                        // console.log(response);
+                        var events = response.map(event => ({
+                            title: event.title,
+                            start: event.start,
+                            color: event.color,
+                            description: event.description // Append description
+                        }));
+                        successCallback(events);
+                    },
+                    error: function() {
+                        failureCallback();
+                    }
+                });
+            @endif
+        },
         dayCellDidMount: function (info) {
             let date = info.date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
 
