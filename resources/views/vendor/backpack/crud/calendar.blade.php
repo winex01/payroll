@@ -496,6 +496,9 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'toggleView' // Add the toggle button
         },
         events: function(fetchInfo, successCallback, failureCallback) {
+            let dateStart = fetchInfo.start.toISOString().split('T')[0]; // Converts to 'YYYY-MM-DD'
+            let dateEnd = fetchInfo.end.toISOString().split('T')[0];
+
             // Fetch events via AJAX
             @if (request()->employee)
                 $.ajax({
@@ -503,15 +506,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     dataType: 'json',
                     data: {
-                        employee : "{{ request()->employee }}"
+                        employee : "{{ request()->employee }}",
+                        date_start : dateStart,
+                        date_end : dateEnd
                     },
                     success: function(response) {
                         // console.log(response);
                         var events = response.map(event => ({
-                            title: event.title,
-                            start: event.start,
-                            color: event.color,
-                            description: event.description // Append description
+                             title: event.title,
+                             start: event.start,
+                             color: event.color,
+                             description: event.description // Append description
                         }));
                         successCallback(events);
                     },
