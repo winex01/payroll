@@ -55,7 +55,7 @@
         @endif
 
         <div class="card">
-            <div class="row" style="margin-left: 10px;">
+            <div class="row" style="margin-left: 12px;">
                 <ul class="custom-legend mt-2">
                     <li><span class="custom-info"></span> Employee Shift Schedule</li>
                     <li><span class="custom-success"></span> Change Shift Schedule</li>
@@ -65,12 +65,12 @@
                 </ul>
             </div>
 
-            <ul class="mt-2">
+            <ul class="mt-2" style="margin-left: 4px;">
                 {{-- TODO:: --}}
                 <li>Click or drag select date to change shift schedule.</li>
             </ul>
 
-            <div class="row">
+            <div class="row m-1">
                 {!! $calendar->calendar() !!}
             </div>
         </div>
