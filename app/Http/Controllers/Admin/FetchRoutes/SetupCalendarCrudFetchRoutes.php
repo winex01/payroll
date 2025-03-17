@@ -40,13 +40,13 @@ trait SetupCalendarCrudFetchRoutes
             return [];
         }
 
-        $results = [];
 
         $dateStart = Carbon::parse(request('date_start'));
         $dateEnd = Carbon::parse(request('date_end'));
 
         $periods = CarbonPeriod::create($dateStart, $dateEnd);
 
+        $events = [];
         foreach ($periods as $period) {
             $day = strtolower($period->format('l'));
             $date = $period->toDateString();
@@ -59,11 +59,32 @@ trait SetupCalendarCrudFetchRoutes
 
             // Check if the shift exists before accessing its attributes
             if ($empShift && $empShift->{$day}) {
-                $results[] = [
-                    'id' => $date . '-employee-shift',
-                    'title' => '• ' . $empShift->{$day}->name,
+                $shift = $empShift->{$day};
+
+                // emp shift title
+                $events[] = [
+                    'id' => 1,
+                    'title' => '• ' . $shift->name,
                     'start' => $date,
-                    'url' => url(route('shift-schedule.show', $empShift->{$day}->id)),
+                    'url' => url(route('shift-schedule.show', $shift->id)),
+                ];
+
+                // working hours
+                $events[] = [
+                    'id' => 2,
+                    'title' => "1. Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? '#fbf7e3' : 'white'
+                ];
+
+                // Shift policies
+                $events[] = [
+                    'id' => 3,
+                    'title' => "2. Shift Policies:\n" . str_replace('<br>', ",\n", $shift->shift_policies_details),
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? '#fbf7e3' : 'white'
                 ];
             }
         }
@@ -72,6 +93,6 @@ trait SetupCalendarCrudFetchRoutes
         // TODO:: leave
         // TODO:: holiday
         // TODO:: TBD: working history? or DTR? such as absent etc...
-        return response()->json($results);
+        return response()->json($events);
     }
 }

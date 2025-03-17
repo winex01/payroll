@@ -68,7 +68,7 @@ class EmployeeCalendarCrudController extends CrudController
                 'month' => 'Month',
                 'week' => 'Week',
             ],
-            'selectable' => true
+            'selectable' => true,
         ]);
 
         if (request('employee')) {
