@@ -49,48 +49,48 @@ trait SetupCalendarEventsFetchRoutes
         foreach ($periods as $period) {
             $day = strtolower($period->format('l'));
             $date = $period->toDateString();
+            $events = array_merge($events, $this->employeeShiftEvents($date, $day));
 
-            $empShift = EmployeeShiftSchedule::
-                where('employee_id', request('employee'))
-                ->active($date)
-                ->with($day)
-                ->first();
-
-            // Check if the shift exists before accessing its attributes
-            if ($empShift && $empShift->{$day}) {
-                $shift = $empShift->{$day};
-
-                // emp shift title
-                $events[] = [
-                    'title' => '• ' . $shift->name,
-                    'start' => $date,
-                    'url' => url(route('shift-schedule.show', $shift->id)),
-                ];
-
-                // working hours
-                $events[] = [
-                    'title' => "1. Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
-                    'start' => $date,
-                    'textColor' => 'black',
-                    'color' => date('Y-m-d') == $date ? '#fbf7e3' : 'white'
-                ];
-
-                // Shift policies
-                $events[] = [
-                    'title' => "2. Shift Policies:\n" . str_replace('<br>', ",\n", $shift->shift_policies_details),
-                    'start' => $date,
-                    'textColor' => 'black',
-                    'color' => date('Y-m-d') == $date ? '#fbf7e3' : 'white'
-                ];
-            }
+            // TODO:: change shift
+            // TODO:: leave
+            // TODO:: holiday
+            // TODO:: TBD: working history? or DTR? such as absent etc...
         }
 
-        // TODO:: setOptions for max rows for the events
-        // TODO:: change shift
-        // TODO:: leave
-        // TODO:: holiday
-        // TODO:: TBD: working history? or DTR? such as absent etc...
         return response()->json($events);
+    }
+
+    public function employeeShiftEvents($date, $day)
+    {
+        $events = [];
+        $empShift = EmployeeShiftSchedule::
+            where('employee_id', request('employee'))
+            ->active($date)
+            ->with($day)
+            ->first();
+
+        // Check if the shift exists before accessing its attributes
+        if ($empShift && $empShift->{$day}) {
+            $shift = $empShift->{$day};
+
+            // emp shift title
+            $events[] = [
+                'title' => '• ' . $shift->name,
+                'start' => $date,
+                'url' => url(route('shift-schedule.show', $shift->id)),
+                'color' => $this->calendarColor()['employee_shift']
+            ];
+
+            // working hours
+            $events[] = [
+                'title' => "Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
+                'start' => $date,
+                'textColor' => 'black',
+                'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+            ];
+        }
+
+        return $events;
     }
 
     public function setCalendar()
@@ -107,6 +107,7 @@ trait SetupCalendarEventsFetchRoutes
                 'week' => 'Week',
             ],
             'selectable' => true,
+            'eventLimit' => 3, // limit include the #(2) more link
         ]);
 
         if (request('employee')) {

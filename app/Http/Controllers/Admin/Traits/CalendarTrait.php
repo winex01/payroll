@@ -28,4 +28,17 @@ trait CalendarTrait
             'sunday',
         ];
     }
+
+    public function calendarColor()
+    {
+        return [
+            'employee_shift' => '#3a87ad',
+            'change_shift' => '#42ba96',
+            'regular_holiday' => '#9933cc',
+            'special_holiday' => '#f88804',
+            'double_holiday' => '#f3969a',
+            'today' => '#fbf7e3',
+            'white' => 'white',
+        ];
+    }
 }

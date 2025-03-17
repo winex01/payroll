@@ -57,16 +57,15 @@
         <div class="card">
             <div class="row" style="margin-left: 12px;">
                 <ul class="custom-legend mt-2">
-                    <li><span class="custom-info"></span> Employee Shift Schedule</li>
-                    <li><span class="custom-success"></span> Change Shift Schedule</li>
-                    <li><span class="custom-primary"></span> Regular Holiday</li>
-                    <li><span class="custom-warning"></span> Special Holiday</li>
-                    <li><span class="custom-secondary"></span> Double Holiday</li>
+                    <li><span class="custom-employee-shift"></span> Employee Shift Schedule</li>
+                    <li><span class="custom-change-shift"></span> Change Shift Schedule</li>
+                    <li><span class="custom-regular-holiday"></span> Regular Holiday</li>
+                    <li><span class="custom-special-holiday"></span> Special Holiday</li>
+                    <li><span class="custom-double-holiday"></span> Double Holiday</li>
                 </ul>
             </div>
 
             <ul class="mt-2" style="margin-left: 4px;">
-                {{-- TODO:: --}}
                 <li>Click or drag select date to change shift schedule.</li>
             </ul>
 
@@ -118,11 +117,11 @@
     }
 
     /* Colors */
-    .custom-info { background-color: #3a87ad; }
-    .custom-success { background-color: #42ba96; }
-    .custom-primary { background-color: #9933cc; }
-    .custom-warning { background-color: #f88804; }
-    .custom-secondary { background-color: #f3969a; }
+    .custom-employee-shift { background-color: {{ \App\Facades\HelperFacade::calendarColor()['employee_shift'] }}; }
+    .custom-change-shift { background-color: {{ \App\Facades\HelperFacade::calendarColor()['change_shift'] }}; }
+    .custom-regular-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['regular_holiday'] }}; }
+    .custom-special-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['special_holiday'] }}; }
+    .custom-double-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['double_holiday'] }}; }
 </style>
 
   @stack('crud_list_styles')
