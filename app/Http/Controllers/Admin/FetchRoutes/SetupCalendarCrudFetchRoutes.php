@@ -26,14 +26,6 @@ trait SetupCalendarCrudFetchRoutes
         ]);
     }
 
-    // events: [
-    //{ id: '1', title: 'Employee Shift', start: '2025-03-10', color: '#0d6efd' },
-    //{ id: '2', title: 'Change Shift', start: '2025-03-10', color: '#198754' },
-    //{ id: '3', title: 'Leave', start: '2025-03-10', color: '#FF9900' },
-    //{ id: '4', title: 'Absent', start: '2025-03-10', color: '#dc3545' },
-    //{ id: '5', title: 'Regular Holiday', start: '2025-03-10', color: '#6c757d' },
-    //{ id: '6', title: 'Special Holiday', start: '2025-03-10', color: '#9933cc' }
-    // ],
     public function fetchEmployeeShift()
     {
         // NOTE:: this validation is different from the filter but its the validation from the ajax request.
@@ -68,10 +60,10 @@ trait SetupCalendarCrudFetchRoutes
             // Check if the shift exists before accessing its attributes
             if ($empShift && $empShift->{$day}) {
                 $results[] = [
-                    'id' => 1, // Change this to the correct shift ID if needed
-                    'title' => $empShift->{$day}->name, // Access 'name' safely
+                    'id' => $date . '-employee-shift',
+                    'title' => '• ' . $empShift->{$day}->name,
                     'start' => $date,
-                    'color' => '#0d6efd'
+                    'url' => url(route('shift-schedule.show', $empShift->{$day}->id)),
                 ];
             }
         }

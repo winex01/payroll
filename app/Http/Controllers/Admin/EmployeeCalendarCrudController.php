@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use LaravelFullCalendar\Facades\Calendar;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -56,7 +57,54 @@ class EmployeeCalendarCrudController extends CrudController
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
 
+        $calendar = Calendar::setOptions([
+            'header' => [
+                'left' => 'prev,next today',
+                'center' => 'title',
+                'right' => 'month,basicWeek',
+            ],
+            'buttonText' => [
+                'today' => 'Today',
+                'month' => 'Month',
+                'week' => 'Week',
+            ],
+            'selectable' => true
+        ]);
+
+        if (request('employee')) {
+            $calendar->setCallbacks([
+                'events' => "function(start, end, timezone, successCallback, failureCallback) {
+                    let dateStart = start.format('YYYY-MM-DD'); // Using moment.js formatting
+                    let dateEnd = end.format('YYYY-MM-DD');
+
+                    // console.log(dateStart);
+                    // console.log(dateEnd);
+
+                    $.ajax({
+                        url: '" . route('employee-calendar.fetchEmployeeShift') . "',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            employee: '" . request('employee') . "',
+                            date_start: dateStart,
+                            date_end: dateEnd
+                        },
+                        success: function(response) {
+                            successCallback(response);
+                        },
+                        error: function() {
+                            failureCallback();
+                        }
+                    });
+                }"
+            ]);
+        }
+
+        $this->data['calendar'] = $calendar;
+
         // loast custom calendar view instead of default list.blade.php
         return view('crud::calendar', $this->data);
     }
+
+
 }

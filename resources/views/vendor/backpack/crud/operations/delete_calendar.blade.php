@@ -54,27 +54,9 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <div class="card">
-            <div class="row" style="margin-left: 10px;">
-                <ul class="custom-legend mt-2">
-                    <li><span class="custom-info"></span> Employee Shift Schedule</li>
-                    <li><span class="custom-success"></span> Change Shift Schedule</li>
-                    <li><span class="custom-primary"></span> Regular Holiday</li>
-                    <li><span class="custom-warning"></span> Special Holiday</li>
-                    <li><span class="custom-secondary"></span> Double Holiday</li>
-                </ul>
-            </div>
-
-            <ul class="mt-2">
-                {{-- TODO:: --}}
-                <li>Click or drag select date to change shift schedule.</li>
-            </ul>
-
-            <div class="row">
-                {!! $calendar->calendar() !!}
-            </div>
+        <div class="row card">
+            {!! $calendar->calendar() !!}
         </div>
-
 
         @if ( $crud->buttons()->where('stack', 'bottom')->count() )
             <div id="bottom_buttons" class="d-print-none text-sm-left">
@@ -92,39 +74,6 @@
 @section('after_styles')
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   <link href="{{ asset('packages/fullcalendar/3.10.2/fullcalendar.min.css') }}" rel="stylesheet" type="text/css" />
-
-  <style type="text/css">
-    .custom-legend {
-        list-style: none; /* Remove default bullets */
-        display: flex; /* Make list horizontal */
-        flex-wrap: wrap; /* Allow wrapping */
-        gap: 15px; /* Space between items */
-        padding: 0;
-        margin: 0;
-    }
-
-    .custom-legend li {
-        display: flex; /* Align icon & text */
-        align-items: center;
-        gap: 5px; /* Space between box and text */
-        white-space: nowrap; /* Prevents wrapping */
-    }
-
-    .custom-legend span {
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        border: 1px solid #ccc;
-    }
-
-    /* Colors */
-    .custom-info { background-color: #3a87ad; }
-    .custom-success { background-color: #42ba96; }
-    .custom-primary { background-color: #9933cc; }
-    .custom-warning { background-color: #f88804; }
-    .custom-secondary { background-color: #f3969a; }
-</style>
-
   @stack('crud_list_styles')
 @endsection
 

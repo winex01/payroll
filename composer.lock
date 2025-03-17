@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6cabe40cf3254a18081d3c632a4a484",
+    "content-hash": "0fec8af832166d03c3db34118b704f80",
     "packages": [
         {
             "name": "backpack/basset",
@@ -4587,6 +4587,65 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.7"
             },
             "time": "2024-12-10T01:58:33+00:00"
+        },
+        {
+            "name": "qlick/laravel-full-calendar",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/winex01/laravel-full-calendar.git",
+                "reference": "02621eb505b77d9e2400197d007a23b1e18d265a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/winex01/laravel-full-calendar/zipball/02621eb505b77d9e2400197d007a23b1e18d265a",
+                "reference": "02621eb505b77d9e2400197d007a23b1e18d265a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0",
+                "illuminate/support": "^11.0",
+                "php": "^7.1|^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelFullCalendar\\FullCalendarServiceProvider"
+                    ],
+                    "aliases": {
+                        "Calendar": "LaravelFullCalendar\\Facades\\Calendar"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/",
+                    "LaravelFullCalendar\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Qlick by Nermin Elkasovic",
+                    "email": "nermin@qlick.ch",
+                    "homepage": "https://qlick.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel helper for FullCalendar.io. Fork of https://github.com/maddhatter/laravel-fullcalendar",
+            "homepage": "https://github.com/nelkasovic/laravel-full-calendar",
+            "support": {
+                "email": "nermin@qlick.ch",
+                "issues": "https://github.com/nelkasovic/laravel-full-calendar/issues",
+                "wiki": "https://github.com/nelkasovic/laravel-full-calendar/wiki",
+                "source": "https://github.com/nelkasovic/laravel-full-calendar",
+                "docs": "https://github.com/nelkasovic/laravel-full-calendar"
+            },
+            "time": "2025-03-16T13:29:01+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10125,7 +10184,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "qlick/laravel-full-calendar": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
