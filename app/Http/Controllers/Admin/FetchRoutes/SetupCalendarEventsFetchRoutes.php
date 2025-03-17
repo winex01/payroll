@@ -7,8 +7,9 @@ use Illuminate\Support\Carbon;
 use App\Models\EmployeeShiftSchedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use LaravelFullCalendar\Facades\Calendar;
 
-trait SetupCalendarCrudFetchRoutes
+trait SetupCalendarEventsFetchRoutes
 {
     /**
      * Define which routes are needed for this operation.
@@ -19,14 +20,14 @@ trait SetupCalendarCrudFetchRoutes
      */
     protected function setupCalendarCrudFetchRoutes($segment, $routeName, $controller)
     {
-        Route::post($segment . '/fetch-employee-shift', [
-            'as' => $routeName . '.fetchEmployeeShift',
-            'uses' => $controller . '@fetchEmployeeShift',
-            'operation' => 'fetchEmployeeShift',
+        Route::post($segment . '/fetch-calendar-events', [
+            'as' => $routeName . '.fetchCalendarEvents',
+            'uses' => $controller . '@fetchCalendarEvents',
+            'operation' => 'fetchCalendarEvents',
         ]);
     }
 
-    public function fetchEmployeeShift()
+    public function fetchCalendarEvents()
     {
         // NOTE:: this validation is different from the filter but its the validation from the ajax request.
         $validator = Validator::make(request()->all(), [
@@ -40,10 +41,8 @@ trait SetupCalendarCrudFetchRoutes
             return [];
         }
 
-
         $dateStart = Carbon::parse(request('date_start'));
         $dateEnd = Carbon::parse(request('date_end'));
-
         $periods = CarbonPeriod::create($dateStart, $dateEnd);
 
         $events = [];
@@ -63,7 +62,6 @@ trait SetupCalendarCrudFetchRoutes
 
                 // emp shift title
                 $events[] = [
-                    'id' => 1,
                     'title' => '• ' . $shift->name,
                     'start' => $date,
                     'url' => url(route('shift-schedule.show', $shift->id)),
@@ -71,7 +69,6 @@ trait SetupCalendarCrudFetchRoutes
 
                 // working hours
                 $events[] = [
-                    'id' => 2,
                     'title' => "1. Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
                     'start' => $date,
                     'textColor' => 'black',
@@ -80,7 +77,6 @@ trait SetupCalendarCrudFetchRoutes
 
                 // Shift policies
                 $events[] = [
-                    'id' => 3,
                     'title' => "2. Shift Policies:\n" . str_replace('<br>', ",\n", $shift->shift_policies_details),
                     'start' => $date,
                     'textColor' => 'black',
@@ -89,10 +85,59 @@ trait SetupCalendarCrudFetchRoutes
             }
         }
 
+        // TODO:: setOptions for max rows for the events
         // TODO:: change shift
         // TODO:: leave
         // TODO:: holiday
         // TODO:: TBD: working history? or DTR? such as absent etc...
         return response()->json($events);
+    }
+
+    public function setCalendar()
+    {
+        $calendar = Calendar::setOptions([
+            'header' => [
+                'left' => 'prev,next today',
+                'center' => 'title',
+                'right' => 'month,basicWeek',
+            ],
+            'buttonText' => [
+                'today' => 'Today',
+                'month' => 'Month',
+                'week' => 'Week',
+            ],
+            'selectable' => true,
+        ]);
+
+        if (request('employee')) {
+            $calendar->setCallbacks([
+                'events' => "function(start, end, timezone, successCallback, failureCallback) {
+                    let dateStart = start.format('YYYY-MM-DD'); // Using moment.js formatting
+                    let dateEnd = end.format('YYYY-MM-DD');
+
+                    // console.log(dateStart);
+                    // console.log(dateEnd);
+
+                    $.ajax({
+                        url: '" . route('employee-calendar.fetchCalendarEvents') . "',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            employee: '" . request('employee') . "',
+                            date_start: dateStart,
+                            date_end: dateEnd
+                        },
+                        success: function(response) {
+                            successCallback(response);
+                        },
+                        error: function() {
+                            failureCallback();
+                        }
+                    });
+                }"
+            ]);
+        }
+
+        return $calendar;
     }
 }
