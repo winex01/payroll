@@ -107,7 +107,7 @@ trait SetupCalendarEventsFetchRoutes
                 'week' => 'Week',
             ],
             'selectable' => true,
-            'eventLimit' => 3, // limit include the #(2) more link
+            'eventLimit' => 3, // x more link - limit
         ]);
 
         if (request('employee')) {
@@ -115,9 +115,6 @@ trait SetupCalendarEventsFetchRoutes
                 'events' => "function(start, end, timezone, successCallback, failureCallback) {
                     let dateStart = start.format('YYYY-MM-DD'); // Using moment.js formatting
                     let dateEnd = end.format('YYYY-MM-DD');
-
-                    // console.log(dateStart);
-                    // console.log(dateEnd);
 
                     $.ajax({
                         url: '" . route('employee-calendar.fetchCalendarEvents') . "',
