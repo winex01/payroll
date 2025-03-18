@@ -7643,16 +7643,16 @@
         },
         {
             "name": "winex01/backpack-permission-manager",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/winex01/backpack-permission-manager.git",
-                "reference": "3878d5593f75ae7062bf117ef2589f09a1435e40"
+                "reference": "ad2f319dbded37e7027f71912e6090f04c775296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/winex01/backpack-permission-manager/zipball/3878d5593f75ae7062bf117ef2589f09a1435e40",
-                "reference": "3878d5593f75ae7062bf117ef2589f09a1435e40",
+                "url": "https://api.github.com/repos/winex01/backpack-permission-manager/zipball/ad2f319dbded37e7027f71912e6090f04c775296",
+                "reference": "ad2f319dbded37e7027f71912e6090f04c775296",
                 "shasum": ""
             },
             "require": {
@@ -7697,9 +7697,9 @@
             ],
             "support": {
                 "issues": "https://github.com/winex01/backpack-permission-manager/issues",
-                "source": "https://github.com/winex01/backpack-permission-manager/tree/1.2.3"
+                "source": "https://github.com/winex01/backpack-permission-manager/tree/1.2.4"
             },
-            "time": "2024-08-11T14:51:53+00:00"
+            "time": "2025-03-18T09:45:11+00:00"
         }
     ],
     "packages-dev": [
