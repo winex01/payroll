@@ -43,7 +43,7 @@ class ChangeShiftScheduleCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
-        // TODO:: filter date range?? TBD
+        $this->crud->field('date_range')->type('date_range')->size(4);
     }
 
     /**
@@ -54,7 +54,7 @@ class ChangeShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // TODO:: filters
+        // TODO:: filters, here naku!
 
         $this->employeeColumn();
         $this->crud->column('date')->type('date');

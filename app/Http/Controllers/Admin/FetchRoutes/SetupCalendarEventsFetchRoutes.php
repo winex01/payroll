@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\FetchRoutes;
 
+use App\Models\ChangeShiftSchedule;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use App\Models\EmployeeShiftSchedule;
@@ -50,14 +51,66 @@ trait SetupCalendarEventsFetchRoutes
             $day = strtolower($period->format('l'));
             $date = $period->toDateString();
             $events = array_merge($events, $this->employeeShiftEvents($date, $day));
-
             // TODO:: change shift
+            $events = array_merge($events, $this->changeShiftEvents($date));
+
+
             // TODO:: leave
             // TODO:: holiday
             // TODO:: TBD: working history? or DTR? such as absent etc...
         }
 
         return response()->json($events);
+    }
+
+    public function changeShiftEvents($date)
+    {
+        $events = [];
+        $changeShift = ChangeShiftSchedule::
+            where('employee_id', request('employee'))
+            ->whereDate('date', $date)
+            ->first();
+
+        if ($changeShift) {
+            // TODO:: change shift events!!!
+            if ($changeShift->shiftSchedule) {
+                $shift = $changeShift->shiftSchedule;
+
+                // change shift
+                $events[] = [
+                    'title' => ' • ' . $shift->name,
+                    'start' => $date,
+                    'color' => $this->calendarColor()['change_shift'],
+                    'url' => $this->crud->hasAccess('show') ? url(route('shift-schedule.show', $shift->id)) : null,
+                ];
+
+                // change shift working hours
+                $events[] = [
+                    'title' => " Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                ];
+
+            } else {
+                // null
+                $events[] = [
+                    'title' => '  • None',
+                    'start' => $date,
+                    'color' => $this->calendarColor()['change_shift'],
+                ];
+
+                $events[] = [
+                    'title' => " Working Hours:\n\n\n",
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                ];
+            }
+
+        }
+
+        return $events;
     }
 
     public function employeeShiftEvents($date, $day)
@@ -73,7 +126,7 @@ trait SetupCalendarEventsFetchRoutes
         if ($empShift && $empShift->{$day}) {
             $shift = $empShift->{$day};
 
-            // emp shift title
+            // emp shift
             $events[] = [
                 'title' => '• ' . $shift->name,
                 'start' => $date,
@@ -107,7 +160,7 @@ trait SetupCalendarEventsFetchRoutes
                 'week' => 'Week',
             ],
             'selectable' => true,
-            'eventLimit' => 3, // x more link - limit
+            'eventLimit' => true, //3, // x more link - limit
         ]);
 
         if (request('employee')) {
