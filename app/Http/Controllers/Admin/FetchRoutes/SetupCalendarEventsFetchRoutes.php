@@ -51,9 +51,7 @@ trait SetupCalendarEventsFetchRoutes
             $day = strtolower($period->format('l'));
             $date = $period->toDateString();
             $events = array_merge($events, $this->employeeShiftEvents($date, $day));
-            // TODO:: change shift
             $events = array_merge($events, $this->changeShiftEvents($date));
-
 
             // TODO:: leave
             // TODO:: holiday
