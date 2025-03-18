@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Admin\Traits\StrTrait;
 
 class EmploymentDetailType extends Model
 {
     use ModelTraits;
+    use StrTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +59,10 @@ class EmploymentDetailType extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getFormattedNameAttribute()
+    {
+        return $this->strToHumanReadable($this->name);
+    }
 
     /*
     |--------------------------------------------------------------------------

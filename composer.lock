@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6cabe40cf3254a18081d3c632a4a484",
+    "content-hash": "0fec8af832166d03c3db34118b704f80",
     "packages": [
         {
             "name": "backpack/basset",
@@ -4589,6 +4589,65 @@
             "time": "2024-12-10T01:58:33+00:00"
         },
         {
+            "name": "qlick/laravel-full-calendar",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/winex01/laravel-full-calendar.git",
+                "reference": "02621eb505b77d9e2400197d007a23b1e18d265a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/winex01/laravel-full-calendar/zipball/02621eb505b77d9e2400197d007a23b1e18d265a",
+                "reference": "02621eb505b77d9e2400197d007a23b1e18d265a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0",
+                "illuminate/support": "^11.0",
+                "php": "^7.1|^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelFullCalendar\\FullCalendarServiceProvider"
+                    ],
+                    "aliases": {
+                        "Calendar": "LaravelFullCalendar\\Facades\\Calendar"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/",
+                    "LaravelFullCalendar\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Qlick by Nermin Elkasovic",
+                    "email": "nermin@qlick.ch",
+                    "homepage": "https://qlick.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel helper for FullCalendar.io. Fork of https://github.com/maddhatter/laravel-fullcalendar",
+            "homepage": "https://github.com/nelkasovic/laravel-full-calendar",
+            "support": {
+                "email": "nermin@qlick.ch",
+                "issues": "https://github.com/nelkasovic/laravel-full-calendar/issues",
+                "wiki": "https://github.com/nelkasovic/laravel-full-calendar/wiki",
+                "source": "https://github.com/nelkasovic/laravel-full-calendar",
+                "docs": "https://github.com/nelkasovic/laravel-full-calendar"
+            },
+            "time": "2025-03-16T13:29:01+00:00"
+        },
+        {
             "name": "ralouphie/getallheaders",
             "version": "3.0.3",
             "source": {
@@ -7584,16 +7643,16 @@
         },
         {
             "name": "winex01/backpack-permission-manager",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/winex01/backpack-permission-manager.git",
-                "reference": "3878d5593f75ae7062bf117ef2589f09a1435e40"
+                "reference": "ad2f319dbded37e7027f71912e6090f04c775296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/winex01/backpack-permission-manager/zipball/3878d5593f75ae7062bf117ef2589f09a1435e40",
-                "reference": "3878d5593f75ae7062bf117ef2589f09a1435e40",
+                "url": "https://api.github.com/repos/winex01/backpack-permission-manager/zipball/ad2f319dbded37e7027f71912e6090f04c775296",
+                "reference": "ad2f319dbded37e7027f71912e6090f04c775296",
                 "shasum": ""
             },
             "require": {
@@ -7638,9 +7697,9 @@
             ],
             "support": {
                 "issues": "https://github.com/winex01/backpack-permission-manager/issues",
-                "source": "https://github.com/winex01/backpack-permission-manager/tree/1.2.3"
+                "source": "https://github.com/winex01/backpack-permission-manager/tree/1.2.4"
             },
-            "time": "2024-08-11T14:51:53+00:00"
+            "time": "2025-03-18T09:45:11+00:00"
         }
     ],
     "packages-dev": [
@@ -10125,7 +10184,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "qlick/laravel-full-calendar": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -54,26 +54,9 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <div class="card">
-            <div class="row" style="margin-left: 12px;">
-                <ul class="custom-legend mt-2">
-                    <li><span class="custom-employee-shift"></span> Employee Shift Schedule</li>
-                    <li><span class="custom-change-shift"></span> Change Shift Schedule</li>
-                    <li><span class="custom-regular-holiday"></span> Regular Holiday</li>
-                    <li><span class="custom-special-holiday"></span> Special Holiday</li>
-                    <li><span class="custom-double-holiday"></span> Double Holiday</li>
-                </ul>
-            </div>
-
-            <ul class="mt-2" style="margin-left: 4px;">
-                <li>Click or drag select date to change shift schedule.</li>
-            </ul>
-
-            <div class="row m-1">
-                {!! $calendar->calendar() !!}
-            </div>
+        <div class="row card">
+            {!! $calendar->calendar() !!}
         </div>
-
 
         @if ( $crud->buttons()->where('stack', 'bottom')->count() )
             <div id="bottom_buttons" class="d-print-none text-sm-left">
@@ -91,39 +74,6 @@
 @section('after_styles')
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   <link href="{{ asset('packages/fullcalendar/3.10.2/fullcalendar.min.css') }}" rel="stylesheet" type="text/css" />
-
-  <style type="text/css">
-    .custom-legend {
-        list-style: none; /* Remove default bullets */
-        display: flex; /* Make list horizontal */
-        flex-wrap: wrap; /* Allow wrapping */
-        gap: 15px; /* Space between items */
-        padding: 0;
-        margin: 0;
-    }
-
-    .custom-legend li {
-        display: flex; /* Align icon & text */
-        align-items: center;
-        gap: 5px; /* Space between box and text */
-        white-space: nowrap; /* Prevents wrapping */
-    }
-
-    .custom-legend span {
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        border: 1px solid #ccc;
-    }
-
-    /* Colors */
-    .custom-employee-shift { background-color: {{ \App\Facades\HelperFacade::calendarColor()['employee_shift'] }}; }
-    .custom-change-shift { background-color: {{ \App\Facades\HelperFacade::calendarColor()['change_shift'] }}; }
-    .custom-regular-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['regular_holiday'] }}; }
-    .custom-special-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['special_holiday'] }}; }
-    .custom-double-holiday { background-color: {{ \App\Facades\HelperFacade::calendarColor()['double_holiday'] }}; }
-</style>
-
   @stack('crud_list_styles')
 @endsection
 
