@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Admin\Traits\CalendarTrait;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\Admin\Traits\CalendarTrait;
 
 class EmployeeShiftScheduleRequest extends FormRequest
 {
@@ -29,7 +30,16 @@ class EmployeeShiftScheduleRequest extends FormRequest
     {
         $rules = [
             'employee' => 'required|exists:employees,id',
-            'effectivity_date' => 'required|date|after_or_equal:today',
+            'effectivity_date' => [
+                'required',
+                'date',
+                'after_or_equal:today',
+                Rule::unique('employee_shift_schedules', 'effectivity_date')
+                    ->where(function ($query) {
+                        return $query->where('employee_id', $this->employee);
+                    })
+                    ->ignore(request()->id ?? null), // Ignore current record during update
+            ],
         ];
 
         foreach ($this->daysOfWeek() as $day) {

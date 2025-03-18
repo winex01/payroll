@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeShiftScheduleRequest extends FormRequest
@@ -26,7 +27,16 @@ class ChangeShiftScheduleRequest extends FormRequest
     {
         return [
             'employee' => 'required|exists:employees,id',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:today',
+                Rule::unique('change_shift_schedules', 'date')
+                    ->where(function ($query) {
+                        return $query->where('employee_id', $this->employee);
+                    })
+                    ->ignore(request()->id ?? null), // Ignore current record during update
+            ],
             'shiftSchedule' => 'nullable|exists:shift_schedules,id',
         ];
     }
