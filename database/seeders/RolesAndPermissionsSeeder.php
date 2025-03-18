@@ -132,11 +132,10 @@ class RolesAndPermissionsSeeder extends Seeder
         ],
 
         'employee_calendars' => [
-            'employee_calendars_list', // view calendar
-            'employee_calendars_create', // create emp shift sched.
-            'employee_calendars_show', // link to shift schedule preview/show
-            'employee_calendars_update', // change shift sched.
-            'employee_calendars_filters', // employee filter select
+            'employee_calendars_list',
+            'employee_calendars_show',
+            'employee_calendars_filters',
+            'employee_calendars_click_and_select',
         ],
     ];
 

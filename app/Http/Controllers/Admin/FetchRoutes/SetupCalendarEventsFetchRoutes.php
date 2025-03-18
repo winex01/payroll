@@ -77,8 +77,8 @@ trait SetupCalendarEventsFetchRoutes
             $events[] = [
                 'title' => '• ' . $shift->name,
                 'start' => $date,
-                'url' => url(route('shift-schedule.show', $shift->id)),
-                'color' => $this->calendarColor()['employee_shift']
+                'color' => $this->calendarColor()['employee_shift'],
+                'url' => $this->crud->hasAccess('show') ? url(route('shift-schedule.show', $shift->id)) : null,
             ];
 
             // working hours
