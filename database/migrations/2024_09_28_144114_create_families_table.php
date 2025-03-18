@@ -14,8 +14,15 @@ return new class extends Migration {
             $table->id();
 
             // Foreign keys
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->foreignId('family_type_id')->nullable()->constrained('family_types')->onDelete('set null');
+            $table->foreignId('employee_id')
+                ->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreignId('family_type_id')
+                ->nullable()
+                ->constrained('family_types')
+                ->onDelete('set null');
 
             // Family member details
             $table->string('last_name');
