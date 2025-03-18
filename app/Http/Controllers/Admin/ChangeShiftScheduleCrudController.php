@@ -48,8 +48,9 @@ class ChangeShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
-        // TODO:: filters
+        $this->employeeColumn();
+        $this->crud->column('date')->type('date');
+        $this->crud->column('shiftSchedule');
     }
 
     /**
