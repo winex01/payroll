@@ -137,6 +137,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'employee_calendars_filters',
             'employee_calendars_click_and_select',
         ],
+
+        'change_shift_schedules' => [
+            'change_shift_schedules_list',
+            'change_shift_schedules_create',
+            'change_shift_schedules_show',
+            'change_shift_schedules_update',
+            'change_shift_schedules_delete',
+            'change_shift_schedules_revise',
+            'change_shift_schedules_filters',
+        ],
     ];
 
     /**
