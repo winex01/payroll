@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\Admin\Traits\StrTrait;
@@ -32,8 +33,17 @@ class EmploymentDetailRequest extends FormRequest
         $rules = [
             'employee' => 'required|exists:employees,id',
             'employmentDetailType' => 'required|exists:employment_detail_types,id',
-            'effectivity_date' => 'required|date|after_or_equal:today',
-
+            'effectivity_date' => [
+                'required',
+                'date',
+                'after_or_equal:today',
+                Rule::unique('employment_details', 'effectivity_date')
+                    ->where(function ($query) {
+                        return $query->where('employee_id', $this->employee)
+                            ->where('employment_detail_type_id', $this->employmentDetailType);
+                    })
+                    ->ignore(request()->id ?? null),
+            ],
         ];
 
         if (request('employmentDetailType')) {
