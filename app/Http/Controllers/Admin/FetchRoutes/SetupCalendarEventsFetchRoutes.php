@@ -72,7 +72,6 @@ trait SetupCalendarEventsFetchRoutes
             ->first();
 
         if ($changeShift) {
-            // TODO:: change shift events!!!
             if ($changeShift->shiftSchedule) {
                 $shift = $changeShift->shiftSchedule;
 
