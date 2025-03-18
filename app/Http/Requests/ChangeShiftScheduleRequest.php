@@ -25,7 +25,9 @@ class ChangeShiftScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'employee' => 'required|exists:employees,id',
+            'date' => 'required|date|after_or_equal:today',
+            'shiftSchedule' => 'nullable|exists:shift_schedules,id',
         ];
     }
 

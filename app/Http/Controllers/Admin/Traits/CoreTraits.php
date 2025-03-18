@@ -11,6 +11,7 @@ trait CoreTraits
 {
     use ReviseOperation;
     use UserPermissions;
+    use AdditionalPermissions;
     use StrTrait;
     use NumberTrait;
     use TimeFormatTrait;

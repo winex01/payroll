@@ -44,7 +44,7 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setEntityNameStrings('employment detail', 'employment details');
 
         $this->userPermissions();
-        $this->effectivityDatePermissions();
+        $this->datePermissions('effectivity_date');
     }
 
     public function setupFilterOperation()

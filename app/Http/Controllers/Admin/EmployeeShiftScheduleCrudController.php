@@ -36,7 +36,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
         CRUD::setEntityNameStrings('employee shift schedule', 'employee shift schedules');
 
         $this->userPermissions();
-        $this->effectivityDatePermissions();
+        $this->datePermissions('effectivity_date');
     }
 
     public function setupFilterOperation()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use App\Http\Requests\ChangeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -36,8 +37,7 @@ class ChangeShiftScheduleCrudController extends CrudController
         CRUD::setEntityNameStrings('change shift schedule', 'change shift schedules');
 
         $this->userPermissions();
-
-        // TODO:: Date edit permission
+        $this->datePermissions();
     }
 
     /**
@@ -60,7 +60,6 @@ class ChangeShiftScheduleCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        // TODO:: validation
         CRUD::setValidation(ChangeShiftScheduleRequest::class);
         $this->crud->field('employee');
         $this->crud->field('date')->type('date');
@@ -76,5 +75,10 @@ class ChangeShiftScheduleCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
     }
 }

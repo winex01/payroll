@@ -6,22 +6,6 @@ use Illuminate\Support\Carbon;
 
 trait EffectivityDateTrait
 {
-    // NOTE:: dont forget to add active scope in model.
-
-    // CRUD controller access condition
-    public function effectivityDatePermissions()
-    {
-        // Hide or show action buttons
-        // only allow modify if effectivity_date >= today
-        $this->crud->operation(['list', 'update', 'delete', 'show'], function () {
-            $this->crud->setAccessCondition(['update', 'delete'], function ($entry) {
-                $date = Carbon::parse($entry->effectivity_date)->startOfDay(); // Set time to midnight
-                $today = now()->startOfDay(); // Set today’s date to midnight as well
-                return $date >= $today;
-            });
-        });
-    }
-
     // field
     public function effectivityDateFilter()
     {
@@ -38,6 +22,7 @@ trait EffectivityDateTrait
         ]);
     }
 
+    // NOTE:: dont forget to add active scope in model. if you use historyQueriesFilter method/function
     // field submit query
     public function historyQueriesFilter($query)
     {
