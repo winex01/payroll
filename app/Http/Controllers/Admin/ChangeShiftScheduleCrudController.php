@@ -23,7 +23,7 @@ class ChangeShiftScheduleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
-    // use FilterOperation;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -38,6 +38,12 @@ class ChangeShiftScheduleCrudController extends CrudController
 
         $this->userPermissions();
         $this->datePermissions();
+    }
+
+    public function setupFilterOperation()
+    {
+        $this->employeeRelationshipFilter();
+        // TODO:: filter date range?? TBD
     }
 
     /**
