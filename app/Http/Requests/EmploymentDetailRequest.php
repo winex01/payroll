@@ -42,7 +42,7 @@ class EmploymentDetailRequest extends FormRequest
                         return $query->where('employee_id', $this->employee)
                             ->where('employment_detail_type_id', $this->employmentDetailType);
                     })
-                    ->ignore(request()->id ?? null),
+                    ->ignore($this->id ?? null),
             ],
         ];
 

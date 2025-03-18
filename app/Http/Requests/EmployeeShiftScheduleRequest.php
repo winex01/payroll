@@ -38,7 +38,7 @@ class EmployeeShiftScheduleRequest extends FormRequest
                     ->where(function ($query) {
                         return $query->where('employee_id', $this->employee);
                     })
-                    ->ignore(request()->id ?? null), // Ignore current record during update
+                    ->ignore($this->id ?? null), // Ignore current record during update
             ],
         ];
 
