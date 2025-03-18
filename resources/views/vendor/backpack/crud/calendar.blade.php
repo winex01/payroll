@@ -66,7 +66,9 @@
             </div>
 
             <ul class="mt-2" style="margin-left: 4px;">
-                <li>Click or drag select date to change shift schedule.</li>
+                @if ($crud->hasAccess('clickAndSelect'))
+                    <li>Click or drag select date to change shift schedule.</li>
+                @endif
             </ul>
 
             <div class="row m-1">
