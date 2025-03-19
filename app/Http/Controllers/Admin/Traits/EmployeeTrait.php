@@ -78,7 +78,7 @@ trait EmployeeTrait
         $this->crud->field('employee')
             ->type('select_ajax')
             ->size(4)
-            ->data_source(route('employee.fetch'));
+            ->data_source(route('employee.employeeFetch'));
     }
 
     public function employeeQueriesFilter($query)

@@ -6,7 +6,7 @@ use App\Http\Requests\EmployeeRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Http\Controllers\Admin\FetchRoutes\SetupEmployeeFetchRoutes;
+use App\Http\Controllers\Admin\Operations\EmployeeFetchOperation;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
@@ -24,7 +24,7 @@ class EmployeeCrudController extends CrudController
 
     use CoreTraits;
     use FilterOperation;
-    use SetupEmployeeFetchRoutes;
+    use EmployeeFetchOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
