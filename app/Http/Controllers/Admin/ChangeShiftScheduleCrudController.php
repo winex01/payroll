@@ -34,7 +34,7 @@ class ChangeShiftScheduleCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\ChangeShiftSchedule::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/change-shift-schedule');
-        CRUD::setEntityNameStrings('change shift schedule', 'change shift schedules');
+        CRUD::setEntityNameStrings('change shift', 'change shifts');
 
         $this->userPermissions();
         $this->datePermissions();

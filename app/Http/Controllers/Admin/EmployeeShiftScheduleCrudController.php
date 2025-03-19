@@ -33,7 +33,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\EmployeeShiftSchedule::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/employee-shift-schedule');
-        CRUD::setEntityNameStrings('employee shift schedule', 'employee shift schedules');
+        CRUD::setEntityNameStrings('employee shift', 'employee shifts');
 
         $this->userPermissions();
         $this->datePermissions('effectivity_date');

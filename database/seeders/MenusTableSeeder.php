@@ -316,7 +316,7 @@ class MenusTableSeeder extends Seeder
             21 => 
             array (
                 'id' => 23,
-                'label' => 'Employee Shift Schedules',
+                'label' => 'Employee Shifts',
                 'icon' => 'las la-business-time',
                 'url' => 'employee-shift-schedule',
                 'permissions' => '["employee_shift_schedules_list"]',
@@ -325,7 +325,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 18,
                 'depth' => 2,
                 'created_at' => '2025-02-26 12:58:11',
-                'updated_at' => '2025-03-18 19:33:00',
+                'updated_at' => '2025-03-19 08:33:03',
             ),
             22 => 
             array (
@@ -344,7 +344,7 @@ class MenusTableSeeder extends Seeder
             23 => 
             array (
                 'id' => 25,
-                'label' => 'Change Shift Schedules',
+                'label' => 'Change Shifts',
                 'icon' => 'las la-calendar-check',
                 'url' => 'change-shift-schedule',
                 'permissions' => '["change_shift_schedules_list"]',
@@ -353,7 +353,7 @@ class MenusTableSeeder extends Seeder
                 'rgt' => 16,
                 'depth' => 2,
                 'created_at' => '2025-03-18 19:34:28',
-                'updated_at' => '2025-03-18 19:35:01',
+                'updated_at' => '2025-03-19 08:32:55',
             ),
         ));
         

@@ -157,7 +157,7 @@ trait SetupCalendarEventsFetchRoutes
                 'week' => 'Week',
             ],
             'selectable' => true,
-            'eventLimit' => true, //3, // x more link - limit
+            // 'eventLimit' => true, //3, // x more link - limit
         ]);
 
         if (request('employee')) {

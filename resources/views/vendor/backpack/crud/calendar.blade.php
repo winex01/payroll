@@ -57,8 +57,8 @@
         <div class="card">
             <div class="row" style="margin-left: 12px;">
                 <ul class="custom-legend mt-2">
-                    <li><span class="custom-employee-shift"></span> Employee Shift Schedule</li>
-                    <li><span class="custom-change-shift"></span> Change Shift Schedule</li>
+                    <li><span class="custom-employee-shift"></span> Employee Shift</li>
+                    <li><span class="custom-change-shift"></span> Change Shift</li>
                     <li><span class="custom-regular-holiday"></span> Regular Holiday</li>
                     <li><span class="custom-special-holiday"></span> Special Holiday</li>
                     <li><span class="custom-double-holiday"></span> Double Holiday</li>
