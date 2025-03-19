@@ -10,7 +10,6 @@ trait EffectivityDateTrait
     public function effectivityDateFilter()
     {
         $this->crud->field('effectivity_date')
-            ->label('Active')
             ->type('date')
             ->size(4);
     }
