@@ -1,26 +1,32 @@
 <?php
 
-namespace App\Http\Controllers\Admin\FetchRoutes;
+namespace App\Http\Controllers\Admin\Operations;
 
-use App\Models\ChangeShiftSchedule;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
+use App\Models\ChangeShiftSchedule;
 use App\Models\EmployeeShiftSchedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use LaravelFullCalendar\Facades\Calendar;
-
-trait SetupCalendarEventsFetchRoutes
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+trait CalendarListOperation
 {
     /**
      * Define which routes are needed for this operation.
      *
-     * @param string $segment    Name of the current entity (singular). Used as first URL segment.
-     * @param string $routeName  Prefix of the route name.
-     * @param string $controller Name of the current CrudController.
+     * @param  string  $segment  Name of the current entity (singular). Used as first URL segment.
+     * @param  string  $routeName  Prefix of the route name.
+     * @param  string  $controller  Name of the current CrudController.
      */
-    protected function setupCalendarCrudFetchRoutes($segment, $routeName, $controller)
+    protected function setupListRoutes($segment, $routeName, $controller)
     {
+        Route::get($segment . '/', [
+            'as' => $routeName . '.index',
+            'uses' => $controller . '@index',
+            'operation' => 'list',
+        ]);
+
         Route::post($segment . '/fetch-calendar-events', [
             'as' => $routeName . '.fetchCalendarEvents',
             'uses' => $controller . '@fetchCalendarEvents',
@@ -28,8 +34,86 @@ trait SetupCalendarEventsFetchRoutes
         ]);
     }
 
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupListDefaults()
+    {
+        $this->crud->allowAccess('list');
+
+        $this->crud->operation('list', function () {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+    }
+
+    /**
+     * Display all rows in the database for this entity.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function index()
+    {
+        $this->crud->hasAccessOrFail('list');
+
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
+
+        $this->data['calendar'] = $this->setCalendar();
+
+        // loast custom calendar view instead of default list.blade.php
+        return view('crud::calendar', $this->data);
+    }
+
+    public function setCalendar()
+    {
+        $calendar = Calendar::setOptions([
+            'header' => [
+                'left' => 'prev,next today',
+                'center' => 'title',
+                'right' => 'month,basicWeek',
+            ],
+            'buttonText' => [
+                'today' => 'Today',
+                'month' => 'Month',
+                'week' => 'Week',
+            ],
+            'selectable' => true,
+            // 'eventLimit' => true, //3, // x more link - limit
+        ]);
+
+        if (request('employee')) {
+            $calendar->setCallbacks([
+                'events' => "function(start, end, timezone, successCallback, failureCallback) {
+                    let dateStart = start.format('YYYY-MM-DD'); // Using moment.js formatting
+                    let dateEnd = end.format('YYYY-MM-DD');
+
+                    $.ajax({
+                        url: '" . route('employee-calendar.fetchCalendarEvents') . "',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            employee: '" . request('employee') . "',
+                            date_start: dateStart,
+                            date_end: dateEnd
+                        },
+                        success: function(response) {
+                            successCallback(response);
+                        },
+                        error: function() {
+                            failureCallback();
+                        }
+                    });
+                }"
+            ]);
+        }
+
+        return $calendar;
+    }
+
     public function fetchCalendarEvents()
     {
+        $this->crud->hasAccessOrFail('list');
+
         // NOTE:: this validation is different from the filter but its the validation from the ajax request.
         $validator = Validator::make(request()->all(), [
             'employee' => 'nullable|exists:employees,id',
@@ -141,51 +225,5 @@ trait SetupCalendarEventsFetchRoutes
         }
 
         return $events;
-    }
-
-    public function setCalendar()
-    {
-        $calendar = Calendar::setOptions([
-            'header' => [
-                'left' => 'prev,next today',
-                'center' => 'title',
-                'right' => 'month,basicWeek',
-            ],
-            'buttonText' => [
-                'today' => 'Today',
-                'month' => 'Month',
-                'week' => 'Week',
-            ],
-            'selectable' => true,
-            // 'eventLimit' => true, //3, // x more link - limit
-        ]);
-
-        if (request('employee')) {
-            $calendar->setCallbacks([
-                'events' => "function(start, end, timezone, successCallback, failureCallback) {
-                    let dateStart = start.format('YYYY-MM-DD'); // Using moment.js formatting
-                    let dateEnd = end.format('YYYY-MM-DD');
-
-                    $.ajax({
-                        url: '" . route('employee-calendar.fetchCalendarEvents') . "',
-                        method: 'POST',
-                        dataType: 'json',
-                        data: {
-                            employee: '" . request('employee') . "',
-                            date_start: dateStart,
-                            date_end: dateEnd
-                        },
-                        success: function(response) {
-                            successCallback(response);
-                        },
-                        error: function() {
-                            failureCallback();
-                        }
-                    });
-                }"
-            ]);
-        }
-
-        return $calendar;
     }
 }
