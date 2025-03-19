@@ -75,7 +75,7 @@ trait EmployeeTrait
 
     public function employeeRelationshipFilter()
     {
-        $this->crud->field('employee')
+        return $this->crud->field('employee')
             ->type('select_ajax')
             ->size(4)
             ->data_source(route('employee.employeeFetch'));

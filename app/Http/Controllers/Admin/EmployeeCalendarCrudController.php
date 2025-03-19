@@ -35,7 +35,7 @@ class EmployeeCalendarCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter();
+        $this->employeeRelationshipFilter()->size(3);
     }
 
     protected function setupListOperation()
