@@ -45,17 +45,17 @@
         <div class="card">
             <div class="row" style="margin-left: 12px;">
                 <ul class="custom-legend mt-2">
-                    <li><span class="custom-employee-shift"></span> Employee Shift</li>
-                    <li><span class="custom-change-shift"></span> Change Shift</li>
-                    <li><span class="custom-regular-holiday"></span> Regular Holiday</li>
-                    <li><span class="custom-special-holiday"></span> Special Holiday</li>
-                    <li><span class="custom-double-holiday"></span> Double Holiday</li>
+                    <li><span class="custom-employee-shift"></span> {{ __('Employee Shift') }}</li>
+                    <li><span class="custom-change-shift"></span> {{ __('Change Shift') }}</li>
+                    <li><span class="custom-regular-holiday"></span> {{ __(key: 'Regular Holiday') }}</li>
+                    <li><span class="custom-special-holiday"></span> {{ __('Special Holiday') }}</li>
+                    <li><span class="custom-double-holiday"></span> {{ __('Double Holiday') }}</li>
                 </ul>
             </div>
 
             <ul class="mt-2" style="margin-left: 4px;">
                 @if ($crud->hasAccess('clickAndSelect'))
-                    <li>Click or drag select date to change shift schedule.</li>
+                    <li>{{ __('Click or drag select date to change shift schedule.') }}</li>
                 @endif
             </ul>
 
