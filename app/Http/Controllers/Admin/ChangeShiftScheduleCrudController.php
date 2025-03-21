@@ -44,16 +44,7 @@ class ChangeShiftScheduleCrudController extends CrudController
     {
         $this->employeeRelationshipFilter();
         $this->crud->field('date_range')->type('date_range')->size(4);
-
-        $valueOptions = ShiftSchedule::get()->pluck('name', 'id');
-        $valueOptions = $valueOptions->prepend('- (Rest Day)', -1)->toArray();
-
-        $this->crud->field([
-            'name' => 'shift_schedule',
-            'type' => 'select_from_array',
-            'options' => $valueOptions,
-            'allows_null' => true,
-        ])->size(4);
+        $this->crud->field('shiftSchedule')->size(4);
     }
 
     /**
@@ -66,14 +57,8 @@ class ChangeShiftScheduleCrudController extends CrudController
     {
         $this->filterQueries(function ($query) {
             $this->employeeQueriesFilter($query);
-
-            $shiftSchedule = request('shift_schedule');
-            if ($shiftSchedule) {
-                if ($shiftSchedule == -1) {
-                    $query->whereNull('shift_schedule_id');
-                } else {
-                    $query->where('shift_schedule_id', $shiftSchedule);
-                }
+            if (request('shiftSchedule')) {
+                $query->where('shift_schedule_id', request('shiftSchedule'));
             }
 
             // TODO:: date range
