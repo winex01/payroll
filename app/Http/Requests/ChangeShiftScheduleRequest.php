@@ -36,7 +36,7 @@ class ChangeShiftScheduleRequest extends FormRequest
                     })
                     ->ignore($this->id ?? null), // Ignore current record during update
             ],
-            'shiftSchedule' => 'nullable|exists:shift_schedules,id',
+            'shiftSchedule' => 'required|exists:shift_schedules,id',
         ];
 
         // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
@@ -68,7 +68,7 @@ class ChangeShiftScheduleRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'date.unique' => __('app.duplicate_entry'),
         ];
     }
 }

@@ -77,7 +77,7 @@ class EmploymentDetailRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'effectivity_date.unique' => __('app.duplicate_entry'),
         ];
     }
 }
