@@ -19,4 +19,16 @@ trait AdditionalPermissions
             });
         });
     }
+
+    public function ignoreIdPermissions($ids)
+    {
+        $ids = is_array($ids) ? $ids : [$ids]; // Ensure $ids is always an array
+
+        $this->crud->operation(['list', 'update', 'delete', 'show'], function () use ($ids) {
+            $this->crud->setAccessCondition(['update', 'delete'], function ($entry) use ($ids) {
+                return !in_array($entry->id, $ids);
+            });
+        });
+    }
+
 }

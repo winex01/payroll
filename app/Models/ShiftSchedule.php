@@ -62,11 +62,14 @@ class ShiftSchedule extends Model
         }
 
         $value = [];
-        foreach ($this->working_hours as $wk) {
-            if (!empty($wk)) {
-                $start = $this->hourDisplayFormat($wk['start']);
-                $end = $this->hourDisplayFormat($wk['end']);
-                $value[] = $start . ' - ' . $end;
+
+        if ($this->working_hours) {
+            foreach ($this->working_hours as $wk) {
+                if (!empty($wk)) {
+                    $start = $this->hourDisplayFormat($wk['start']);
+                    $end = $this->hourDisplayFormat($wk['end']);
+                    $value[] = $start . ' - ' . $end;
+                }
             }
         }
 

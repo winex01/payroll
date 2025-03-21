@@ -34,6 +34,7 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setEntityNameStrings('shift schedule', 'shift schedules');
 
         $this->userPermissions();
+        $this->ignoreIdPermissions(1); // 1 = Rest day
     }
 
     /**
