@@ -166,12 +166,21 @@ trait CalendarListOperation
                 ];
 
                 // change shift working hours
-                $events[] = [
-                    'title' => " Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
-                    'start' => $date,
-                    'textColor' => 'black',
-                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
-                ];
+                if ($shift->working_hours) {
+                    $events[] = [
+                        'title' => " Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
+                        'start' => $date,
+                        'textColor' => 'black',
+                        'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                    ];
+                } else {
+                    $events[] = [
+                        'title' => " Working Hours:\n\n",
+                        'start' => $date,
+                        'textColor' => 'black',
+                        'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                    ];
+                }
             }
         }
 
@@ -200,12 +209,21 @@ trait CalendarListOperation
             ];
 
             // working hours
-            $events[] = [
-                'title' => "Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
-                'start' => $date,
-                'textColor' => 'black',
-                'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
-            ];
+            if ($shift->working_hours) {
+                $events[] = [
+                    'title' => "Working Hours:\n" . str_replace('<br>', "\n", $shift->working_hours_details),
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                ];
+            } else {
+                $events[] = [
+                    'title' => "Working Hours:\n\n",
+                    'start' => $date,
+                    'textColor' => 'black',
+                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
+                ];
+            }
         }
 
         return $events;
