@@ -39,5 +39,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DaysPerYearsTableSeeder::class);
         $this->call(ShiftSchedulesTableSeeder::class);
         $this->call(EmployeesTableSeeder::class);
+        $this->call(DepartmentsTableSeeder::class);
+        $this->call(PayrollGroupsTableSeeder::class);
+        $this->call(CompaniesTableSeeder::class);
     }
 }

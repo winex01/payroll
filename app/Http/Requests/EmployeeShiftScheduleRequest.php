@@ -33,7 +33,6 @@ class EmployeeShiftScheduleRequest extends FormRequest
             'effectivity_date' => [
                 'required',
                 'date',
-                'after_or_equal:today',
                 Rule::unique('employee_shift_schedules', 'effectivity_date')
                     ->where(function ($query) {
                         return $query->where('employee_id', $this->employee);
@@ -41,6 +40,11 @@ class EmployeeShiftScheduleRequest extends FormRequest
                     ->ignore($this->id ?? null), // Ignore current record during update
             ],
         ];
+
+        // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
+        if (!backpack_user()->can('employee_shift_schedules_backdating')) {
+            $rules['effectivity_date'][] = 'after_or_equal:today';
+        }
 
         foreach ($this->daysOfWeek() as $day) {
             $rules[$day] = 'required|exists:shift_schedules,id';
