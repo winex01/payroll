@@ -13,6 +13,11 @@ trait AdditionalPermissions
         // only allow modify if effectivity_date >= today
         $this->crud->operation(['list', 'update', 'delete', 'show'], function () use ($attribute) {
             $this->crud->setAccessCondition(['update', 'delete'], function ($entry) use ($attribute) {
+                // allow if auth user has table_backdting permission
+                if ($this->crud->hasAccess('backdating')) {
+                    return true;
+                }
+
                 $date = Carbon::parse($entry->{$attribute})->startOfDay(); // Set time to midnight
                 $today = now()->startOfDay(); // Set today’s date to midnight as well
                 return $date >= $today;

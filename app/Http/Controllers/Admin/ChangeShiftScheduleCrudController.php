@@ -61,7 +61,8 @@ class ChangeShiftScheduleCrudController extends CrudController
                 $query->where('shift_schedule_id', request('shiftSchedule'));
             }
 
-            // TODO:: date range
+            // TODO:: date range here NAKU!!!
+            debug(request('date_range'));
         });
 
         $this->employeeColumn();

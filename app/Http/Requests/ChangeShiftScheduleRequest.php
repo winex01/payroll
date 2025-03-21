@@ -25,12 +25,11 @@ class ChangeShiftScheduleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'employee' => 'required|exists:employees,id',
             'date' => [
                 'required',
                 'date',
-                'after_or_equal:today',
                 Rule::unique('change_shift_schedules', 'date')
                     ->where(function ($query) {
                         return $query->where('employee_id', $this->employee);
@@ -39,7 +38,15 @@ class ChangeShiftScheduleRequest extends FormRequest
             ],
             'shiftSchedule' => 'nullable|exists:shift_schedules,id',
         ];
+
+        // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
+        if (!backpack_user()->can('change_shift_schedules_backdating')) {
+            $rules['date'][] = 'after_or_equal:today';
+        }
+
+        return $rules;
     }
+
 
     /**
      * Get the validation attributes that apply to the request.

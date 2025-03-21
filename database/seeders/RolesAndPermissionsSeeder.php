@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -90,9 +91,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'employment_details_show',
             'employment_details_update',
             'employment_details_delete',
-            'employment_details_revise',
-            'employment_details_filters',
             'employment_details_new_hire',
+            'employment_details_filters',
+            'employment_details_revise',
+            'employment_details_backdating',
         ],
 
         'employment_detail_types' => [
@@ -100,8 +102,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'employment_detail_types_create',
             'employment_detail_types_update',
             'employment_detail_types_delete',
-            'employment_detail_types_revise',
             'employment_detail_types_reorder',
+            'employment_detail_types_revise',
         ],
 
         'payroll_groups' => [
@@ -127,8 +129,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'employee_shift_schedules_show',
             'employee_shift_schedules_update',
             'employee_shift_schedules_delete',
-            'employee_shift_schedules_revise',
             'employee_shift_schedules_filters',
+            'employee_shift_schedules_revise',
+            'employee_shift_schedules_backdating',
         ],
 
         'employee_calendars' => [
@@ -136,6 +139,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'employee_calendars_show',
             'employee_calendars_filters',
             'employee_calendars_click_and_select',
+            'employee_calendars_backdating',
         ],
 
         'change_shift_schedules' => [
@@ -144,8 +148,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'change_shift_schedules_show',
             'change_shift_schedules_update',
             'change_shift_schedules_delete',
-            'change_shift_schedules_revise',
             'change_shift_schedules_filters',
+            'change_shift_schedules_revise',
+            'change_shift_schedules_backdating',
         ],
     ];
 
@@ -203,8 +208,12 @@ class RolesAndPermissionsSeeder extends Seeder
                     'guard_name' => $this->guardName,
                 ]);
 
-                // assign role_permission to role
-                $permission->assignRole($role);
+                if (!Str::endsWith($rolePermission, ['_backdating', '_revise'])) {
+                    // assign role_permission to role
+                    $permission->assignRole($role);
+                }
+
+                // $permission->assignRole($role);
             }
         }
 
