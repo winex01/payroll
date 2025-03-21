@@ -43,7 +43,7 @@ class EmployeeShiftScheduleRequest extends FormRequest
         ];
 
         foreach ($this->daysOfWeek() as $day) {
-            $rules[$day] = 'nullable|exists:shift_schedules,id';
+            $rules[$day] = 'required|exists:shift_schedules,id';
         }
 
         return $rules;

@@ -172,23 +172,7 @@ trait CalendarListOperation
                     'textColor' => 'black',
                     'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
                 ];
-
-            } else {
-                // null
-                $events[] = [
-                    'title' => '  • None',
-                    'start' => $date,
-                    'color' => $this->calendarColor()['change_shift'],
-                ];
-
-                $events[] = [
-                    'title' => " Working Hours:\n\n\n",
-                    'start' => $date,
-                    'textColor' => 'black',
-                    'color' => date('Y-m-d') == $date ? $this->calendarColor()['today'] : $this->calendarColor()['white']
-                ];
             }
-
         }
 
         return $events;
