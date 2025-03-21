@@ -53,19 +53,22 @@ class EmploymentDetail extends Model
     */
     public function scopeActive(Builder $query, $date = null): Builder
     {
-        if ($date == null) {
-            $date = now()->toDateString();
+        if ($date === null) {
+            $date = today()->toDateString();
         }
 
-        $query->whereIn('employment_details.id', function ($query) use ($date) {
-            $query->selectRaw('MAX(employment_details.id)') // Get the latest record (MAX(id)) for each combination
-                ->from('employment_details')
-                ->where('effectivity_date', '<=', $date) // Only consider records where effectivity_date <= today
-                ->groupBy('employee_id', 'employment_detail_type_id'); // Group by employee_id and employment_detail_type_id
-        });
-
-        return $query;
+        return $query->whereRaw("
+            employment_details.effectivity_date = (
+                SELECT MAX(ed2.effectivity_date)
+                FROM employment_details ed2
+                WHERE ed2.employee_id = employment_details.employee_id
+                AND ed2.employment_detail_type_id = employment_details.employment_detail_type_id
+                AND ed2.effectivity_date <= ?
+            )
+        ", [$date]);
     }
+
+
 
     /*
     |--------------------------------------------------------------------------
