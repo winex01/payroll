@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
@@ -52,22 +53,18 @@ class EmploymentDetailCrudController extends CrudController
         $this->employeeRelationshipFilter();
         $this->crud->field('employmentDetailType')->attribute('formatted_name')->size(4);
 
-        $valueOptions = [];
+        $valueOptions = [0 => '-'];
+
 
         if (request('employmentDetailType') && request('value')) {
             $type = EmploymentDetailType::find(request('employmentDetailType'));
             if ($type) {
                 $tempModel = $this->strToModelName($type->name);
                 if (class_exists($tempModel)) {
-                    $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
+                    $valueOptions = array_merge($valueOptions, $tempModel::get()->pluck('name', 'id')->toArray());
                 }
             }
         }
-
-        // i added this, to trick the validation from package so it wont fired the invalid bec. it check the value from options in
-        // select from array if not exist then it will return failed validation, so we added it here instead of overriding the
-        // package validation. check blade file if you want to see the selected option event employment-detal.blade.php
-        $valueOptions = array_merge(['0' => '-'], $valueOptions); // append
 
         $this->crud->field([
             'name' => 'value',

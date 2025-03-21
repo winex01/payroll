@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Carbon;
+use App\Models\ShiftSchedule;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use App\Http\Requests\ChangeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -44,6 +44,16 @@ class ChangeShiftScheduleCrudController extends CrudController
     {
         $this->employeeRelationshipFilter();
         $this->crud->field('date_range')->type('date_range')->size(4);
+
+        $valueOptions = ShiftSchedule::get()->pluck('name', 'id');
+        $valueOptions = $valueOptions->prepend('- (Rest Day)', -1)->toArray();
+
+        $this->crud->field([
+            'name' => 'shift_schedule',
+            'type' => 'select_from_array',
+            'options' => $valueOptions,
+            'allows_null' => true,
+        ])->size(4);
     }
 
     /**
@@ -54,11 +64,22 @@ class ChangeShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // TODO:: filters, here naku!
+        $this->filterQueries(function ($query) {
+            $this->employeeQueriesFilter($query);
+
+            $shiftSchedule = request('shift_schedule');
+            if ($shiftSchedule) {
+                if ($shiftSchedule == -1) {
+                    $query->whereNull('shift_schedule_id');
+                } else {
+                    $query->where('shift_schedule_id', $shiftSchedule);
+                }
+            }
+        });
 
         $this->employeeColumn();
         $this->crud->column('date')->type('date');
-        $this->crud->column('shiftSchedule');
+        $this->crud->column('shiftSchedule')->label(__('Shift Schedule'));
     }
 
     /**
