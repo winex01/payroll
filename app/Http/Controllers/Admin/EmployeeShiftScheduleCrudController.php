@@ -37,8 +37,6 @@ class EmployeeShiftScheduleCrudController extends CrudController
 
         $this->userPermissions();
         $this->datePermissions('effectivity_date');
-
-        // TODO:: show only active? as default
     }
 
     public function setupFilterOperation()

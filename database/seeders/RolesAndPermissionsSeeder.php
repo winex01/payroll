@@ -208,7 +208,12 @@ class RolesAndPermissionsSeeder extends Seeder
                     'guard_name' => $this->guardName,
                 ]);
 
-                if (!Str::endsWith($rolePermission, ['_backdating', '_revise'])) {
+                if (
+                    !Str::endsWith($rolePermission, [
+                        '_backdating',
+                        // '_revise'
+                    ])
+                ) {
                     // assign role_permission to role
                     $permission->assignRole($role);
                 }
