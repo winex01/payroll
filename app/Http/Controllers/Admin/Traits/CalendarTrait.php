@@ -16,6 +16,16 @@ trait CalendarTrait
             ->isoFormat(config('backpack.ui.default_date_format'));
     }
 
+    public function dateRange($dateRange, $delimeter = '-')
+    {
+        $dateRange = explode($delimeter, $dateRange);
+
+        return [
+            Carbon::parse($dateRange[0])->toDateString(),
+            Carbon::parse($dateRange[1])->toDateString(),
+        ];
+    }
+
     public function daysOfWeek()
     {
         return [

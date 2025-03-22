@@ -56,12 +56,11 @@ class EmployeeCrudController extends CrudController
     {
         $this->filterQueries(function ($query) {
             $gender = request('gender');
-            $civilStatus = request('civilStatus');
-
             if ($gender) {
                 $query->where('gender_id', $gender);
             }
 
+            $civilStatus = request('civilStatus');
             if ($civilStatus) {
                 $query->where('civil_status_id', $civilStatus);
             }

@@ -57,12 +57,16 @@ class ChangeShiftScheduleCrudController extends CrudController
     {
         $this->filterQueries(function ($query) {
             $this->employeeQueriesFilter($query);
-            if (request('shiftSchedule')) {
-                $query->where('shift_schedule_id', request('shiftSchedule'));
+
+            $dateRange = request('date_range');
+            if ($dateRange) {
+                $query->whereBetween('date', $this->dateRange($dateRange));
             }
 
-            // TODO:: date range here NAKU!!! NEXT!!
-            debug(request('date_range'));
+            $shiftSchedule = request('shiftSchedule');
+            if ($shiftSchedule) {
+                $query->where('shift_schedule_id', $shiftSchedule);
+            }
         });
 
         $this->employeeColumn();
