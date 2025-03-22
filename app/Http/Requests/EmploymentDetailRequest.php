@@ -36,7 +36,6 @@ class EmploymentDetailRequest extends FormRequest
             'effectivity_date' => [
                 'required',
                 'date',
-                'after_or_equal:today',
                 Rule::unique('employment_details', 'effectivity_date')
                     ->where(function ($query) {
                         return $query->where('employee_id', $this->employee)
@@ -45,6 +44,11 @@ class EmploymentDetailRequest extends FormRequest
                     ->ignore($this->id ?? null),
             ],
         ];
+
+        // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
+        if (!backpack_user()->can('employment_details_backdating')) {
+            $rules['effectivity_date'][] = 'after_or_equal:today';
+        }
 
         if (request('employmentDetailType')) {
             $type = EmploymentDetailType::findOrFail(request('employmentDetailType'));
