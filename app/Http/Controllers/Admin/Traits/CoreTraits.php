@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Traits;
 
 use Backpack\ReviseOperation\ReviseOperation;
-use App\Http\Requests\Traits\ValidateUniqueTrait;
 use App\Http\Controllers\Admin\Traits\TimeFormatTrait;
 use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
@@ -17,8 +16,9 @@ trait CoreTraits
     use TimeFormatTrait;
     use WidgetTrait;
     use EmployeeTrait;
-    use ValidateUniqueTrait;
+    use ValidationTrait;
     use BadgeTrait;
     use CalendarTrait;
     use EffectivityDateTrait;
+    use FieldTrait;
 }
