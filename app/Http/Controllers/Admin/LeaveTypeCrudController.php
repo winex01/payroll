@@ -55,9 +55,9 @@ class LeaveTypeCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        // TODO:: validation
         CRUD::setValidation(LeaveTypeRequest::class);
         CRUD::setFromDb();
+        $this->booleanField('with_pay');
     }
 
     /**
