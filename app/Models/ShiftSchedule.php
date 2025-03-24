@@ -37,6 +37,14 @@ class ShiftSchedule extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function isRestDay()
+    {
+        if ($this->id == 1) {
+            return true;
+        }
+
+        return false;
+    }
 
     /*
     |--------------------------------------------------------------------------
