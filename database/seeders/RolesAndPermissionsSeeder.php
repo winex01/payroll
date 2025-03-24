@@ -152,6 +152,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'change_shift_schedules_revise',
             'change_shift_schedules_backdating',
         ],
+
+        'leave_types' => [
+            'leave_types_list',
+            'leave_types_create',
+            'leave_types_show',
+            'leave_types_update',
+            'leave_types_delete',
+            'leave_types_revise',
+        ],
     ];
 
     /**
