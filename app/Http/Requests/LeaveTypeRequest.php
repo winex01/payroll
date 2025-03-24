@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\Admin\Traits\ValidationTrait;
 
 class LeaveTypeRequest extends FormRequest
 {
+    use ValidationTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,9 +27,13 @@ class LeaveTypeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 'name' => 'required|min:5|max:255'
-        ];
+        $rules = $this->validateUnique('name', table: 'leave_types');
+
+        $rules = array_merge($rules, [
+            'with_pay' => 'required|boolean',
+        ]);
+
+        return $rules;
     }
 
     /**

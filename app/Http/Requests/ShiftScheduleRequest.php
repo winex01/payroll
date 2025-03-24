@@ -31,7 +31,7 @@ class ShiftScheduleRequest extends FormRequest
         $openTime = $this->input('open_time');
 
         $rules = array_merge($rules, [
-            'open_time' => 'boolean',
+            'open_time' => 'required|boolean',
             'early_login_overtime' => 'boolean',
             'after_shift_overtime' => 'boolean',
             'night_differential' => 'boolean',
@@ -46,8 +46,6 @@ class ShiftScheduleRequest extends FormRequest
             'working_hours.*.start' => $openTime ? 'nullable|date_format:H:i' : 'required|date_format:H:i',
             'working_hours.*.end' => $openTime ? 'nullable|date_format:H:i' : 'required|date_format:H:i',
         ]);
-
-        // dd(request()->all());
 
         return $rules;
     }
