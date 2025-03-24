@@ -159,6 +159,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'leave_types_show',
             'leave_types_update',
             'leave_types_delete',
+            'leave_types_filters',
             'leave_types_revise',
         ],
     ];
