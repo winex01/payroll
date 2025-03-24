@@ -42,5 +42,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentsTableSeeder::class);
         $this->call(PayrollGroupsTableSeeder::class);
         $this->call(CompaniesTableSeeder::class);
+        $this->call(LeaveTypesTableSeeder::class);
     }
 }

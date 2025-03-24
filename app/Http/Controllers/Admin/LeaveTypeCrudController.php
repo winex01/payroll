@@ -70,4 +70,9 @@ class LeaveTypeCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function setupShowOperation()
+    {
+        $this->setupListOperation();
+    }
 }
