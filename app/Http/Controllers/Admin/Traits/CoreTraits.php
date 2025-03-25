@@ -21,4 +21,5 @@ trait CoreTraits
     use CalendarTrait;
     use EffectivityDateTrait;
     use FieldTrait;
+    use FilterTrait;
 }

@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Admin\Traits;
 
 trait FieldTrait
 {
-    public function booleanField($name, $options = [], $default = 0)
+    public function booleanField($name, $options = [])
     {
         if (!$options) {
             $options = [
-                0 => 'No',
-                1 => 'Yes'
+                false => 'No',
+                true => 'Yes'
             ];
         }
 
-        $this->crud->field([
+        return $this->crud->field([
             'name' => $name,
+            // in filterOperation: chain method and use ->type('select_from_array') so you can select 3 state: 1. null/- 2. False, 3 True
             'type' => 'radio',
-            'default' => $default,
             'options' => $options,
-        ]);
+        ])->size(2);
     }
 }

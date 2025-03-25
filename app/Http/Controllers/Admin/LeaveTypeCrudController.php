@@ -6,6 +6,7 @@ use App\Http\Requests\LeaveTypeRequest;
 use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
  * Class LeaveTypeCrudController
@@ -21,6 +22,7 @@ class LeaveTypeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTraits;
+    use FilterOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -36,6 +38,11 @@ class LeaveTypeCrudController extends CrudController
         $this->userPermissions();
     }
 
+    public function setupFilterOperation()
+    {
+        $this->booleanField('with_pay')->type('select_from_array');
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -44,7 +51,11 @@ class LeaveTypeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb();
+        $this->filterQueries(function ($query) {
+            $this->booleanQueriesFilter($query, 'with_pay');
+        });
+
+        CRUD::setFromDb(false, true);
     }
 
     /**
