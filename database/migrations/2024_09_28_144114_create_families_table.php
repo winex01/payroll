@@ -19,9 +19,9 @@ return new class extends Migration {
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreignId('family_type_id')
+            $table->foreignId('relationship_id')
                 ->nullable()
-                ->constrained('family_types')
+                ->constrained('relationships')
                 ->onDelete('set null');
 
             // Family member details

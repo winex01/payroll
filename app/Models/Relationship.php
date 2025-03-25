@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 
-class FamilyType extends Model
+class Relationship extends Model
 {
     use ModelTraits;
 
@@ -15,7 +15,7 @@ class FamilyType extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'family_types';
+    protected $table = 'relationships';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

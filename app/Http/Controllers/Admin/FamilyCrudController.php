@@ -41,7 +41,7 @@ class FamilyCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeRelationshipFilter();
-        $this->crud->field('familyType');
+        $this->crud->field('relationship');
     }
 
     /**
@@ -55,30 +55,16 @@ class FamilyCrudController extends CrudController
         $this->filterQueries(function ($query) {
             $this->employeeQueriesFilter($query);
 
-            $familyType = request('familyType');
-            if ($familyType) {
-                $query->where('family_type_id', $familyType);
+            $relation = request('relationship');
+            if ($relation) {
+                $query->where('relationship_id', $relation);
             }
         });
 
         CRUD::setFromDb(false, true);
-        $this->input('column');
+        $this->crud->removeColumns($this->removeItems());
         $this->employeeColumn();
-
-        $this->crud->modifyColumn('familyType', [
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', '%' . $searchTerm . '%');
-                });
-            },
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) {
-                return $query
-                    ->leftJoin('family_types', 'family_types.id', '=', 'families.family_type_id')
-                    ->orderBy('family_types.name', $columnDirection)
-                    ->select('families.*');
-            },
-        ]);
+        $this->crud->column('relationship')->after('employee');
     }
 
     /**
@@ -91,7 +77,9 @@ class FamilyCrudController extends CrudController
     {
         CRUD::setValidation(FamilyRequest::class);
         CRUD::setFromDb();
-        $this->input('field');
+        $this->crud->removeFields($this->removeItems());
+        $this->crud->field('employee')->makeFirst();
+        $this->crud->field('relationship')->after('employee');
     }
 
     /**
@@ -110,18 +98,11 @@ class FamilyCrudController extends CrudController
         $this->setupListOperation();
     }
 
-    public function input($input = 'field')
+    public function removeItems()
     {
-    $input = ucfirst($input);
-
-        $this->crud->{'remove' . $input . 's'}([
+        return [
             'employee_id',
-            'family_type_id',
-        ]);
-
-        $this->crud->{$input}('employee')->before('last_name');
-        $name = 'familyType';
-        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->after('employee');
+            'relationship_id',
+        ];
     }
-
 }

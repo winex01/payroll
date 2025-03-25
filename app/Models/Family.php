@@ -41,9 +41,9 @@ class Family extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    public function familyType()
+    public function relationship()
     {
-        return $this->belongsTo(FamilyType::class);
+        return $this->belongsTo(Relationship::class);
     }
 
     /*

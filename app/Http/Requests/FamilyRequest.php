@@ -26,7 +26,7 @@ class FamilyRequest extends FormRequest
     {
         return [
             'employee' => 'required|exists:employees,id',
-            'familyType' => 'required|exists:family_types,id',
+            'relationship' => 'required|exists:relationships,id',
             'last_name' => 'required|string|min:2|max:255',
             'first_name' => 'required|string|min:2|max:255',
             'middle_name' => 'nullable|string|min:2|max:255',
