@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\Traits\EmployeeNotSoftDeletedScopeTrait;
+use App\Models\Scopes\EmployeeNotSoftDeletedScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy([EmployeeNotSoftDeletedScope::class])]
 class EmploymentDetail extends Model
 {
     use ModelTraits;
-    use EmployeeNotSoftDeletedScopeTrait;
 
     /*
     |--------------------------------------------------------------------------

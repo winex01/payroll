@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy([EmployeeNotSoftDeletedScope::class])]
 class Relation extends Model
 {
     use ModelTraits;
