@@ -10,10 +10,8 @@ trait CoreTraits
     use FieldTrait;
     use FilterTrait;
     use HelperTrait;
-    use EmployeeTrait;
     use UserPermissions;
     use ReviseOperation;
     use ValidationTrait;
-    use EffectivityDateTrait;
-    use AdditionalPermissions;
+    use Permissions;
 }

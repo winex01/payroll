@@ -2,8 +2,13 @@
 
 namespace App\Traits;
 
-trait EmployeeTrait
+trait ColumnTrait
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Employee
+    |--------------------------------------------------------------------------
+    */
     public function employeePhoto($fieldOrColumn = 'column', $relationship = true)
     {
         $this->crud->{$fieldOrColumn}([
@@ -71,21 +76,5 @@ trait EmployeeTrait
                     ->select($currentTable . '.*');
             },
         ]);
-    }
-
-    public function employeeRelationshipFilter()
-    {
-        return $this->crud->field('employee')
-            ->type('select_ajax')
-            ->size(4)
-            ->data_source(route('employee.employeeFetch'));
-    }
-
-    public function employeeQueriesFilter($query)
-    {
-        $employee = request('employee');
-        if ($employee) {
-            $query->where('employee_id', $employee);
-        }
     }
 }
