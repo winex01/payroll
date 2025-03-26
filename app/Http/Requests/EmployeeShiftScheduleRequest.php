@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HelperTrait;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Admin\Traits\CalendarTrait;
 
 class EmployeeShiftScheduleRequest extends FormRequest
 {
-    use CalendarTrait;
+    use HelperTrait;
 
     /**
      * Determine if the user is authorized to make this request.

@@ -2,15 +2,15 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HelperTrait;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Models\EmploymentDetailType;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Admin\Traits\StrTrait;
 
 class EmploymentDetailRequest extends FormRequest
 {
-    use StrTrait;
+    use HelperTrait;
 
     /**
      * Determine if the user is authorized to make this request.

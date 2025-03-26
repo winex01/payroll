@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HelperTrait;
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
 
 class ShiftSchedule extends Model
