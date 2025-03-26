@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Traits;
-
-use Illuminate\Support\Carbon;
+namespace App\Traits;
 
 trait EffectivityDateTrait
 {

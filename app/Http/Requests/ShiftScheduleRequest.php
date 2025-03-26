@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Admin\Traits\ValidationTrait;
 
 class ShiftScheduleRequest extends FormRequest
 {

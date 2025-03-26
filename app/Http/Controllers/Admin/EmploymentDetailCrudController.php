@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Traits\CoreTraits;
 use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Models\EmploymentDetail;
 use Illuminate\Support\Facades\App;
 use App\Models\EmploymentDetailType;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\EmploymentDetailRequest;
-use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;

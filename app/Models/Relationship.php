@@ -42,9 +42,9 @@ class Relationship extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function families()
+    public function relations()
     {
-        return $this->hasMany(Family::class);
+        return $this->hasMany(Relation::class);
     }
 
     /*

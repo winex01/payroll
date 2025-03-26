@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Traits;
+namespace App\Traits;
 
 trait FieldTrait
 {

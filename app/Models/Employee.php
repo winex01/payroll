@@ -70,14 +70,14 @@ class Employee extends Model
         return $this->hasMany(EmployeeShiftSchedule::class);
     }
 
-    public function families()
-    {
-        return $this->hasMany(Family::class);
-    }
-
     public function gender()
     {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function relations()
+    {
+        return $this->hasMany(Relation::class);
     }
 
     /*

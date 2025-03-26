@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Family extends Model
+class Relation extends Model
 {
     use ModelTraits;
-    // use EmployeeNotSoftDeletedScopeTrait; // TODO:: transfer if possible in Relation.php model
 
     /*
     |--------------------------------------------------------------------------
@@ -16,7 +16,7 @@ class Family extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'families';
+    protected $table = 'relations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -34,11 +34,20 @@ class Family extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function relations()
+    public function relationable(): MorphTo
     {
-        return $this->morphMany(Relation::class, 'relationable');
+        return $this->morphTo();
     }
 
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function relationship()
+    {
+        return $this->belongsTo(Relationship::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

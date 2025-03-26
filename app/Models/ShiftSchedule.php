@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HelperTrait;
 use App\Models\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\Admin\Traits\StrTrait;
-use App\Http\Controllers\Admin\Traits\BadgeTrait;
-use App\Http\Controllers\Admin\Traits\TimeFormatTrait;
 
 class ShiftSchedule extends Model
 {
     use ModelTraits;
-    use TimeFormatTrait;
-    use BadgeTrait;
-    use StrTrait;
+    use HelperTrait;
 
     /*
     |--------------------------------------------------------------------------
