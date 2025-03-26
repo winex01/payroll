@@ -40,8 +40,8 @@ class FamilyCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        // $this->employeeRelationshipFilter();
-        // $this->crud->field('relationship');
+        $this->employeeRelationshipFilter('relation.employee');
+        $this->crud->field('relation.relationship')->label(__('Relationship'));
     }
 
     /**
@@ -53,15 +53,12 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
-            // $this->employeeQueriesFilter($query);
-
-            // $relation = request('relationship');
-            // if ($relation) {
-            //     $query->where('relationship_id', $relation);
-            // }
+            $this->employeeQueriesFilter($query, 'relation.employee');
+            // TODO:: relationship field filter
         });
 
         $this->morphColumn('relation');
+        // TODO:: fix: add link in employee column
     }
 
     /**

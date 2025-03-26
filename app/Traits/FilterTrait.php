@@ -60,19 +60,32 @@ trait FilterTrait
     | Employee Filter
     |--------------------------------------------------------------------------
     */
-    public function employeeRelationshipFilter()
+    public function employeeRelationshipFilter($name = null)
     {
-        return $this->crud->field('employee')
+        return $this->crud->field($name ?? 'employee')
             ->type('select_ajax')
+            ->label(__('Employee'))
             ->size(4)
             ->data_source(route('employee.employeeFetch'));
     }
 
-    public function employeeQueriesFilter($query)
+    public function employeeQueriesFilter($query, $name = null)
     {
-        $employee = request('employee');
-        if ($employee) {
-            $query->where('employee_id', $employee);
+        if ($name != null && str_contains($name, '.')) {
+            // relationship.employee
+            $employee = request($name);
+            $nameParts = explode('.', $name);
+            if ($employee) {
+                $query->whereHas($nameParts[0], function ($q) use ($name) {
+                    $q->where('employee_id', request($name));
+                });
+            }
+        } else {
+            // employee
+            $employee = request('employee');
+            if ($employee) {
+                $query->where('employee_id', $employee);
+            }
         }
     }
 }
