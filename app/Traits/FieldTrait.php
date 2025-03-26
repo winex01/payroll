@@ -2,10 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Str;
-use App\Facades\HelperFacade;
-use Illuminate\Support\Facades\Schema;
-
 trait FieldTrait
 {
     public function booleanField($name, $options = [])
@@ -19,10 +15,25 @@ trait FieldTrait
 
         return $this->crud->field([
             'name' => $name,
-            // in filterOperation: chain method and use ->type('select_from_array') so you can select 3 state: 1. null/- 2. False, 3 True
             'type' => 'radio',
             'options' => $options,
-        ])->size(2);
+        ]);
+    }
+
+    public function imageField($name)
+    {
+        return $this->crud->field([
+            'name' => $name,
+            'type' => 'upload',
+            'height' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'width' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'withFiles' => [
+                'disk' => 'public',
+                'path' => $name,
+            ],
+            'orderable' => false,
+        ])->makeFirst();
+
     }
 
     public function morphField($relationship, $table = null)

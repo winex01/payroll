@@ -4,6 +4,22 @@ namespace App\Traits;
 
 trait FilterTrait
 {
+    public function booleanFilter($name, $options = [])
+    {
+        if (!$options) {
+            $options = [
+                false => 'No',
+                true => 'Yes'
+            ];
+        }
+
+        return $this->crud->field([
+            'name' => $name,
+            'type' => 'select_from_array',
+            'options' => $options,
+        ])->size(2);
+    }
+
     public function booleanQueriesFilter($query, $name)
     {
         $request = request($name);
@@ -60,7 +76,6 @@ trait FilterTrait
     | Employee Filter
     |--------------------------------------------------------------------------
     */
-    // TODO:: change parameters and use morphTo or relationship instead of name
     public function employeeFilter($name = 'employee')
     {
         return $this->crud->field($name)

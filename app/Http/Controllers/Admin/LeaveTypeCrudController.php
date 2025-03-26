@@ -40,7 +40,7 @@ class LeaveTypeCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->booleanField('with_pay')->type('select_from_array');
+        $this->booleanFilter('with_pay');
     }
 
     /**

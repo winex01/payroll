@@ -68,7 +68,7 @@ class EmployeeCrudController extends CrudController
 
         CRUD::setFromDb(false, true);
         $this->crud->removeColumn('photo');
-        $this->employeePhoto('column', false);
+        $this->imageColumn('photo');
     }
 
     /**
@@ -84,7 +84,7 @@ class EmployeeCrudController extends CrudController
 
         CRUD::setValidation(EmployeeRequest::class);
 
-        $this->employeePhoto('field', false);
+        $this->imageField('photo');
         $this->crud->field('employee_no');
         $this->crud->field('last_name');
         $this->crud->field('first_name');

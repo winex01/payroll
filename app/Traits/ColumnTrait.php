@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\Schema;
 
 trait ColumnTrait
 {
+    public function imageColumn($name)
+    {
+        $this->crud->removeColumn($name);
+        return $this->crud->column([
+            'name' => $name,
+            'type' => 'image',
+            'height' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'width' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
+            'withFiles' => [
+                'disk' => 'public',
+                'path' => null,
+            ],
+            'orderable' => false,
+        ])->makeFirst();
+    }
+
     public function morphColumn($relationship, $table = null)
     {
         $this->morphType($relationship, $table, 'column');
@@ -18,25 +34,6 @@ trait ColumnTrait
     | Employee
     |--------------------------------------------------------------------------
     */
-    // TODO:: refactor
-    public function employeePhoto($fieldOrColumn = 'column', $relationship = true)
-    {
-        return $this->crud->{$fieldOrColumn}([
-            'name' => ($relationship) ? 'employee.photo' : 'photo',
-            'label' => 'Photo',
-            'type' => ($fieldOrColumn == 'field') ? 'upload' : 'image',
-            'height' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
-            'width' => ($this->crud->getOperation() == 'show') ? '100px' : '25px',
-            'withFiles' => [
-                'disk' => 'public',
-                // we use ternary below, bec. backpack will cause warning if path is not null if its a column.
-                'path' => ($fieldOrColumn == 'column') ? null : 'photos',
-            ],
-            'orderable' => false,
-        ])->makeFirst();
-
-    }
-
     public function employeeColumn($column = 'employee', $label = 'employee')
     {
         $this->crud->removeColumn([
