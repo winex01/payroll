@@ -12,27 +12,6 @@ return new class extends Migration {
     {
         Schema::create('families', function (Blueprint $table) {
             $table->id();
-
-            // TODO:: delete this!
-            // $table->foreignId('employee_id')
-            //     ->constrained()
-            //     ->onDelete('cascade')
-            //     ->onUpdate('cascade');
-
-            // $table->foreignId('relationship_id')
-            //     ->nullable()
-            //     ->constrained('relationships')
-            //     ->onDelete('set null');
-
-            // // Family member details
-            // $table->string('last_name');
-            // $table->string('first_name');
-            // $table->string('middle_name');
-            // $table->date('birth_date')->nullable();
-            // $table->string('occupation')->nullable();
-            // $table->string('contact_no')->nullable();
-            // $table->string('address')->nullable();
-
             $table->timestamps();
         });
     }

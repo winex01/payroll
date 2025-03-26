@@ -16,7 +16,6 @@ return new class extends Migration {
             // Polymorphic relation
             $table->morphs('relationable'); // Creates `relationable_id` and `relationable_type`
 
-            // Employee association
             $table->foreignId('employee_id')
                 ->constrained()
                 ->cascadeOnDelete()
