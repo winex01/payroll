@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 #[ScopedBy([EmployeeNotSoftDeletedScope::class])]
 class ChangeShiftSchedule extends Model
 {
-    use ModelTraits;
+    use ModelTrait;
 
     /*
     |--------------------------------------------------------------------------

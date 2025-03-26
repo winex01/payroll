@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Carbon;
 
-trait Permissions
+trait PermissionTrait
 {
     // CRUD controller access condition
     public function datePermissions($attribute = 'date')

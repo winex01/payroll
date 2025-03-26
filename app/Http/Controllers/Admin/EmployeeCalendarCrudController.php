@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Traits\CoreTraits;
+use App\Traits\CoreTrait;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -16,7 +16,7 @@ class EmployeeCalendarCrudController extends CrudController
 {
     use \App\Http\Controllers\Admin\Operations\CalendarListOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
 
     /**

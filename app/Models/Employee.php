@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use ModelTraits;
+    use ModelTrait;
     use SoftDeletes;
 
     /*

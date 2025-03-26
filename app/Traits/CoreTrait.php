@@ -10,8 +10,9 @@ trait CoreTraits
     use FieldTrait;
     use FilterTrait;
     use HelperTrait;
+    use ColumnTrait;
+    use PermissionTrait;
     use UserPermissions;
     use ReviseOperation;
     use ValidationTrait;
-    use Permissions;
 }

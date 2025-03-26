@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Traits\CoreTraits;
+use App\Traits\CoreTrait;
 use Illuminate\Support\Str;
 use App\Models\EmploymentDetail;
 use Illuminate\Support\Facades\App;
@@ -28,7 +28,7 @@ class EmploymentDetailCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \App\Http\Controllers\Admin\Operations\NewHireOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
 
     /**
