@@ -67,8 +67,11 @@ class EmployeeCrudController extends CrudController
         });
 
         CRUD::setFromDb(false, true);
-        $this->crud->removeColumn('photo');
         $this->imageColumn('photo');
+        $this->crud->column('gender')->after('middle_name');
+        $this->crud->column('civilStatus')->after('birth_place')
+            ->label(__('Civil status'));
+        $this->crud->removeColumns(['gender_id', 'civil_status_id']);
     }
 
     /**
@@ -94,8 +97,8 @@ class EmployeeCrudController extends CrudController
         $this->crud->field('gender')->tab($tab);
         $this->crud->field('birth_date')->tab($tab);
         $this->crud->field('birth_place')->tab($tab);
-        $name = 'civilStatus';
-        $this->crud->field($name)->label($this->strToHumanReadable($name))->tab($tab);
+        $this->crud->field('civilStatus')->tab($tab)
+            ->label(__('Civil status'));
         $this->crud->field('date_of_marriage')->tab($tab);
 
         $this->crud->field('mobile_no')->tab($tab);
@@ -132,7 +135,6 @@ class EmployeeCrudController extends CrudController
 
     public function setupShowOperation()
     {
-        $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
     }
 }
