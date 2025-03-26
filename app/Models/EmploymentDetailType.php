@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HelperTrait;
 use App\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\Admin\Traits\StrTrait;
 
 class EmploymentDetailType extends Model
 {
     use ModelTraits;
-    use StrTrait;
+    use HelperTrait;
 
     /*
     |--------------------------------------------------------------------------

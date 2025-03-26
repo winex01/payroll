@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTraits;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
+use App\Traits\EmployeeNotSoftDeletedScopeTrait;
 
 class ChangeShiftSchedule extends Model
 {

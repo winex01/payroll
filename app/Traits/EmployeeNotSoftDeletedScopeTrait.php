@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Scopes\Traits;
+namespace App\Traits;
 
 use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 
