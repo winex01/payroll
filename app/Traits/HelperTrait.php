@@ -8,43 +8,11 @@ use Backpack\CRUD\app\Library\Widget;
 
 trait HelperTrait
 {
-    public function numberToDecimals($value, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
-    {
-        return number_format($value, $decimals, $dec_point, $thousands_sep);
-    }
-
-    public function strToHumanReadable($string, $capitalizeAllWords = false)
-    {
-        $snakeCase = Str::replace('_', ' ', Str::snake($string)); // Convert camelCase to snake_case and replace underscores
-
-        return $capitalizeAllWords ? ucwords($snakeCase) : ucfirst($snakeCase); // Use ucwords() or ucfirst() based on the second parameter
-    }
-
-    public function strToModelName($string, $modelPath = 'App\Models\\')
-    {
-        return $modelPath . Str::studly($string);
-    }
-
-    public function hourDisplayFormat($hour)
-    {
-        return Carbon::create($hour)->format('h:i A'); // 12 hr AM/PM
-    }
-
-    public function widgetScript($path)
-    {
-        Widget::add()->type('script')->content(asset($path));
-    }
-
-    public function widgetBladeScript($path)
-    {
-        Widget::add()->type('view')->view($path); // crud::scripts.employee
-    }
-
-    public function widgetView($path)
-    {
-        Widget::add()->type('view')->content($path);
-    }
-
+    /*
+    |--------------------------------------------------------------------------
+    | Badge
+    |--------------------------------------------------------------------------
+    */
     public function badgeBoolean(bool $bool)
     {
         if ($bool) {
@@ -54,6 +22,11 @@ trait HelperTrait
         return '<span class="badge badge-danger bg-danger">No</span>';
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Date
+    |--------------------------------------------------------------------------
+    */
     public function dateFormat($date)
     {
         // if you want to change the date format, dont change this! but instead change the config.backpack.ui
@@ -72,6 +45,11 @@ trait HelperTrait
         ];
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Days
+    |--------------------------------------------------------------------------
+    */
     public function daysOfWeek()
     {
         return [
@@ -85,6 +63,69 @@ trait HelperTrait
         ];
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Number
+    |--------------------------------------------------------------------------
+    */
+    public function numberToDecimals($value, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
+    {
+        return number_format($value, $decimals, $dec_point, $thousands_sep);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | String
+    |--------------------------------------------------------------------------
+    */
+    public function strToHumanReadable($string, $capitalizeAllWords = false)
+    {
+        $snakeCase = Str::replace('_', ' ', Str::snake($string)); // Convert camelCase to snake_case and replace underscores
+
+        return $capitalizeAllWords ? ucwords($snakeCase) : ucfirst($snakeCase); // Use ucwords() or ucfirst() based on the second parameter
+    }
+
+    public function strToModelName($string, $modelPath = 'App\Models\\')
+    {
+        return $modelPath . Str::studly($string);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Time
+    |--------------------------------------------------------------------------
+    */
+    public function hourDisplayFormat($hour)
+    {
+        return Carbon::create($hour)->format('h:i A'); // 12 hr AM/PM
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Widget
+    |--------------------------------------------------------------------------
+    */
+
+    public function widgetScript($path)
+    {
+        Widget::add()->type('script')->content(asset($path));
+    }
+
+    public function widgetBladeScript($path)
+    {
+        Widget::add()->type('view')->view($path); // crud::scripts.employee
+    }
+
+    public function widgetView($path)
+    {
+        Widget::add()->type('view')->content($path);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | -----
+    |--------------------------------------------------------------------------
+    */
     public function calendarColor()
     {
         return [
