@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Family extends Model
 {
     use ModelTraits;
-    // use EmployeeNotSoftDeletedScopeTrait; // TODO:: transfer if possible in Relation.php model
 
     /*
     |--------------------------------------------------------------------------
