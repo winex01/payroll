@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Family extends Model
 {
@@ -33,9 +34,9 @@ class Family extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function relations()
+    public function relation(): MorphOne
     {
-        return $this->morphMany(Relation::class, 'relationable');
+        return $this->morphOne(Relation::class, 'relationable');
     }
 
     /*

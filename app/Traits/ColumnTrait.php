@@ -2,8 +2,17 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+use App\Facades\HelperFacade;
+use Illuminate\Support\Facades\Schema;
+
 trait ColumnTrait
 {
+    public function morphColumn($relationship, $table = null)
+    {
+        $this->morphType($relationship, $table, 'column');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Employee

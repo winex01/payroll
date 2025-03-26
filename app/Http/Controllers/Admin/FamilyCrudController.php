@@ -61,10 +61,7 @@ class FamilyCrudController extends CrudController
             // }
         });
 
-        CRUD::setFromDb(false, true);
-        // $this->crud->removeColumns($this->removeItems());
-        // $this->employeeColumn();
-        // $this->crud->column('relationship')->after('employee');
+        $this->morphColumn('relation');
     }
 
     /**
@@ -75,25 +72,8 @@ class FamilyCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(FamilyRequest::class);
-        CRUD::setFromDb();
-        // $this->crud->removeFields($this->removeItems());
-        // $this->crud->field('employee')->makeFirst();
-        // $this->crud->field('relationship')->after('employee');
-
-        //note comment_text is a text field in the comment table.
-        // CRUD::field('relations')->subfields([
-        //     ['name' => 'employee']
-        // ]);
-
-        // $this->crud->field('relations.employee');
-
-        // $relation = Relation::getColumns();
-        // TODO:: her na!!!!!!
-        dd(
-            \Illuminate\Support\Facades\Schema::getColumnListing('relations') // Replace 'employees' with your table name
-
-        );
+        // CRUD::setValidation(FamilyRequest::class); // TODO:: fix this shit!!
+        $this->morphField('relation');
     }
 
     /**
@@ -112,11 +92,28 @@ class FamilyCrudController extends CrudController
         $this->setupListOperation();
     }
 
-    public function removeItems()
+    public function store()
     {
-        return [
-            'employee_id',
-            'relationship_id',
-        ];
+        $this->crud->hasAccessOrFail('create');
+
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+
+        dd($this->crud->getStrippedSaveRequest($request));
+
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
+        // insert item in the db
+        $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
+        $this->data['entry'] = $this->crud->entry = $item;
+
+        // show a success message
+        \Alert::success(trans('backpack::crud.insert_success'))->flash();
+
+        // save the redirect choice for next time
+        $this->crud->setSaveAction();
+
+        return $this->crud->performSaveAction($item->getKey());
     }
 }

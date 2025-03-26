@@ -2,6 +2,10 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+use App\Facades\HelperFacade;
+use Illuminate\Support\Facades\Schema;
+
 trait FieldTrait
 {
     public function booleanField($name, $options = [])
@@ -19,5 +23,10 @@ trait FieldTrait
             'type' => 'radio',
             'options' => $options,
         ])->size(2);
+    }
+
+    public function morphField($relationship, $table = null)
+    {
+        $this->morphType($relationship, $table, 'field');
     }
 }
