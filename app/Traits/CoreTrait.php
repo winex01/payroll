@@ -5,7 +5,7 @@ namespace App\Traits;
 use Backpack\ReviseOperation\ReviseOperation;
 use Winex01\BackpackPermissionManager\Http\Controllers\Traits\UserPermissions;
 
-trait CoreTraits
+trait CoreTrait
 {
     use FieldTrait;
     use FilterTrait;
