@@ -48,7 +48,7 @@ class EmploymentDetailCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter();
+        $this->employeeFilter();
         $this->crud->field('employmentDetailType')->attribute('formatted_name')->size(4);
 
         $valueOptions = [0 => '-'];
@@ -90,7 +90,7 @@ class EmploymentDetailCrudController extends CrudController
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         $this->filterQueries(function ($query) {
-            $this->employeeQueriesFilter($query);
+            $this->employeeQueryFilter($query);
 
             $type = request('employmentDetailType');
             if ($type) {

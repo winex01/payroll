@@ -35,13 +35,13 @@ class EmployeeCalendarCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter()->size(3);
+        $this->employeeFilter()->size(3);
     }
 
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
-            $this->employeeQueriesFilter($query);
+            $this->employeeQueryFilter($query);
         });
     }
 }

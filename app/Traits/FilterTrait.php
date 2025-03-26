@@ -60,32 +60,60 @@ trait FilterTrait
     | Employee Filter
     |--------------------------------------------------------------------------
     */
-    public function employeeRelationshipFilter($name = null)
+    // TODO:: change parameters and use morphTo or relationship instead of name
+    public function employeeFilter($name = 'employee')
     {
-        return $this->crud->field($name ?? 'employee')
+        return $this->crud->field($name)
             ->type('select_ajax')
             ->label(__('Employee'))
             ->size(4)
             ->data_source(route('employee.employeeFetch'));
     }
 
-    public function employeeQueriesFilter($query, $name = null)
+    public function employeeQueryFilter($query, $name = 'employee')
     {
-        if ($name != null && str_contains($name, '.')) {
-            // relationship.employee
-            $employee = request($name);
+        if ($name != 'employee' && str_contains($name, '.')) {
+            $request = request($name);
             $nameParts = explode('.', $name);
-            if ($employee) {
+            if ($request) {
                 $query->whereHas($nameParts[0], function ($q) use ($name) {
                     $q->where('employee_id', request($name));
                 });
             }
         } else {
-            // employee
-            $employee = request('employee');
-            if ($employee) {
-                $query->where('employee_id', $employee);
+            $request = request($name);
+            if ($request) {
+                $query->where('employee_id', $request);
             }
         }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationship Filter
+    |--------------------------------------------------------------------------
+    */
+    public function relationshipFilter($name = 'relationship')
+    {
+        return $this->crud->field($name)->label(__('Relationship'));
+    }
+
+    public function relationshipQueryFilter($query, $name = 'relationship')
+    {
+        if ($name != 'relationship' && str_contains($name, '.')) {
+            $request = request($name);
+            $nameParts = explode('.', $name);
+            if ($request) {
+                $query->whereHas($nameParts[0], function ($q) use ($name) {
+                    $q->where('relationship_id', request($name));
+                });
+            }
+        } else {
+            $request = request($name);
+            if ($request) {
+                $query->where('relationship_id', $request);
+            }
+        }
+    }
+
 }
