@@ -58,7 +58,7 @@ class FamilyCrudController extends CrudController
         });
 
         $this->morphColumn('relation');
-        // TODO:: fix: add link in employee column
+        $this->employeeColumn('relation.employee');
     }
 
     /**
@@ -87,30 +87,5 @@ class FamilyCrudController extends CrudController
     public function setupShowOperation()
     {
         $this->setupListOperation();
-    }
-
-    public function store()
-    {
-        $this->crud->hasAccessOrFail('create');
-
-        // execute the FormRequest authorization and validation, if one is required
-        $request = $this->crud->validateRequest();
-
-        dd($this->crud->getStrippedSaveRequest($request));
-
-        // register any Model Events defined on fields
-        $this->crud->registerFieldEvents();
-
-        // insert item in the db
-        $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
-        $this->data['entry'] = $this->crud->entry = $item;
-
-        // show a success message
-        \Alert::success(trans('backpack::crud.insert_success'))->flash();
-
-        // save the redirect choice for next time
-        $this->crud->setSaveAction();
-
-        return $this->crud->performSaveAction($item->getKey());
     }
 }

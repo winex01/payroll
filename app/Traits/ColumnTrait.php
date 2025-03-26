@@ -18,9 +18,10 @@ trait ColumnTrait
     | Employee
     |--------------------------------------------------------------------------
     */
+    // TODO:: refactor
     public function employeePhoto($fieldOrColumn = 'column', $relationship = true)
     {
-        $this->crud->{$fieldOrColumn}([
+        return $this->crud->{$fieldOrColumn}([
             'name' => ($relationship) ? 'employee.photo' : 'photo',
             'label' => 'Photo',
             'type' => ($fieldOrColumn == 'field') ? 'upload' : 'image',
@@ -36,35 +37,16 @@ trait ColumnTrait
 
     }
 
-    public function employeeColumn($column = 'employee', $linkTo = null)
+    public function employeeColumn($column = 'employee', $label = 'employee')
     {
-        // if column not exist then we create it
-        if (!isset($this->crud->settings()['list.columns'][$column])) {
-            // if raw column or FK column exist then we remove it.
-            if (isset($this->crud->settings()['list.columns']['employee_id'])) {
-                $this->crud->removeColumn('employee_id');
-            }
-            $this->crud->column($column)->makeFirst();
-        }
+        $this->crud->removeColumn([
+            $column,
+            str_replace('.', '__', $column)
+        ]);
 
-        $this->crud->modifyColumn($column, [
-            'wrapper' => [
-                'href' => function ($crud, $column, $entry, $related_key) use ($linkTo) {
-                    if ($linkTo) {
-                        return $linkTo;
-                    }
-                    return backpack_url($column['name'] . '/' . $related_key . '/show');
-                },
-                'title' => function ($crud, $column, $entry, $related_key) {
-                    if (!$entry->employee->employee_no) {
-                        return;
-                    }
-
-                    return 'EMP NO: ' . $entry->employee->employee_no;
-                }
-                // 'target' => '_blank'
-            ],
-
+        return $this->crud->column([
+            'name' => $column,
+            'label' => __('Employee'),
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
                     $q->where('last_name', 'like', '%' . $searchTerm . '%')
@@ -72,7 +54,6 @@ trait ColumnTrait
                         ->orWhere('middle_name', 'like', '%' . $searchTerm . '%');
                 });
             },
-
             'orderable' => true,
             'orderLogic' => function ($query, $column, $columnDirection) {
                 $currentTable = $this->crud->model->getTable();
@@ -84,6 +65,11 @@ trait ColumnTrait
                     ->orderBy($leftTable . '.middle_name', $columnDirection)
                     ->select($currentTable . '.*');
             },
-        ]);
+            'wrapper' => [
+                'href' => function ($crud, $column, $entry, $related_key) {
+                    return backpack_url('employee/' . $related_key . '/show');
+                },
+            ]
+        ])->makeFirst();
     }
 }
