@@ -24,9 +24,9 @@ trait ColumnTrait
         ])->makeFirst();
     }
 
-    public function morphColumn($relationship, $table = null)
+    public function morphColumns($relationship, $table = null)
     {
-        $this->morphType($relationship, $table, 'column');
+        $this->morphColumnsFields($relationship, $table, 'column');
     }
 
     /*

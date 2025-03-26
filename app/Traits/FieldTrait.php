@@ -36,8 +36,8 @@ trait FieldTrait
 
     }
 
-    public function morphField($relationship, $table = null)
+    public function morphFields($relationship, $table = null)
     {
-        $this->morphType($relationship, $table, 'field');
+        $this->morphColumnsFields($relationship, $table, 'field');
     }
 }

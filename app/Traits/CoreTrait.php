@@ -19,7 +19,7 @@ trait CoreTrait
     use ReviseOperation;
     use ValidationTrait;
 
-    public function morphType($relationship, $table = null, $type)
+    public function morphColumnsFields($relationship, $table = null, $type)
     {
         $table = $table ?? $this->crud->model->{$relationship}()->getModel()->getTable();
 

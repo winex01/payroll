@@ -57,7 +57,7 @@ class FamilyCrudController extends CrudController
             $this->relationshipQueryFilter($query, 'relation.relationship');
         });
 
-        $this->morphColumn('relation');
+        $this->morphColumns('relation');
         $this->employeeColumn('relation.employee');
     }
 
@@ -70,7 +70,7 @@ class FamilyCrudController extends CrudController
     protected function setupCreateOperation()
     {
         // CRUD::setValidation(FamilyRequest::class); // TODO:: fix this shit!!
-        $this->morphField('relation');
+        $this->morphFields('relation');
     }
 
     /**
