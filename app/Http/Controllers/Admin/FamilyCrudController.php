@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Traits\CoreTrait;
-use App\Http\Requests\FamilyRequest;
+use App\Http\Requests\RelationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -69,7 +69,7 @@ class FamilyCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        // CRUD::setValidation(FamilyRequest::class); // TODO:: fix this shit!!
+        CRUD::setValidation(RelationRequest::class);
         $this->morphFields('relation');
     }
 
