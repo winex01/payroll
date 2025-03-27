@@ -22,7 +22,7 @@ class EmployeesTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'photo' => 'photo/23657442-XU2R.jpg',
+                'photo' => 'photo/23657442-crtP.jpg',
                 'employee_no' => '001',
                 'last_name' => 'Damayo',
                 'first_name' => 'Winnie',
@@ -49,13 +49,13 @@ class EmployeesTableSeeder extends Seeder
                 'personal_email' => 'winnie131212592@gmail.com',
                 'company_email' => 'winnie131212592@gmail.com',
                 'created_at' => '2025-03-21 13:43:41',
-                'updated_at' => '2025-03-26 19:06:16',
+                'updated_at' => '2025-03-27 16:09:15',
                 'deleted_at' => NULL,
             ),
             1 => 
             array (
                 'id' => 2,
-                'photo' => 'photo/images-1-6Ndo.jpg',
+                'photo' => 'photo/images-1-UZKK.jpg',
                 'employee_no' => '002',
                 'last_name' => 'Cline',
                 'first_name' => 'Aurora',
@@ -82,13 +82,13 @@ class EmployeesTableSeeder extends Seeder
                 'personal_email' => 'jixo@mailinator.com',
                 'company_email' => 'pypob@mailinator.com',
                 'created_at' => '2025-03-21 17:24:06',
-                'updated_at' => '2025-03-26 19:06:39',
+                'updated_at' => '2025-03-27 16:09:44',
                 'deleted_at' => NULL,
             ),
             2 => 
             array (
                 'id' => 3,
-                'photo' => 'photo/download-TjNV.jpg',
+                'photo' => 'photo/download-Y7H2.jpg',
                 'employee_no' => '003',
                 'last_name' => 'Hansen',
                 'first_name' => 'Seth',
@@ -115,13 +115,13 @@ class EmployeesTableSeeder extends Seeder
                 'personal_email' => 'ramoni@mailinator.com',
                 'company_email' => 'dulavyjum@mailinator.com',
                 'created_at' => '2025-03-21 17:25:09',
-                'updated_at' => '2025-03-26 19:06:49',
+                'updated_at' => '2025-03-27 16:09:59',
                 'deleted_at' => NULL,
             ),
             3 => 
             array (
                 'id' => 4,
-                'photo' => 'photo/images-3-3a5W.jpg',
+                'photo' => 'photo/images-3-rA29.jpg',
                 'employee_no' => '004',
                 'last_name' => 'Barrera',
                 'first_name' => 'Wallace',
@@ -148,13 +148,13 @@ class EmployeesTableSeeder extends Seeder
                 'personal_email' => 'rudebyje@mailinator.com',
                 'company_email' => 'cedol@mailinator.com',
                 'created_at' => '2025-03-21 17:25:51',
-                'updated_at' => '2025-03-26 19:07:01',
+                'updated_at' => '2025-03-27 16:10:10',
                 'deleted_at' => NULL,
             ),
             4 => 
             array (
                 'id' => 5,
-                'photo' => 'photo/images-2-rPwo.jpg',
+                'photo' => 'photo/images-2-Hohd.jpg',
                 'employee_no' => '005',
                 'last_name' => 'Sawyer',
                 'first_name' => 'Susan',
@@ -181,7 +181,7 @@ class EmployeesTableSeeder extends Seeder
                 'personal_email' => 'lasywe@mailinator.com',
                 'company_email' => 'jykepy@mailinator.com',
                 'created_at' => '2025-03-26 19:03:08',
-                'updated_at' => '2025-03-26 19:03:08',
+                'updated_at' => '2025-03-27 16:10:23',
                 'deleted_at' => NULL,
             ),
         ));
