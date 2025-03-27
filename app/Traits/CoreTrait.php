@@ -19,6 +19,7 @@ trait CoreTrait
     use ReviseOperation;
     use ValidationTrait;
 
+    // TODO:: remove this, transfer to field and column trait.
     public function morphColumnsFields($relationship, $table = null, $type)
     {
         $table = $table ?? $this->crud->model->{$relationship}()->getModel()->getTable();
