@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\CoreTrait;
 use App\Http\Requests\ShiftScheduleRequest;
-use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -20,7 +20,7 @@ class ShiftScheduleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use CoreTraits;
+    use CoreTrait;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -34,6 +34,7 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setEntityNameStrings('shift schedule', 'shift schedules');
 
         $this->userPermissions();
+        $this->ignoreIdPermissions(1); // 1 = Rest day
     }
 
     /**
@@ -96,7 +97,7 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setFromDb();
 
         $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, Morning Shift, Graveyard Shift, Etc.');
-        $this->crud->field('open_time');
+        $this->booleanField('open_time');
 
         $this->crud->field([   // repeatable
             'name' => 'working_hours',

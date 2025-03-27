@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FamilyRequest extends FormRequest
+class ChangeShiftScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,18 +25,28 @@ class FamilyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'employee' => 'required|exists:employees,id',
-            'familyType' => 'required|exists:family_types,id',
-            'last_name' => 'required|string|min:2|max:255',
-            'first_name' => 'required|string|min:2|max:255',
-            'middle_name' => 'nullable|string|min:2|max:255',
-
-            'birth_date' => 'nullable|date',
-            'contact_no' => 'nullable|phone:INTERNATIONAL,PH',
-            'address' => 'required|string|min:10|max:255',
+            'date' => [
+                'required',
+                'date',
+                Rule::unique('change_shift_schedules', 'date')
+                    ->where(function ($query) {
+                        return $query->where('employee_id', $this->employee);
+                    })
+                    ->ignore($this->id ?? null), // Ignore current record during update
+            ],
+            'shiftSchedule' => 'required|exists:shift_schedules,id',
         ];
+
+        // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
+        if (!backpack_user()->can('change_shift_schedules_backdating')) {
+            $rules['date'][] = 'after_or_equal:today';
+        }
+
+        return $rules;
     }
+
 
     /**
      * Get the validation attributes that apply to the request.
@@ -57,7 +68,7 @@ class FamilyRequest extends FormRequest
     public function messages()
     {
         return [
-            'contact_no' => 'The :attribute field must be a valid number.',
+            'date.unique' => __('app.duplicate_entry'),
         ];
     }
 }

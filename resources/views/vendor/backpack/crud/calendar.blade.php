@@ -26,7 +26,7 @@
     <div class="{{ $crud->getListContentClass() }}">
 
         <div class="row mb-2 align-items-center">
-          <div class="col-sm-9">
+          <div class="col-sm-12">
             @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
               <div class="d-print-none {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -35,18 +35,6 @@
               </div>
             @endif
           </div>
-          @if($crud->getOperationSetting('searchableTable'))
-          <div class="col-sm-3">
-            <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none">
-              <div class="input-icon">
-                <span class="input-icon-addon">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
-                </span>
-                <input type="search" class="form-control" placeholder="{{ trans('backpack::crud.search') }}..."/>
-              </div>
-            </div>
-          </div>
-          @endif
         </div>
 
         {{-- Backpack List Filters --}}
@@ -57,16 +45,18 @@
         <div class="card">
             <div class="row" style="margin-left: 12px;">
                 <ul class="custom-legend mt-2">
-                    <li><span class="custom-employee-shift"></span> Employee Shift Schedule</li>
-                    <li><span class="custom-change-shift"></span> Change Shift Schedule</li>
-                    <li><span class="custom-regular-holiday"></span> Regular Holiday</li>
-                    <li><span class="custom-special-holiday"></span> Special Holiday</li>
-                    <li><span class="custom-double-holiday"></span> Double Holiday</li>
+                    <li><span class="custom-employee-shift"></span> {{ __('Employee Shift') }}</li>
+                    <li><span class="custom-change-shift"></span> {{ __('Change Shift') }}</li>
+                    <li><span class="custom-regular-holiday"></span> {{ __(key: 'Regular Holiday') }}</li>
+                    <li><span class="custom-special-holiday"></span> {{ __('Special Holiday') }}</li>
+                    <li><span class="custom-double-holiday"></span> {{ __('Double Holiday') }}</li>
                 </ul>
             </div>
 
             <ul class="mt-2" style="margin-left: 4px;">
-                <li>Click or drag select date to change shift schedule.</li>
+                @if ($crud->hasAccess('clickAndSelect'))
+                    <li>{{ __('Click or drag select date to change shift schedule.') }}</li>
+                @endif
             </ul>
 
             <div class="row m-1">

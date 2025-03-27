@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Admin\Traits\CalendarTrait;
+use App\Traits\HelperTrait;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EmployeeShiftScheduleRequest extends FormRequest
 {
-    use CalendarTrait;
+    use HelperTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -29,11 +30,24 @@ class EmployeeShiftScheduleRequest extends FormRequest
     {
         $rules = [
             'employee' => 'required|exists:employees,id',
-            'effectivity_date' => 'required|date|after_or_equal:today',
+            'effectivity_date' => [
+                'required',
+                'date',
+                Rule::unique('employee_shift_schedules', 'effectivity_date')
+                    ->where(function ($query) {
+                        return $query->where('employee_id', $this->employee);
+                    })
+                    ->ignore($this->id ?? null), // Ignore current record during update
+            ],
         ];
 
+        // Only enforce 'after_or_equal:today' if user does NOT have 'backdating' permission
+        if (!backpack_user()->can('employee_shift_schedules_backdating')) {
+            $rules['effectivity_date'][] = 'after_or_equal:today';
+        }
+
         foreach ($this->daysOfWeek() as $day) {
-            $rules[$day] = 'nullable|exists:shift_schedules,id';
+            $rules[$day] = 'required|exists:shift_schedules,id';
         }
 
         return $rules;
@@ -59,7 +73,7 @@ class EmployeeShiftScheduleRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'effectivity_date.unique' => __('app.duplicate_entry'),
         ];
     }
 }

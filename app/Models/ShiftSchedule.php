@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\HelperTrait;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\Admin\Traits\StrTrait;
-use App\Http\Controllers\Admin\Traits\BadgeTrait;
-use App\Http\Controllers\Admin\Traits\TimeFormatTrait;
 
 class ShiftSchedule extends Model
 {
-    use ModelTraits;
-    use TimeFormatTrait;
-    use BadgeTrait;
-    use StrTrait;
+    use ModelTrait;
+    use HelperTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -37,6 +33,14 @@ class ShiftSchedule extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function isRestDay()
+    {
+        if ($this->id == 1) {
+            return true;
+        }
+
+        return false;
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -62,11 +66,14 @@ class ShiftSchedule extends Model
         }
 
         $value = [];
-        foreach ($this->working_hours as $wk) {
-            if (!empty($wk)) {
-                $start = $this->hourDisplayFormat($wk['start']);
-                $end = $this->hourDisplayFormat($wk['end']);
-                $value[] = $start . ' - ' . $end;
+
+        if ($this->working_hours) {
+            foreach ($this->working_hours as $wk) {
+                if (!empty($wk)) {
+                    $start = $this->hourDisplayFormat($wk['start']);
+                    $end = $this->hourDisplayFormat($wk['end']);
+                    $value[] = $start . ' - ' . $end;
+                }
             }
         }
 

@@ -42,7 +42,8 @@ trait NewHireOperation
             //     'icon' => 'la la-home',
             //     'label' => 'New Hire',
             //     'wrapper' => [
-            //          'target' => '_blank',
+            //         'target' => '_blank',
+            //         'class' => 'btn btn-primary'
             //     ],
             // ],
         );

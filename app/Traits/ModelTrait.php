@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Traits;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-trait ModelTraits
+trait ModelTrait
 {
     use CrudTrait;
     use HasFactory;

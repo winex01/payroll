@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Family extends Model
 {
-    use ModelTraits;
-    use EmployeeNotSoftDeletedScopeTrait;
+    use ModelTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -30,20 +29,14 @@ class Family extends Model
     |--------------------------------------------------------------------------
     */
 
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function employee()
+    public function relation(): MorphOne
     {
-        return $this->belongsTo(Employee::class);
-    }
-
-    public function familyType()
-    {
-        return $this->belongsTo(FamilyType::class);
+        return $this->morphOne(Relation::class, 'relationable');
     }
 
     /*

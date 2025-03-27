@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use ModelTraits;
+    use ModelTrait;
     use SoftDeletes;
 
     /*
@@ -70,14 +70,14 @@ class Employee extends Model
         return $this->hasMany(EmployeeShiftSchedule::class);
     }
 
-    public function families()
-    {
-        return $this->hasMany(Family::class);
-    }
-
     public function gender()
     {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function relations()
+    {
+        return $this->hasMany(Relation::class);
     }
 
     /*

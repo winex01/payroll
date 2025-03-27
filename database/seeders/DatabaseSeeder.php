@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MenusTableSeeder::class);
         $this->call(GendersTableSeeder::class);
         $this->call(CivilStatusesTableSeeder::class);
-        $this->call(FamilyTypesTableSeeder::class);
+        $this->call(RelationhipsTableSeeder::class);
         $this->call(JobStatusesTableSeeder::class);
         $this->call(EmploymentStatusesTableSeeder::class);
         $this->call(EmploymentDetailTypesTableSeeder::class);
@@ -38,5 +38,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentMethodsTableSeeder::class);
         $this->call(DaysPerYearsTableSeeder::class);
         $this->call(ShiftSchedulesTableSeeder::class);
+        $this->call(EmployeesTableSeeder::class);
+        $this->call(DepartmentsTableSeeder::class);
+        $this->call(PayrollGroupsTableSeeder::class);
+        $this->call(CompaniesTableSeeder::class);
+        $this->call(LeaveTypesTableSeeder::class);
     }
 }

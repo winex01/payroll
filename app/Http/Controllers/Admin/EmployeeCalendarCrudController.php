@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Traits\CoreTrait;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
-use App\Http\Controllers\Admin\FetchRoutes\SetupCalendarEventsFetchRoutes;
 
 /**
  * Class EmployeeCalendarCrudController
@@ -15,11 +14,10 @@ use App\Http\Controllers\Admin\FetchRoutes\SetupCalendarEventsFetchRoutes;
  */
 class EmployeeCalendarCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \App\Http\Controllers\Admin\Operations\CalendarListOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
-    use SetupCalendarEventsFetchRoutes;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -37,30 +35,13 @@ class EmployeeCalendarCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter();
+        $this->employeeFilter()->size(3);
     }
 
     protected function setupListOperation()
     {
-        CRUD::setOperationSetting('searchableTable', false);
-
         $this->filterQueries(function ($query) {
-            $this->employeeQueriesFilter($query);
+            $this->employeeQueryFilter($query);
         });
     }
-
-    public function index()
-    {
-        $this->crud->hasAccessOrFail('list');
-
-        $this->data['crud'] = $this->crud;
-        $this->data['title'] = $this->crud->getTitle() ?? mb_ucfirst($this->crud->entity_name_plural);
-
-        $this->data['calendar'] = $this->setCalendar();
-
-        // loast custom calendar view instead of default list.blade.php
-        return view('crud::calendar', $this->data);
-    }
-
-
 }

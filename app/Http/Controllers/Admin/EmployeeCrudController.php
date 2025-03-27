@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\CoreTrait;
 use App\Http\Requests\EmployeeRequest;
-use App\Http\Controllers\Admin\Traits\CoreTraits;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Http\Controllers\Admin\FetchRoutes\SetupEmployeeFetchRoutes;
+use App\Http\Controllers\Admin\Operations\EmployeeFetchOperation;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
 /**
@@ -22,9 +22,9 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
-    use SetupEmployeeFetchRoutes;
+    use EmployeeFetchOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -56,20 +56,22 @@ class EmployeeCrudController extends CrudController
     {
         $this->filterQueries(function ($query) {
             $gender = request('gender');
-            $civilStatus = request('civilStatus');
-
             if ($gender) {
                 $query->where('gender_id', $gender);
             }
 
+            $civilStatus = request('civilStatus');
             if ($civilStatus) {
                 $query->where('civil_status_id', $civilStatus);
             }
         });
 
         CRUD::setFromDb(false, true);
-        $this->crud->removeColumn('photo');
-        $this->employeePhoto('column', false);
+        $this->imageColumn('photo');
+        $this->crud->column('gender')->after('middle_name');
+        $this->crud->column('civilStatus')->after('birth_place')
+            ->label(__('Civil status'));
+        $this->crud->removeColumns(['gender_id', 'civil_status_id']);
     }
 
     /**
@@ -85,7 +87,7 @@ class EmployeeCrudController extends CrudController
 
         CRUD::setValidation(EmployeeRequest::class);
 
-        $this->employeePhoto('field', false);
+        $this->imageField('photo');
         $this->crud->field('employee_no');
         $this->crud->field('last_name');
         $this->crud->field('first_name');
@@ -95,8 +97,8 @@ class EmployeeCrudController extends CrudController
         $this->crud->field('gender')->tab($tab);
         $this->crud->field('birth_date')->tab($tab);
         $this->crud->field('birth_place')->tab($tab);
-        $name = 'civilStatus';
-        $this->crud->field($name)->label($this->strToHumanReadable($name))->tab($tab);
+        $this->crud->field('civilStatus')->tab($tab)
+            ->label(__('Civil status'));
         $this->crud->field('date_of_marriage')->tab($tab);
 
         $this->crud->field('mobile_no')->tab($tab);
@@ -133,7 +135,6 @@ class EmployeeCrudController extends CrudController
 
     public function setupShowOperation()
     {
-        $this->crud->setOperationSetting('tabsEnabled', true);
         $this->setupListOperation();
     }
 }

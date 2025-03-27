@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Scopes\Traits\EmployeeNotSoftDeletedScopeTrait;
+use App\Models\Scopes\EmployeeNotSoftDeletedScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy([EmployeeNotSoftDeletedScope::class])]
 class EmployeeShiftSchedule extends Model
 {
-    use ModelTraits;
-    use EmployeeNotSoftDeletedScopeTrait;
+    use ModelTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -83,19 +84,21 @@ class EmployeeShiftSchedule extends Model
     */
     public function scopeActive(Builder $query, $date = null): Builder
     {
-        if ($date == null) {
-            $date = now()->toDateString();
+        if ($date === null) {
+            $date = today()->toDateString();
         }
 
-        $query->whereIn('employee_shift_schedules.id', function ($query) use ($date) {
-            $query->selectRaw('MAX(employee_shift_schedules.id)') // Get the latest record (MAX(id)) for each combination
-                ->from('employee_shift_schedules')
-                ->where('effectivity_date', '<=', $date) // Only consider records where effectivity_date <= today
-                ->groupBy('employee_id'); // Group by employee_id
-        });
-
-        return $query;
+        return $query->whereRaw("
+            employee_shift_schedules.id = (
+                SELECT id FROM employee_shift_schedules AS sub
+                WHERE sub.employee_id = employee_shift_schedules.employee_id
+                AND sub.effectivity_date <= ?
+                ORDER BY sub.effectivity_date DESC, sub.id DESC
+                LIMIT 1
+            )
+        ", [$date]);
     }
+
 
     /*
     |--------------------------------------------------------------------------

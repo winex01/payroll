@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ModelTraits;
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class FamilyType extends Model
+class LeaveType extends Model
 {
-    use ModelTraits;
+    use ModelTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ class FamilyType extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'family_types';
+    protected $table = 'leave_types';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -27,25 +27,12 @@ class FamilyType extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('orderByName', function (\Illuminate\Database\Eloquent\Builder $builder) {
-            $orderBy = 'asc';
-            $builder->orderBy('name', $orderBy);
-        });
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function families()
-    {
-        return $this->hasMany(Family::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

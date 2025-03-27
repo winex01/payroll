@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Traits;
+namespace App\Traits;
 
 use Illuminate\Validation\Rule;
 
-trait ValidateUniqueTrait
+trait ValidationTrait
 {
     public function validateUnique($attribute = 'name', $column = 'name', $table = null)
     {

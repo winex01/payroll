@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class FamilyTypesTableSeeder extends Seeder
+class RelationhipsTableSeeder extends Seeder
 {
 
     /**
@@ -16,9 +16,9 @@ class FamilyTypesTableSeeder extends Seeder
     {
 
 
-        \DB::table('family_types')->delete();
+        \DB::table('relationships')->delete();
 
-        \DB::table('family_types')->insert(array(
+        \DB::table('relationships')->insert(array(
             0 =>
                 array(
                     'id' => 1,

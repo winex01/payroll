@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\FamilyRequest;
-use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Traits\CoreTrait;
+use App\Http\Requests\RelationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
@@ -21,7 +21,7 @@ class FamilyCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
 
     /**
@@ -40,8 +40,8 @@ class FamilyCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter();
-        $this->crud->field('familyType');
+        $this->employeeFilter('relation.employee');
+        $this->relationshipFilter('relation.relationship');
     }
 
     /**
@@ -53,32 +53,12 @@ class FamilyCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
-            $this->employeeQueriesFilter($query);
-
-            $familyType = request('familyType');
-            if ($familyType) {
-                $query->where('family_type_id', $familyType);
-            }
+            $this->employeeQueryFilter($query, 'relation.employee');
+            $this->relationshipQueryFilter($query, 'relation.relationship');
         });
 
-        CRUD::setFromDb(false, true);
-        $this->input('column');
-        $this->employeeColumn();
-
-        $this->crud->modifyColumn('familyType', [
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', '%' . $searchTerm . '%');
-                });
-            },
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) {
-                return $query
-                    ->leftJoin('family_types', 'family_types.id', '=', 'families.family_type_id')
-                    ->orderBy('family_types.name', $columnDirection)
-                    ->select('families.*');
-            },
-        ]);
+        $this->morphColumns('relation');
+        $this->employeeColumn('relation.employee');
     }
 
     /**
@@ -89,9 +69,8 @@ class FamilyCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(FamilyRequest::class);
-        CRUD::setFromDb();
-        $this->input('field');
+        CRUD::setValidation(RelationRequest::class);
+        $this->morphFields('relation');
     }
 
     /**
@@ -109,19 +88,4 @@ class FamilyCrudController extends CrudController
     {
         $this->setupListOperation();
     }
-
-    public function input($input = 'field')
-    {
-    $input = ucfirst($input);
-
-        $this->crud->{'remove' . $input . 's'}([
-            'employee_id',
-            'family_type_id',
-        ]);
-
-        $this->crud->{$input}('employee')->before('last_name');
-        $name = 'familyType';
-        $this->crud->{$input}($name)->label($this->strToHumanReadable($name))->after('employee');
-    }
-
 }

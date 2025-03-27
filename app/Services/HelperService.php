@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Traits\HelperTrait;
 
 class HelperService
 {
-    use CoreTraits;
+    use HelperTrait;
 }

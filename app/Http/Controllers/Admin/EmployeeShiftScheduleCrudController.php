@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Traits\CoreTraits;
+use App\Traits\CoreTrait;
 use App\Http\Requests\EmployeeShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -21,7 +21,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    use CoreTraits;
+    use CoreTrait;
     use FilterOperation;
 
     /**
@@ -33,15 +33,15 @@ class EmployeeShiftScheduleCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\EmployeeShiftSchedule::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/employee-shift-schedule');
-        CRUD::setEntityNameStrings('employee shift schedule', 'employee shift schedules');
+        CRUD::setEntityNameStrings('employee shift', 'employee shifts');
 
         $this->userPermissions();
-        $this->effectivityDatePermissions();
+        $this->datePermissions('effectivity_date');
     }
 
     public function setupFilterOperation()
     {
-        $this->employeeRelationshipFilter();
+        $this->employeeFilter();
         $this->effectivityDateFilter();
         $this->historyFilter();
     }
@@ -55,7 +55,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
-            $this->employeeQueriesFilter($query);
+            $this->employeeQueryFilter($query);
             $this->historyQueriesFilter($query);
         });
 
