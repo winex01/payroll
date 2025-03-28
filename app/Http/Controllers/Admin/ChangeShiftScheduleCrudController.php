@@ -42,7 +42,7 @@ class ChangeShiftScheduleCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter();
-        $this->crud->field('date_range')->type('date_range')->size(4);
+        // $this->crud->field('date_range')->type('date_range')->size(4); // TODO:: no basset date range script
         $this->crud->field('shiftSchedule')->size(4);
     }
 
@@ -69,8 +69,8 @@ class ChangeShiftScheduleCrudController extends CrudController
         });
 
         $this->employeeColumn();
-        $this->crud->column('date')->type('date');
-        $this->crud->column('shiftSchedule')->label(__('Shift Schedule'));
+        // $this->column('date');
+        $this->column('shiftSchedule.name');
     }
 
     /**
@@ -82,9 +82,9 @@ class ChangeShiftScheduleCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ChangeShiftScheduleRequest::class);
-        $this->crud->field('employee');
-        $this->crud->field('date')->type('date');
-        $this->crud->field('shiftSchedule');
+        $this->field('employee');
+        $this->field('date');
+        $this->field('shiftSchedule');
     }
 
     /**

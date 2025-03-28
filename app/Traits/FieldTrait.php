@@ -2,8 +2,20 @@
 
 namespace App\Traits;
 
+use App\Facades\HelperFacade;
+
 trait FieldTrait
 {
+    public function field($name)
+    {
+        $this->crud->removeFields([
+            $name,
+            str_replace('.', '__', $name)
+        ]);
+
+        return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($name));
+    }
+
     public function booleanField($name, $options = [])
     {
         if (!$options) {

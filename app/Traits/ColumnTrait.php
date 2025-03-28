@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Schema\ForeignIdColumnDefinition;
 use Illuminate\Support\Str;
 use App\Facades\HelperFacade;
 use Illuminate\Support\Facades\Schema;
@@ -16,31 +15,34 @@ trait ColumnTrait
             str_replace('.', '__', $name)
         ]);
 
-        $modelTable = $this->crud->model->getTable();
-
         // if $name has dot notation then we assume its a relationship
         if (str_contains($name, '.')) {
-            $nameParts = explode('.', $name);
-
             return $this->crud->column([
                 'name' => $name,
-                'label' => HelperFacade::strToHumanReadable($nameParts[0]),
-                'searchLogic' => function ($query, $column, $searchTerm) use ($nameParts, $modelTable) {
-                    // check first if $nameParts[1] or column exist in database table
-                    if (Schema::hasColumn($modelTable, $nameParts[1])) {
-                        $query->orWhereHas($nameParts[0], function ($q) use ($column, $searchTerm, $nameParts) {
-                            $q->where($nameParts[1], 'like', '%' . $searchTerm . '%');
+                'label' => HelperFacade::strToHumanReadable(explode('.', $name)[0]),
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $entity = explode('.', $column['entity']);
+                    $joinTable = $this->crud->model->{$entity[0]}()->getModel()->getTable();
+
+                    // check first if attribute or column exist in database table
+                    if (Schema::hasColumn($joinTable, $column['attribute'])) {
+                        $query->orWhereHas($entity[0], function ($q) use ($column, $searchTerm) {
+                            $q->where($column['attribute'], 'like', '%' . $searchTerm . '%');
                         });
                     }
                 },
                 'orderable' => true,
-                'orderLogic' => function ($query, $column, $columnDirection) use ($modelTable, $nameParts) {
-                    // check first if $nameParts[1] or column exist in database table
-                    if (Schema::hasColumn($modelTable, $nameParts[1])) {
-                        $joinTable = $this->crud->model->{$nameParts[0]}()->getModel()->getTable();
+                'orderLogic' => function ($query, $column, $columnDirection) {
+                    $entity = explode('.', $column['entity']);
+                    $joinTable = $this->crud->model->{$entity[0]}()->getModel()->getTable();
+                    $modelTable = $this->crud->model->getTable();
 
-                        $query->leftJoin($joinTable, "$joinTable.id", '=', "$modelTable.$nameParts[0]_id");
-                        $query->orderBy("$joinTable.$nameParts[1]", $columnDirection)
+                    debug($modelTable, $joinTable, $column);
+
+                    // check first if attribute or column exist in database table
+                    if (Schema::hasColumn($joinTable, $column['attribute'])) {
+                        $query->leftJoin($joinTable, "$joinTable.id", '=', "$modelTable." . Str::snake($entity[0]) . "_id");
+                        $query->orderBy("$joinTable.$entity[1]", $columnDirection)
                             ->select("$modelTable.*");
                     }
 
@@ -49,6 +51,7 @@ trait ColumnTrait
             ]);
         }
 
+        $modelTable = $this->crud->model->getTable();
         $label = HelperFacade::strToHumanReadable($name);
 
         // check if column exist in db table, and db data type
