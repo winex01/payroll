@@ -108,8 +108,6 @@ class EmploymentDetailCrudController extends CrudController
             $this->historyQueriesFilter($query);
         });
 
-        CRUD::setFromDb(false, true);
-
         $currentTable = $this->crud->model->getTable();
         $detailsTypeTable = 'employment_detail_types';
 
@@ -121,36 +119,15 @@ class EmploymentDetailCrudController extends CrudController
         }
 
         $this->employeeColumn();
-        $this->column('employmentDetailType')->attribute('formatted_name')->after('employee');
-
-        $this->crud->modifyColumn('value', [
-            'escaped' => false,
-            'value' => function ($entry) {
-                return $entry->formatted_value;
-            },
-        ]);
-
-        // details type column
-        $this->crud->modifyColumn('employmentDetailType', [
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', '%' . $searchTerm . '%');
-                });
-            },
-
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) use ($currentTable, $detailsTypeTable) {
-                return $query
-                    ->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
-                    ->orderBy($detailsTypeTable . '.name', $columnDirection)
-                    ->select($currentTable . '.*');
-            },
-        ]);
+        $this->column('employmentDetailType.name');
+        $this->column('formatted_value')->label(__('Value'));
+        $this->column('effectivity_date');
     }
 
     public function setupShowOperation()
     {
         $this->setupListOperation();
+        // TODO:: here naku next
         $this->crud->removeColumn('employee_id');
     }
 
