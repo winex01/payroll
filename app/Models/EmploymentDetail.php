@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use App\Facades\HelperFacade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Scopes\EmployeeNotSoftDeletedScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
@@ -76,6 +78,33 @@ class EmploymentDetail extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getFormattedValueAttribute()
+    {
+        $model = HelperFacade::strToModelName($this->employmentDetailType->name);
+        if (class_exists($model)) {
+            $value = $model::find($this->value)->name;
+
+            if ($value) {
+                return $value;
+            }
+        }
+
+        $value = $this->value;
+
+        if (is_numeric($value)) {
+            return HelperFacade::numberToDecimals($value);
+        }
+
+        $validator = Validator::make(['date' => $value], [
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->passes()) {
+            $value = HelperFacade::dateFormat($value);
+        }
+
+        return $value;
+    }
 
     /*
     |--------------------------------------------------------------------------

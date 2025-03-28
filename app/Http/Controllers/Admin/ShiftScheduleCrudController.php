@@ -45,37 +45,12 @@ class ShiftScheduleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->column('name');
+        $this->column('name');
+        $this->column('working_hours_details')->escaped(false);
+        $this->column('shift_policies_details')->escaped(false);
+        $this->column('day_start_details')->escaped(false);
 
-        $this->crud->column([
-            'name' => 'working_hours',
-            'type' => 'closure',
-            'function' => function ($entry) {
-                return $entry->working_hours_details;
-            },
-            'orderable' => false,
-            'escaped' => false,
-        ]);
-
-        $this->crud->column([
-            'name' => 'shift_policies',
-            'type' => 'closure',
-            'function' => function ($entry) {
-                return $entry->shift_policies_details;
-            },
-            'escaped' => false,
-        ]);
-
-        $this->crud->column([
-            'name' => 'day_start',
-            'label' => 'Day start (hrs)',
-            'type' => 'closure',
-            'function' => function ($entry) {
-                return $entry->day_start_details;
-            },
-        ]);
-
-        $this->crud->column('description')->limit(999);
+        $this->column('description');
     }
 
     public function setupShowOperation()

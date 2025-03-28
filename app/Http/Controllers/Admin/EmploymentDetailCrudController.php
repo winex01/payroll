@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Facades\HelperFacade;
 use App\Traits\CoreTrait;
 use Illuminate\Support\Str;
 use App\Models\EmploymentDetail;
@@ -49,26 +50,27 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter();
+        $this->effectivityDateFilter();
         $this->field('employmentDetailType')->attribute('formatted_name')->size(4);
+        $this->field('value')->type('hidden');
 
-        $valueOptions = [0 => '-'];
+        foreach (EmploymentDetailType::all() as $type) {
+            $tempModel = $this->strToModelName($type->name);
+            if (class_exists($tempModel)) {
+                $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
 
-        if (request('employmentDetailType') && request('value')) {
-            $type = EmploymentDetailType::find(request('employmentDetailType'));
-            if ($type) {
-                $tempModel = $this->strToModelName($type->name);
-                if (class_exists($tempModel)) {
-                    $valueOptions = array_merge($valueOptions, $tempModel::get()->pluck('name', 'id')->toArray());
-                }
+                $this->crud->field([
+                    'name' => Str::snake($type->name),
+                    'label' => HelperFacade::strToHumanReadable($type->name),
+                    'type' => 'select_from_array',
+                    'options' => $valueOptions,
+                    'wrapper' => [
+                        'class' => 'form-group col-sm-4 mb-4 d-none ',
+                    ],
+                ])->after('employmentDetailType');
             }
         }
 
-        $this->field('value')
-            ->type('select_from_array')
-            ->options($valueOptions)
-            ->wrapper(['class' => 'form-group col-md-4 d-none']); // d-none to hide when load
-
-        $this->effectivityDateFilter();
         $this->historyFilter();
     }
 
@@ -87,14 +89,20 @@ class EmploymentDetailCrudController extends CrudController
         $this->filterQueries(function ($query) {
             $this->employeeQueryFilter($query);
 
-            $type = request('employmentDetailType');
-            if ($type) {
-                $query->where('employment_detail_type_id', $type);
+            $detailType = request('employmentDetailType');
+            if ($detailType) {
+                $query->where('employment_detail_type_id', $detailType);
             }
 
-            $value = request('value');
-            if ($value && $value != 0) {
-                $query->where('value', $value);
+            foreach (EmploymentDetailType::all() as $type) {
+                $fieldName = $type->name;
+                $tempModel = $this->strToModelName($fieldName);
+                if (class_exists($tempModel)) {
+                    $request = request($fieldName);
+                    if ($request) {
+                        $query->where('value', $request);
+                    }
+                }
             }
 
             $this->historyQueriesFilter($query);
@@ -112,43 +120,14 @@ class EmploymentDetailCrudController extends CrudController
                 ->select($currentTable . '.*');
         }
 
-        $this->crud->removeColumns(['employment_detail_type_id']);
-
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')
-            ->label('Employment detail type.')
-            ->attribute('formatted_name')
-            ->after('employee');
+        $this->column('employmentDetailType')->attribute('formatted_name')->after('employee');
 
         $this->crud->modifyColumn('value', [
-            'type' => 'closure',
-            'function' => function ($entry) {
-                $model = $this->strToModelName($entry->employmentDetailType->name);
-                if (class_exists($model)) {
-                    $value = $model::find($entry->value)->name;
-
-                    if ($value) {
-                        return $value;
-                    }
-                }
-
-                $value = $entry->value;
-
-                if (is_numeric($value)) {
-                    return $this->numberToDecimals($value);
-                }
-
-                $validator = Validator::make(['date' => $value], [
-                    'date' => 'required|date',
-                ]);
-
-                if ($validator->passes()) {
-                    $value = $this->dateFormat($value);
-                }
-
-                return $value;
-            },
             'escaped' => false,
+            'value' => function ($entry) {
+                return $entry->formatted_value;
+            },
         ]);
 
         // details type column
@@ -167,8 +146,6 @@ class EmploymentDetailCrudController extends CrudController
                     ->select($currentTable . '.*');
             },
         ]);
-
-        // dd($this->crud->columns());
     }
 
     public function setupShowOperation()

@@ -103,15 +103,6 @@ trait NewHireOperation
         $types = EmploymentDetailType::all();
         foreach ($types as $type) {
             $fieldName = Str::snake($type->name);
-            $this->crud
-                ->field([
-                    'name' => $fieldName,
-                    'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
-                    ],
-                ])
-                ->after('employmentDetailType');
-
             $modifiedAttributes = [];
 
             // model/select
@@ -121,7 +112,7 @@ trait NewHireOperation
 
                 $data = $data->mapWithKeys(function ($item) {
                     return [$item->id => $item->name];
-                });
+                })->toArray();
 
                 $modifiedAttributes = [
                     'type' => 'select_from_array',
@@ -138,7 +129,17 @@ trait NewHireOperation
                 ];
             }
 
-            $this->crud->modifyField($fieldName, $modifiedAttributes);
+            $this->crud->field(
+                array_merge(
+                    [
+                        'name' => $fieldName,
+                        'wrapper' => [
+                            'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
+                        ],
+                    ],
+                    $modifiedAttributes
+                )
+            )->after('employmentDetailType');
         }
     }
 }

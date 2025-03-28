@@ -16,11 +16,14 @@ trait ColumnTrait
             Str::snake($name) . '_id',
         ]);
 
+        $limit = 999;
+
         // if $name has dot notation then we assume its a relationship
         if (str_contains($name, '.')) {
             return $this->crud->column([
                 'name' => $name,
                 'label' => HelperFacade::strToHumanReadable(explode('.', $name)[0]),
+                'limit' => $limit,
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     $entity = explode('.', $column['entity']);
                     $joinTable = $this->crud->model->{$entity[0]}()->getModel()->getTable();
@@ -51,7 +54,7 @@ trait ColumnTrait
         }
 
         $modelTable = $this->crud->model->getTable();
-        $label = HelperFacade::strToHumanReadable($name);
+        $label = HelperFacade::strToHumanReadable(str_replace('_details', '', $name));
 
         // check if column exist in db table, and db data type
         if (Schema::hasColumn($modelTable, $name)) {
@@ -60,11 +63,11 @@ trait ColumnTrait
             // for now lets just assign if datatype is date and let auto otherwise.
             if ($type == 'date') {
                 // TODO:: searchLogic and orderLogic
-                return $this->crud->column($name)->label($label)->type('date');//->$type($type)
+                return $this->crud->column($name)->label($label)->type('date')->limit($limit);//->$type($type)
             }
         }
 
-        return $this->crud->column($name)->label($label);
+        return $this->crud->column($name)->label($label)->limit($limit);
     }
 
     public function imageColumn($name)

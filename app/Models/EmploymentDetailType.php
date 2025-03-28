@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\HelperTrait;
 use App\Traits\ModelTrait;
+use App\Facades\HelperFacade;
 use Illuminate\Database\Eloquent\Model;
 
 class EmploymentDetailType extends Model
 {
     use ModelTrait;
-    use HelperTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +60,7 @@ class EmploymentDetailType extends Model
     */
     public function getFormattedNameAttribute()
     {
-        return $this->strToHumanReadable($this->name);
+        return HelperFacade::strToHumanReadable($this->name);
     }
 
     /*
