@@ -49,10 +49,9 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter();
-        $this->crud->field('employmentDetailType')->attribute('formatted_name')->size(4);
+        $this->field('employmentDetailType')->attribute('formatted_name')->size(4);
 
         $valueOptions = [0 => '-'];
-
 
         if (request('employmentDetailType') && request('value')) {
             $type = EmploymentDetailType::find(request('employmentDetailType'));
@@ -64,14 +63,10 @@ class EmploymentDetailCrudController extends CrudController
             }
         }
 
-        $this->crud->field([
-            'name' => 'value',
-            'type' => 'select_from_array',
-            'options' => $valueOptions,
-            'wrapper' => [
-                'class' => 'form-group col-sm-4 mb-3 d-none',
-            ],
-        ]);
+        $this->field('value')
+            ->type('select_from_array')
+            ->options($valueOptions)
+            ->wrapper(['class' => 'form-group col-md-4 d-none']); // d-none to hide when load
 
         $this->effectivityDateFilter();
         $this->historyFilter();
@@ -172,6 +167,8 @@ class EmploymentDetailCrudController extends CrudController
                     ->select($currentTable . '.*');
             },
         ]);
+
+        // dd($this->crud->columns());
     }
 
     public function setupShowOperation()

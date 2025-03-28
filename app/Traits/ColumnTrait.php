@@ -12,7 +12,8 @@ trait ColumnTrait
     {
         $this->crud->removeColumns([
             $name,
-            str_replace('.', '__', $name)
+            str_replace('.', '__', $name),
+            Str::snake($name) . '_id',
         ]);
 
         // if $name has dot notation then we assume its a relationship
@@ -36,8 +37,6 @@ trait ColumnTrait
                     $entity = explode('.', $column['entity']);
                     $joinTable = $this->crud->model->{$entity[0]}()->getModel()->getTable();
                     $modelTable = $this->crud->model->getTable();
-
-                    debug($modelTable, $joinTable, $column);
 
                     // check first if attribute or column exist in database table
                     if (Schema::hasColumn($joinTable, $column['attribute'])) {
@@ -94,47 +93,54 @@ trait ColumnTrait
     | Employee
     |--------------------------------------------------------------------------
     */
-    public function employeeColumn($column = 'employee', $label = 'employee')
+    public function employeeColumn($name = 'employee', $label = 'employee')
     {
         $this->crud->removeColumns([
-            $column,
-            str_replace('.', '__', $column)
+            $name,
+            str_replace('.', '__', $name),
+            Str::snake($name) . '_id',
         ]);
 
         return $this->crud->column([
-            'name' => $column,
+            'name' => $name,
             'label' => __('Employee'),
             'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
+                // we use $column['entity'] in orWhereHas bec. there are only 2 posibilities we use this,
+                // but normally we ue orWhereHas($nameParts[0]) or explode the name using dot notation and
+                // take the 0 element array.
+                // 1. employee
+                // 2. relation.employee (polymorph etc..)
+                $query->orWhereHas($column['entity'], function ($q) use ($searchTerm) {
                     $q->where('last_name', 'like', '%' . $searchTerm . '%')
                         ->orWhere('first_name', 'like', '%' . $searchTerm . '%')
                         ->orWhere('middle_name', 'like', '%' . $searchTerm . '%');
                 });
             },
             'orderable' => true,
-            'orderLogic' => function ($query, $tempCol, $columnDirection) use ($column) {
-                $currentTable = $this->crud->model->getTable();
-                $employeeTable = 'employees';
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                $modelTable = $this->crud->model->getTable();
                 $relationTable = null;
 
-                if (str_contains($column, '.')) {
-                    $columnParts = explode('.', $column); // Example: "relation.employee"
+                // if name has dot or . notation we assume its a polyrmorph
+                if (str_contains($column['name'], '.')) {
+                    $columnParts = explode('.', $column['entity']);
                     $relationTable = $this->crud->model->{$columnParts[0]}()->getModel()->getTable();
 
-                    $query->leftJoin($relationTable, function ($join) use ($currentTable, $relationTable) {
-                        $join->on("$relationTable.relationable_id", '=', "$currentTable.id")
+                    // join the polymorph
+                    $query->leftJoin($relationTable, function ($join) use ($modelTable, $relationTable) {
+                        $join->on("$relationTable.relationable_id", '=', "$modelTable.id")
                             ->where("$relationTable.relationable_type", '=', $this->crud->model::class);
                     });
 
-                    $query->leftJoin($employeeTable, "$employeeTable.id", '=', "$relationTable.employee_id");
+                    $query->leftJoin("employees", "employees.id", '=', "$relationTable.employee_id");
                 } else {
-                    $query->leftJoin($employeeTable, $employeeTable . '.id', '=', $currentTable . '.employee_id');
+                    $query->leftJoin("employees", "employees.id", '=', $modelTable . '.employee_id');
                 }
 
-                $query->orderBy("$employeeTable.last_name", $columnDirection)
-                    ->orderBy("$employeeTable.first_name", $columnDirection)
-                    ->orderBy("$employeeTable.middle_name", $columnDirection)
-                    ->select("$currentTable.*");
+                $query->orderBy("employees.last_name", $columnDirection)
+                    ->orderBy("employees.first_name", $columnDirection)
+                    ->orderBy("employees.middle_name", $columnDirection)
+                    ->select("$modelTable.*");
 
                 return $query;
             },

@@ -1,4 +1,5 @@
 @push('after_scripts')
+@include('crud::inc.form_fields_script')
     @if ($crud->getOperation() == 'list')
         <script>
             var valueSelector = '[name="value"]';

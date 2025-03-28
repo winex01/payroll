@@ -42,8 +42,8 @@ class ChangeShiftScheduleCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter();
-        // $this->crud->field('date_range')->type('date_range')->size(4); // TODO:: no basset date range script
-        $this->crud->field('shiftSchedule')->size(4);
+        // $this->crud->field('date_range')->type('date_range')->size(4); // TODO::
+        $this->field('shiftSchedule')->size(4);
     }
 
     /**
@@ -69,7 +69,7 @@ class ChangeShiftScheduleCrudController extends CrudController
         });
 
         $this->employeeColumn();
-        // $this->column('date');
+        $this->column('date');
         $this->column('shiftSchedule.name');
     }
 
