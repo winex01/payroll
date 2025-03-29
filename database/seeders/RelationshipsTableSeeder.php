@@ -99,9 +99,9 @@ class RelationshipsTableSeeder extends Seeder
             11 => 
             array (
                 'id' => 12,
-                'name' => 'Character Reference',
+                'name' => 'Reference',
                 'created_at' => '2025-03-29 21:55:57',
-                'updated_at' => '2025-03-29 21:55:57',
+                'updated_at' => '2025-03-29 22:01:59',
             ),
         ));
         
