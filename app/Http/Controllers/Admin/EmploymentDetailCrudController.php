@@ -75,26 +75,6 @@ class EmploymentDetailCrudController extends CrudController
         $this->historyFilter();
     }
 
-    public function filterQueries(\Closure $callback = null)
-    {
-        if (!$this->crud->hasAccess('filters')) {
-            return;
-        }
-
-        // make sure to run only filterValidations on list and export operation,
-        // because we put the filterQueries in setupListOperation and most of the time
-        // we inherit all setupListOperaiton into our showOperation and cause error.,
-        if (in_array($this->crud->getOperation(), ['list', 'export'])) {
-            if ($this->filterValidations()) {
-                if ($callback) {
-                    $callback($this->crud->query);
-                }
-            }
-
-            return redirect()->back()->withInput(request()->input());
-        }
-    }
-
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -111,6 +91,7 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('employment_detail_type_id', $detailType);
             }
 
+            // TODO:: fix this shit
             foreach (EmploymentDetailType::all() as $type) {
                 $fieldName = $type->name;
                 $tempModel = $this->strToModelName($fieldName);
