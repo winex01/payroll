@@ -10,10 +10,12 @@ trait ColumnTrait
 {
     public function column($name)
     {
+        $nameParts = explode('.', $name);
+
         $this->crud->removeColumns([
             $name,
             str_replace('.', '__', $name),
-            Str::snake($name) . '_id',
+            Str::snake($nameParts[0]) . '_id',
         ]);
 
         $limit = 999;

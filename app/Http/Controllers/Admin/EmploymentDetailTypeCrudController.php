@@ -45,8 +45,8 @@ class EmploymentDetailTypeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->column('name');
-        $this->crud->column('validation');
+        $this->column('name');
+        $this->column('validation');
     }
 
     /**
@@ -59,8 +59,8 @@ class EmploymentDetailTypeCrudController extends CrudController
     {
         CRUD::setValidation($this->validateUnique('name'));
 
-        $this->crud->field('name');
-        $this->crud->field('validation')->validationRules('required');
+        $this->field('name');
+        $this->field('validation')->validationRules('required');
     }
 
     /**

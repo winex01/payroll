@@ -9,10 +9,12 @@ trait FieldTrait
 {
     public function field($name)
     {
+        $nameParts = explode('.', $name);
+
         $this->crud->removeFields([
             $name,
             str_replace('.', '__', $name),
-            Str::snake($name) . '_id',
+            Str::snake($nameParts[0]) . '_id',
         ]);
 
         return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($name));
