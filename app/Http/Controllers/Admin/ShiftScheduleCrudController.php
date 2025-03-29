@@ -71,10 +71,10 @@ class ShiftScheduleCrudController extends CrudController
         CRUD::setValidation(ShiftScheduleRequest::class);
         CRUD::setFromDb();
 
-        $this->crud->field('name')->hint('Example: 08:30AM-5:30PM, Morning Shift, Graveyard Shift, Etc.');
+        $this->field('name')->hint('Example: 08:30AM-5:30PM, Morning Shift, Graveyard Shift, Etc.');
         $this->booleanField('open_time');
 
-        $this->crud->field([   // repeatable
+        $this->field([   // repeatable
             'name' => 'working_hours',
             'type' => 'repeat',
             'fields' => [ // also works as: "fields"
@@ -95,20 +95,20 @@ class ShiftScheduleCrudController extends CrudController
         ]);
 
         // label: Shift Policies
-        $this->crud->field([
+        $this->field([
             'name' => 'temp',
             'type' => 'custom_html',
             'value' => 'Shift Policies:',
             'wrapper' => ['class' => 'form-group col-sm-12']// this wrapper supports: bs4, bs5
         ])->after('working_hours');
 
-        $this->crud->field('early_login_overtime')->size(4);
-        $this->crud->field('after_shift_overtime')->size(4);
-        $this->crud->field('night_differential')->size(4);
-        $this->crud->field('late')->size(4);
-        $this->crud->field('undertime')->size(4);
+        $this->field('early_login_overtime')->size(4);
+        $this->field('after_shift_overtime')->size(4);
+        $this->field('night_differential')->size(4);
+        $this->field('late')->size(4);
+        $this->field('undertime')->size(4);
 
-        $this->crud->field([
+        $this->field([
             'name' => 'day_start',
             'type' => 'number',
             'default' => 2,
@@ -125,8 +125,6 @@ class ShiftScheduleCrudController extends CrudController
                          is set to 2, the workday will start at 5 AM. This adjustment helps prevent overtime from
                          overlapping into the next day."
         ]);
-
-
     }
 
     /**

@@ -41,7 +41,7 @@ class FamilyCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter('relation.employee');
-        $this->relationshipFilter('relation.relationship');
+        $this->field('relation.relationship');
     }
 
     /**

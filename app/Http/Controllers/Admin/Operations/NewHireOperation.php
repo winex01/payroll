@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Operations;
 
+use App\Traits\FieldTrait;
 use Illuminate\Support\Str;
 use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
@@ -11,6 +12,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasForm;
 trait NewHireOperation
 {
     use HasForm;
+    use FieldTrait;
 
     /**
      * Define which routes are needed for this operation.
@@ -50,9 +52,9 @@ trait NewHireOperation
 
         $this->crud->operation('newHire', function () {
             $this->crud->setValidation(NewHireRequest::class);
-            $this->crud->field('employee');
+            $this->field('employee');
             $this->employmentDetailTypes(hidden: false);
-            $this->crud->field('effectivity_date');
+            $this->field('effectivity_date');
 
         });
     }
@@ -129,7 +131,7 @@ trait NewHireOperation
                 ];
             }
 
-            $this->crud->field(
+            $this->field(
                 array_merge(
                     [
                         'name' => $fieldName,

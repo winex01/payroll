@@ -59,7 +59,7 @@ class EmploymentDetailCrudController extends CrudController
             if (class_exists($tempModel)) {
                 $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
 
-                $this->crud->field([
+                $this->field([
                     'name' => Str::snake($type->name),
                     'label' => HelperFacade::strToHumanReadable($type->name),
                     'type' => 'select_from_array',

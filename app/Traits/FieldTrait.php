@@ -7,8 +7,13 @@ use App\Facades\HelperFacade;
 
 trait FieldTrait
 {
-    public function field($name)
+    public function field($nameOrDefinition)
     {
+        if (is_array($nameOrDefinition)) {
+            return $this->crud->field($nameOrDefinition);
+        }
+
+        $name = $nameOrDefinition;
         $nameParts = explode('.', $name);
 
         $this->crud->removeFields([
@@ -17,7 +22,7 @@ trait FieldTrait
             Str::snake($nameParts[0]) . '_id',
         ]);
 
-        return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($name));
+        return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($nameParts[0]));
     }
 
     public function booleanField($name, $options = [])
