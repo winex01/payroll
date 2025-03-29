@@ -25,7 +25,6 @@
                     employmentDetailType: field.value,
                 },
                 success: function(response) {
-                    console.log(response);
                     if (response) {
                         /* SELECT FIELDS */
                         crud.fields(response.selectFields).forEach(function(field) {
@@ -37,6 +36,11 @@
                                 field.input.value = '';
                                 field.hide();
                             }
+
+                            // event set value for the specific field to copy value to value field.
+                            crud.field(response.employmentDetailType).onChange(function(field) {
+                                crud.field('value').input.value = field.value;
+                            }).change();
                         });
 
                         /* INPUT FIELDS only in create anad edit */
@@ -57,7 +61,6 @@
                                 crud.field('value').input.value = field.value;
                             }).change();
                         }
-
                     } else {
                         console.log(response);
                         new Noty({

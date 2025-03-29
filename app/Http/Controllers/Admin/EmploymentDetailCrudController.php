@@ -54,7 +54,6 @@ class EmploymentDetailCrudController extends CrudController
         $this->field('employmentDetailType')->size(4);
         $this->field('value')->type('hidden');
 
-
         foreach (EmploymentDetailType::all() as $type) {
             $tempModel = $this->strToModelName($type->name);
             if (class_exists($tempModel)) {
@@ -91,16 +90,9 @@ class EmploymentDetailCrudController extends CrudController
                 $query->where('employment_detail_type_id', $detailType);
             }
 
-            // TODO:: fix this shit
-            foreach (EmploymentDetailType::all() as $type) {
-                $fieldName = $type->name;
-                $tempModel = $this->strToModelName($fieldName);
-                if (class_exists($tempModel)) {
-                    $request = request($fieldName);
-                    if ($request) {
-                        $query->where('value', $request);
-                    }
-                }
+            $value = request('value');
+            if ($value) {
+                $query->where('value', $value);
             }
 
             $this->historyQueriesFilter($query);
@@ -189,7 +181,6 @@ class EmploymentDetailCrudController extends CrudController
                 $selectFields[] = $typeName;
             } else {
                 $inputFields[] = $typeName;
-                $inputFields[] = 'value';
             }
         }
 
