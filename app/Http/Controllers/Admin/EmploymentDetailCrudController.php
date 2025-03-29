@@ -88,11 +88,15 @@ class EmploymentDetailCrudController extends CrudController
             $detailType = request('employmentDetailType');
             if ($detailType) {
                 $query->where('employment_detail_type_id', $detailType);
-            }
 
-            $value = request('value');
-            if ($value) {
-                $query->where('value', $value);
+                $detailTypeModel = EmploymentDetailType::findOrFail($detailType);
+                // only add query clause value if employmentDetailType is select field
+                if (str_contains($detailTypeModel->validation, 'exists')) {
+                    $value = request('value');
+                    if ($value) {
+                        $query->where('value', $value);
+                    }
+                }
             }
 
             $this->historyQueriesFilter($query);
@@ -165,6 +169,7 @@ class EmploymentDetailCrudController extends CrudController
     {
         $validator = Validator::make(request()->all(), [
             'employmentDetailType' => 'required|exists:employment_detail_types,id',
+            'operation' => 'required|in:list,create,update',
         ]);
 
         if ($validator->fails()) {
@@ -184,14 +189,23 @@ class EmploymentDetailCrudController extends CrudController
             }
         }
 
-        // selected employmentDetailType field
-        $employmentDetailType = EmploymentDetailType::findOrFail(request('employmentDetailType'));
-        $employmentDetailType = Str::snake($employmentDetailType->name);
+        // selected dynamicField field
+        $dynamicFieldModel = EmploymentDetailType::findOrFail(request('employmentDetailType'));
+        $dynamicField = Str::snake($dynamicFieldModel->name);
+
+        $isDynamicFieldSelect = false;
+        if (str_contains($dynamicFieldModel->validation, 'exists')) {
+            $isDynamicFieldSelect = true;
+        }
+
+        $operation = request('operation');
 
         return response()->json(compact(
+            'operation',
+            'isDynamicFieldSelect',
             'selectFields',
             'inputFields',
-            'employmentDetailType',
+            'dynamicField',
         ));
     }
 }
