@@ -43,5 +43,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PayrollGroupsTableSeeder::class);
         $this->call(CompaniesTableSeeder::class);
         $this->call(LeaveTypesTableSeeder::class);
+        $this->call(RelationshipsTableSeeder::class);
     }
 }

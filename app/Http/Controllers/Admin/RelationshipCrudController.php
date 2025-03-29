@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Traits\CoreTrait;
-use App\Http\Requests\RelationshipRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -21,6 +20,7 @@ class RelationshipCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     use CoreTrait;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -54,7 +54,7 @@ class RelationshipCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(RelationshipRequest::class);
+        CRUD::setValidation($this->validateUnique('name'));
         CRUD::setFromDb();
     }
 
