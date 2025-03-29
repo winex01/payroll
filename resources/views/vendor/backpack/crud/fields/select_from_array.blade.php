@@ -16,15 +16,15 @@
     @include('crud::fields.inc.translatable_icon')
     @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
-        name="{{ $field['name'] }}" data-init-function="bpFieldInitSelect2Element"
+        name="{{ $field['name'] }}@if ($field['multiple'])[]@endif"
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
+        @if ($field['multiple'])multiple bp-field-main-input @endif
+
+        data-init-function="bpFieldInitSelect2Element"
         data-placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '-' }}"
         data-close-on-select="{{ isset($field['close_on_select']) ? $field['close_on_select'] : true }}"
         data-allows-clear="{{ isset($field['allows_clear']) ? $field['allows_clear'] : true }}"
-        @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
-        @if ($field['multiple']) multiple bp-field-main-input @endif
-        @if ($crud->getOperation() == 'list')
-            data-filter-type="select2"
-        @endif
+        @if ($crud->getOperation() == 'list') data-filter-type="select2" @endif
         >
 
         @if ($field['allows_null'] && !$field['multiple'])
