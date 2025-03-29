@@ -7,11 +7,6 @@ use App\Http\Requests\ShiftScheduleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class ShiftScheduleCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class ShiftScheduleCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -22,11 +17,6 @@ class ShiftScheduleCrudController extends CrudController
 
     use CoreTrait;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
     public function setup()
     {
         CRUD::setModel(\App\Models\ShiftSchedule::class);
@@ -37,12 +27,6 @@ class ShiftScheduleCrudController extends CrudController
         $this->ignoreIdPermissions(1); // 1 = Rest day
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
         $this->column('name');
@@ -58,12 +42,6 @@ class ShiftScheduleCrudController extends CrudController
         $this->setupListOperation();
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         $this->widgetBladeScript('crud::scripts.shift-schedule');
@@ -127,12 +105,6 @@ class ShiftScheduleCrudController extends CrudController
         ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

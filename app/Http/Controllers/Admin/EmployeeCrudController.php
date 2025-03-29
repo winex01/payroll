@@ -9,11 +9,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Http\Controllers\Admin\Operations\EmployeeFetchOperation;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
-/**
- * Class EmployeeCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class EmployeeCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -26,11 +21,6 @@ class EmployeeCrudController extends CrudController
     use FilterOperation;
     use EmployeeFetchOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
     public function setup()
     {
         CRUD::setModel(\App\Models\Employee::class);
@@ -46,12 +36,6 @@ class EmployeeCrudController extends CrudController
         $this->field('civilStatus');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
@@ -72,13 +56,6 @@ class EmployeeCrudController extends CrudController
         $this->column('civilStatus.name')->after('birth_place');
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     *
-     */
     protected function setupCreateOperation()
     {
         $this->widgetBladeScript('crud::scripts.employee');
@@ -119,12 +96,6 @@ class EmployeeCrudController extends CrudController
         $this->field('pagibig')->tab($tab);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
