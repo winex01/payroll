@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
 use App\Facades\HelperFacade;
 
 trait FieldTrait
@@ -10,7 +11,8 @@ trait FieldTrait
     {
         $this->crud->removeFields([
             $name,
-            str_replace('.', '__', $name)
+            str_replace('.', '__', $name),
+            Str::snake($name) . '_id',
         ]);
 
         return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($name));

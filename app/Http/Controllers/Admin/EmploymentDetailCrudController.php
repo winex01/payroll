@@ -51,8 +51,9 @@ class EmploymentDetailCrudController extends CrudController
     {
         $this->employeeFilter();
         $this->effectivityDateFilter();
-        $this->field('employmentDetailType')->attribute('formatted_name')->size(4);
+        $this->field('employmentDetailType')->size(4);
         $this->field('value')->type('hidden');
+
 
         foreach (EmploymentDetailType::all() as $type) {
             $tempModel = $this->strToModelName($type->name);
@@ -67,11 +68,31 @@ class EmploymentDetailCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-sm-4 mb-4 d-none ',
                     ],
-                ])->after('employmentDetailType');
+                ]);
             }
         }
 
         $this->historyFilter();
+    }
+
+    public function filterQueries(\Closure $callback = null)
+    {
+        if (!$this->crud->hasAccess('filters')) {
+            return;
+        }
+
+        // make sure to run only filterValidations on list and export operation,
+        // because we put the filterQueries in setupListOperation and most of the time
+        // we inherit all setupListOperaiton into our showOperation and cause error.,
+        if (in_array($this->crud->getOperation(), ['list', 'export'])) {
+            if ($this->filterValidations()) {
+                if ($callback) {
+                    $callback($this->crud->query);
+                }
+            }
+
+            return redirect()->back()->withInput(request()->input());
+        }
     }
 
     /**
@@ -82,10 +103,6 @@ class EmploymentDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->setDefaultPageLength(25);
-
-        $this->widgetBladeScript('crud::scripts.employment-detail');
-
         $this->filterQueries(function ($query) {
             $this->employeeQueryFilter($query);
 
@@ -108,6 +125,9 @@ class EmploymentDetailCrudController extends CrudController
             $this->historyQueriesFilter($query);
         });
 
+        $this->widgetBladeScript('crud::scripts.employment-detail');
+        $this->crud->setDefaultPageLength(25);
+
         $currentTable = $this->crud->model->getTable();
         $detailsTypeTable = 'employment_detail_types';
 
@@ -127,8 +147,6 @@ class EmploymentDetailCrudController extends CrudController
     public function setupShowOperation()
     {
         $this->setupListOperation();
-        // TODO:: here naku next
-        $this->crud->removeColumn('employee_id');
     }
 
     /**
@@ -142,18 +160,12 @@ class EmploymentDetailCrudController extends CrudController
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         CRUD::setValidation(EmploymentDetailRequest::class);
-        CRUD::setFromDb();
 
-        $this->crud->removeFields(['employee_id', 'employment_detail_type_id']);
-
-        $this->crud->field('employee')->makeFirst();
-        $this->crud->field('employmentDetailType')
-            ->attribute('formatted_name')
-            ->size(6)
-            ->after('employee');
-        $this->crud->field('value')->type('hidden');
-
+        $this->field('employee')->makeFirst();
+        $this->field('employmentDetailType')->size(6);
+        $this->field('value')->type('hidden');
         $this->employmentDetailTypes();
+        $this->field('effectivity_date');
     }
 
     /**
@@ -178,42 +190,36 @@ class EmploymentDetailCrudController extends CrudController
 
     public function valueField()
     {
-        $this->crud->hasAccessToAny(['create', 'update']);
+        $validator = Validator::make(request()->all(), [
+            'employmentDetailType' => 'required|exists:employment_detail_types,id',
+        ]);
 
-        $inputType = EmploymentDetailType::find(request('id'));
-
-        if (!$inputType) {
+        if ($validator->fails()) {
+            \Alert::error($validator->errors()->all())->flash();
             return false;
         }
 
-        $fieldName = Str::snake($inputType->name);
-        $fieldNameHumanReadable = $this->strToHumanReadable($inputType->name);
-
-        $types = EmploymentDetailType::all();
-
-        $allFieldNames = [];
-        foreach ($types as $type) {
-            $allFieldNames[] = Str::snake($type->name);
+        $selectFields = [];
+        $inputFields = [];
+        foreach (EmploymentDetailType::pluck('name')->toArray() as $type) {
+            $typeName = Str::snake($type);
+            $tempModel = $this->strToModelName($typeName);
+            if (class_exists($tempModel)) {
+                $selectFields[] = $typeName;
+            } else {
+                $inputFields[] = $typeName;
+                $inputFields[] = 'value';
+            }
         }
 
-        $allFieldNames[] = 'value';
-        $temp = null;
+        // selected employmentDetailType field
+        $employmentDetailType = EmploymentDetailType::findOrFail(request('employmentDetailType'));
+        $employmentDetailType = Str::snake($employmentDetailType->name);
 
-        // use in list opt, filters.
-        $selectOptions = null;
-        $tempModel = $this->strToModelName($fieldName);
-        if (class_exists($tempModel)) {
-            $selectOptions = $tempModel::all();
-        }
-
-        return response()->json(
-            compact(
-                'temp',
-                'fieldName',
-                'fieldNameHumanReadable',
-                'allFieldNames',
-                'selectOptions'
-            )
-        );
+        return response()->json(compact(
+            'selectFields',
+            'inputFields',
+            'employmentDetailType',
+        ));
     }
 }
