@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Relationship extends Model
 {
@@ -31,7 +32,7 @@ class Relationship extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('orderByName', function (\Illuminate\Database\Eloquent\Builder $builder) {
+        static::addGlobalScope('orderByName', function (Builder $builder) {
             $orderBy = 'asc';
             $builder->orderBy('name', $orderBy);
         });
