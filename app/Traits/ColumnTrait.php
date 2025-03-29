@@ -24,7 +24,7 @@ trait ColumnTrait
         if (str_contains($name, '.')) {
             return $this->crud->column([
                 'name' => $name,
-                'label' => HelperFacade::strToHumanReadable(explode('.', $name)[0]),
+                'label' => HelperFacade::strToHumanReadable($nameParts[0]),
                 'limit' => $limit,
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     $entity = explode('.', $column['entity']);
@@ -62,10 +62,10 @@ trait ColumnTrait
         if (Schema::hasColumn($modelTable, $name)) {
             $type = Schema::getColumnType($modelTable, $name);
 
-            // for now lets just assign if datatype is date and let auto otherwise.
+            // for now lets just assign if datatype is date and let backpack decide for the rest.
             if ($type == 'date') {
                 // TODO:: searchLogic and orderLogic
-                return $this->crud->column($name)->label($label)->type('date')->limit($limit);//->$type($type)
+                return $this->crud->column($name)->label($label)->type('date')->limit($limit);
             }
         }
 
