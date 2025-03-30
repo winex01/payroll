@@ -117,7 +117,7 @@ class EmploymentDetailCrudController extends CrudController
         CRUD::setValidation(EmploymentDetailRequest::class);
 
         $this->field('employee')->makeFirst();
-        $this->field('employmentDetailType')->size(6);
+        $this->field('employmentDetailType');
         $this->field('value')->type('hidden');
         $this->employmentDetailTypes();
         $this->field('effectivity_date');

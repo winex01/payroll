@@ -136,7 +136,7 @@ trait NewHireOperation
                     [
                         'name' => $fieldName,
                         'wrapper' => [
-                            'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
+                            'class' => 'form-group col-sm-12 mb-12 ' . ($hidden ? 'd-none' : ''),
                         ],
                     ],
                     $modifiedAttributes

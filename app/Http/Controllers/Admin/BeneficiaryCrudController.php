@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Operations;
+namespace App\Http\Controllers\Admin;
 
 use App\Traits\CoreTrait;
 use App\Http\Requests\RelationRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
-trait RelationPolymorphOperation
+class BeneficiaryCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -17,6 +18,15 @@ trait RelationPolymorphOperation
 
     use CoreTrait;
     use FilterOperation;
+
+    public function setup()
+    {
+        CRUD::setModel(\App\Models\Beneficiary::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/beneficiary');
+        CRUD::setEntityNameStrings('beneficiary', 'beneficiaries');
+
+        $this->userPermissions();
+    }
 
     public function setupFilterOperation()
     {
@@ -39,6 +49,13 @@ trait RelationPolymorphOperation
     {
         CRUD::setValidation(RelationRequest::class);
         $this->morphFields('relation');
+
+        $this->field('city');
+        $this->field('country');
+        $this->field('company_email')->validationRules('nullable|email');
+        $this->field('personal_email')->validationRules('nullable|email');
+        $this->field('company');
+        $this->field('company_address');
     }
 
     protected function setupUpdateOperation()

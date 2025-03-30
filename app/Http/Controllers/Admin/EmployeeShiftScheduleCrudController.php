@@ -62,7 +62,7 @@ class EmployeeShiftScheduleCrudController extends CrudController
         $this->field('employee');
         $this->field('effectivity_date');
         foreach ($this->daysOfWeek() as $day) {
-            $this->field($day)->size(4);
+            $this->field($day);
         }
     }
 
