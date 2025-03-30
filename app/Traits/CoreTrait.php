@@ -19,7 +19,6 @@ trait CoreTrait
     use ReviseOperation;
     use ValidationTrait;
 
-    // TODO:: remove this, transfer to field and column trait.
     public function morphColumnsFields($relationship, $table = null, $type)
     {
         $table = $table ?? $this->crud->model->{$relationship}()->getModel()->getTable();
@@ -38,7 +37,7 @@ trait CoreTrait
             $colType = Schema::getColumnType($table, $col);
             $col = str_replace('_id', '', $col);
             $name = $relationship . '.' . $col;
-            $field = $this->crud->{$type}($name)->label(HelperFacade::strToHumanReadable($col));
+            $field = $this->{$type}($name)->label(HelperFacade::strToHumanReadable($col));
 
             if ($colType == 'date') {
                 $field->type('date');
