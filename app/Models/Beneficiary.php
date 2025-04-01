@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class Relationship extends Model
+class Beneficiary extends Model
 {
     use ModelTrait;
 
@@ -16,7 +16,7 @@ class Relationship extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'relationships';
+    protected $table = 'beneficiaries';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -28,24 +28,15 @@ class Relationship extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('orderByName', function (Builder $builder) {
-            $orderBy = 'asc';
-            $builder->orderBy('name', $orderBy);
-        });
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function relations()
+    public function relation(): MorphOne
     {
-        return $this->hasMany(Relation::class);
+        return $this->morphOne(Relation::class, 'relationable');
     }
 
     /*

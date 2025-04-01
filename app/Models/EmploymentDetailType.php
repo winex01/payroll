@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\HelperTrait;
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class EmploymentDetailType extends Model
 {
     use ModelTrait;
-    use HelperTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +32,7 @@ class EmploymentDetailType extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('orderByReorder', function (\Illuminate\Database\Eloquent\Builder $builder) {
+        static::addGlobalScope('orderByReorder', function (Builder $builder) {
             $builder->orderBy('lft', 'asc');
         });
     }
@@ -59,10 +58,6 @@ class EmploymentDetailType extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getFormattedNameAttribute()
-    {
-        return $this->strToHumanReadable($this->name);
-    }
 
     /*
     |--------------------------------------------------------------------------

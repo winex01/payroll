@@ -33,10 +33,10 @@ class RelationRequest extends FormRequest
             'relation.birth_date' => 'nullable|date',
             'relation.address' => 'required|string|min:10|max:255',
             // 'relation.contact_no' => 'nullable|phone:INTERNATIONAL,PH',
-            'relation.contact_no' => [
-                'nullable',
-                'regex:/^(?:\+63|0)(\d{9,10})$/',
-            ],
+            // 'relation.contact_no' => [
+            //     'nullable',
+            //     'regex:/^(?:\+63|0)(\d{9,10})$/',
+            // ],
         ];
     }
 
@@ -54,7 +54,7 @@ class RelationRequest extends FormRequest
             'relation.first_name' => 'first name',
             'relation.middle_name' => 'middle name',
             'relation.birth_date' => 'birth date',
-            'relation.contact_no' => 'contact no',
+            // 'relation.contact_no' => 'contact no',
             'relation.address' => 'address',
         ];
     }
@@ -68,7 +68,7 @@ class RelationRequest extends FormRequest
     public function messages()
     {
         return [
-            'relation.contact_no' => 'The :attribute must be a valid mobile or landline number.'
+            // 'relation.contact_no' => 'The :attribute must be a valid mobile or landline number.'
         ];
     }
 }

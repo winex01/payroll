@@ -2,8 +2,29 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+use App\Facades\HelperFacade;
+
 trait FieldTrait
 {
+    public function field($nameOrDefinition)
+    {
+        if (is_array($nameOrDefinition)) {
+            return $this->crud->field($nameOrDefinition);
+        }
+
+        $name = $nameOrDefinition;
+        $nameParts = explode('.', $name);
+
+        $this->crud->removeFields([
+            $name,
+            str_replace('.', '__', $name),
+            Str::snake($nameParts[0]) . '_id',
+        ]);
+
+        return $this->crud->field($name)->label(HelperFacade::strToHumanReadable($nameParts[0]));
+    }
+
     public function booleanField($name, $options = [])
     {
         if (!$options) {

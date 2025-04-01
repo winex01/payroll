@@ -28,6 +28,8 @@ Route::group([
     Route::crud('employee-calendar', 'EmployeeCalendarCrudController');
     Route::crud('change-shift-schedule', 'ChangeShiftScheduleCrudController');
     Route::crud('leave-type', 'LeaveTypeCrudController');
+    Route::crud('relationship', 'RelationshipCrudController');
+    Route::crud('beneficiary', 'BeneficiaryCrudController');
 }); // this should be the absolute last line of this file
 
 /**

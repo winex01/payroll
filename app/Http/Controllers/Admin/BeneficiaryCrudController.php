@@ -8,7 +8,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
-class FamilyCrudController extends CrudController
+class BeneficiaryCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -21,9 +21,9 @@ class FamilyCrudController extends CrudController
 
     public function setup()
     {
-        CRUD::setModel(\App\Models\Family::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/family');
-        CRUD::setEntityNameStrings('family', 'families');
+        CRUD::setModel(\App\Models\Beneficiary::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/beneficiary');
+        CRUD::setEntityNameStrings('beneficiary', 'beneficiaries');
 
         $this->userPermissions();
     }
@@ -49,6 +49,13 @@ class FamilyCrudController extends CrudController
     {
         CRUD::setValidation(RelationRequest::class);
         $this->morphFields('relation');
+
+        $this->field('city');
+        $this->field('country');
+        $this->field('company_email')->validationRules('nullable|email');
+        $this->field('personal_email')->validationRules('nullable|email');
+        $this->field('company');
+        $this->field('company_address');
     }
 
     protected function setupUpdateOperation()

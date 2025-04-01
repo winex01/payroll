@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 use Backpack\CRUD\app\Library\Widget;
 
 trait HelperTrait

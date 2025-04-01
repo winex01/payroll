@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Traits\CoreTrait;
 use Illuminate\Support\Str;
+use App\Facades\HelperFacade;
 use App\Models\EmploymentDetail;
 use Illuminate\Support\Facades\App;
 use App\Models\EmploymentDetailType;
@@ -14,11 +15,6 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
-/**
- * Class EmploymentDetailCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class EmploymentDetailCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -31,11 +27,6 @@ class EmploymentDetailCrudController extends CrudController
     use CoreTrait;
     use FilterOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
     public function setup()
     {
         CRUD::setModel(EmploymentDetail::class);
@@ -49,63 +40,54 @@ class EmploymentDetailCrudController extends CrudController
     public function setupFilterOperation()
     {
         $this->employeeFilter();
-        $this->crud->field('employmentDetailType')->attribute('formatted_name')->size(4);
+        $this->effectivityDateFilter();
+        $this->field('employmentDetailType')->size(4);
+        $this->field('value')->type('hidden');
 
-        $valueOptions = [0 => '-'];
+        foreach (EmploymentDetailType::all() as $type) {
+            $tempModel = $this->strToModelName($type->name);
+            if (class_exists($tempModel)) {
+                $valueOptions = $tempModel::get()->pluck('name', 'id')->toArray();
 
-
-        if (request('employmentDetailType') && request('value')) {
-            $type = EmploymentDetailType::find(request('employmentDetailType'));
-            if ($type) {
-                $tempModel = $this->strToModelName($type->name);
-                if (class_exists($tempModel)) {
-                    $valueOptions = array_merge($valueOptions, $tempModel::get()->pluck('name', 'id')->toArray());
-                }
+                $this->field([
+                    'name' => Str::snake($type->name),
+                    'label' => HelperFacade::strToHumanReadable($type->name),
+                    'type' => 'select_from_array',
+                    'options' => $valueOptions,
+                    'wrapper' => [
+                        'class' => 'form-group col-sm-4 mb-4 d-none ',
+                    ],
+                ]);
             }
         }
 
-        $this->crud->field([
-            'name' => 'value',
-            'type' => 'select_from_array',
-            'options' => $valueOptions,
-            'wrapper' => [
-                'class' => 'form-group col-sm-4 mb-3 d-none',
-            ],
-        ]);
-
-        $this->effectivityDateFilter();
         $this->historyFilter();
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        $this->crud->setDefaultPageLength(25);
-
-        $this->widgetBladeScript('crud::scripts.employment-detail');
-
         $this->filterQueries(function ($query) {
             $this->employeeQueryFilter($query);
 
-            $type = request('employmentDetailType');
-            if ($type) {
-                $query->where('employment_detail_type_id', $type);
-            }
+            $detailType = request('employmentDetailType');
+            if ($detailType) {
+                $query->where('employment_detail_type_id', $detailType);
 
-            $value = request('value');
-            if ($value && $value != 0) {
-                $query->where('value', $value);
+                $detailTypeModel = EmploymentDetailType::findOrFail($detailType);
+                // only add query clause value if employmentDetailType is select field
+                if (str_contains($detailTypeModel->validation, 'exists')) {
+                    $value = request('value');
+                    if ($value) {
+                        $query->where('value', $value);
+                    }
+                }
             }
 
             $this->historyQueriesFilter($query);
         });
 
-        CRUD::setFromDb(false, true);
+        $this->widgetBladeScript('crud::scripts.employment-detail');
+        $this->crud->setDefaultPageLength(25);
 
         $currentTable = $this->crud->model->getTable();
         $detailsTypeTable = 'employment_detail_types';
@@ -117,100 +99,30 @@ class EmploymentDetailCrudController extends CrudController
                 ->select($currentTable . '.*');
         }
 
-        $this->crud->removeColumns(['employment_detail_type_id']);
-
         $this->employeeColumn();
-        $this->crud->column('employmentDetailType')
-            ->label('Employment detail type.')
-            ->attribute('formatted_name')
-            ->after('employee');
-
-        $this->crud->modifyColumn('value', [
-            'type' => 'closure',
-            'function' => function ($entry) {
-                $model = $this->strToModelName($entry->employmentDetailType->name);
-                if (class_exists($model)) {
-                    $value = $model::find($entry->value)->name;
-
-                    if ($value) {
-                        return $value;
-                    }
-                }
-
-                $value = $entry->value;
-
-                if (is_numeric($value)) {
-                    return $this->numberToDecimals($value);
-                }
-
-                $validator = Validator::make(['date' => $value], [
-                    'date' => 'required|date',
-                ]);
-
-                if ($validator->passes()) {
-                    $value = $this->dateFormat($value);
-                }
-
-                return $value;
-            },
-            'escaped' => false,
-        ]);
-
-        // details type column
-        $this->crud->modifyColumn('employmentDetailType', [
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas($column['name'], function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', '%' . $searchTerm . '%');
-                });
-            },
-
-            'orderable' => true,
-            'orderLogic' => function ($query, $column, $columnDirection) use ($currentTable, $detailsTypeTable) {
-                return $query
-                    ->leftJoin($detailsTypeTable, $detailsTypeTable . '.id', '=', $currentTable . '.employment_detail_type_id')
-                    ->orderBy($detailsTypeTable . '.name', $columnDirection)
-                    ->select($currentTable . '.*');
-            },
-        ]);
+        $this->column('employmentDetailType.name');
+        $this->column('formatted_value')->label(__('Value'));
+        $this->column('effectivity_date');
     }
 
     public function setupShowOperation()
     {
         $this->setupListOperation();
-        $this->crud->removeColumn('employee_id');
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         $this->widgetBladeScript('crud::scripts.employment-detail');
 
         CRUD::setValidation(EmploymentDetailRequest::class);
-        CRUD::setFromDb();
 
-        $this->crud->removeFields(['employee_id', 'employment_detail_type_id']);
-
-        $this->crud->field('employee')->makeFirst();
-        $this->crud->field('employmentDetailType')
-            ->attribute('formatted_name')
-            ->size(6)
-            ->after('employee');
-        $this->crud->field('value')->type('hidden');
-
+        $this->field('employee')->makeFirst();
+        $this->field('employmentDetailType');
+        $this->field('value')->type('hidden');
         $this->employmentDetailTypes();
+        $this->field('effectivity_date');
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
@@ -227,42 +139,45 @@ class EmploymentDetailCrudController extends CrudController
 
     public function valueField()
     {
-        $this->crud->hasAccessToAny(['create', 'update']);
+        $validator = Validator::make(request()->all(), [
+            'employmentDetailType' => 'required|exists:employment_detail_types,id',
+            'operation' => 'required|in:list,create,update',
+        ]);
 
-        $inputType = EmploymentDetailType::find(request('id'));
-
-        if (!$inputType) {
+        if ($validator->fails()) {
+            \Alert::error($validator->errors()->all())->flash();
             return false;
         }
 
-        $fieldName = Str::snake($inputType->name);
-        $fieldNameHumanReadable = $this->strToHumanReadable($inputType->name);
-
-        $types = EmploymentDetailType::all();
-
-        $allFieldNames = [];
-        foreach ($types as $type) {
-            $allFieldNames[] = Str::snake($type->name);
+        $selectFields = [];
+        $inputFields = [];
+        foreach (EmploymentDetailType::pluck('name')->toArray() as $type) {
+            $typeName = Str::snake($type);
+            $tempModel = $this->strToModelName($typeName);
+            if (class_exists($tempModel)) {
+                $selectFields[] = $typeName;
+            } else {
+                $inputFields[] = $typeName;
+            }
         }
 
-        $allFieldNames[] = 'value';
-        $temp = null;
+        // selected dynamicField field
+        $dynamicFieldModel = EmploymentDetailType::findOrFail(request('employmentDetailType'));
+        $dynamicField = Str::snake($dynamicFieldModel->name);
 
-        // use in list opt, filters.
-        $selectOptions = null;
-        $tempModel = $this->strToModelName($fieldName);
-        if (class_exists($tempModel)) {
-            $selectOptions = $tempModel::all();
+        $isDynamicFieldSelect = false;
+        if (str_contains($dynamicFieldModel->validation, 'exists')) {
+            $isDynamicFieldSelect = true;
         }
 
-        return response()->json(
-            compact(
-                'temp',
-                'fieldName',
-                'fieldNameHumanReadable',
-                'allFieldNames',
-                'selectOptions'
-            )
-        );
+        $operation = request('operation');
+
+        return response()->json(compact(
+            'operation',
+            'isDynamicFieldSelect',
+            'selectFields',
+            'inputFields',
+            'dynamicField',
+        ));
     }
 }

@@ -162,6 +162,24 @@ class RolesAndPermissionsSeeder extends Seeder
             'leave_types_filters',
             'leave_types_revise',
         ],
+
+        'relationships' => [
+            'relationships_list',
+            'relationships_create',
+            'relationships_update',
+            'relationships_delete',
+            'relationships_revise',
+        ],
+
+        'beneficiaries' => [
+            'beneficiaries_list',
+            'beneficiaries_create',
+            'beneficiaries_show',
+            'beneficiaries_update',
+            'beneficiaries_delete',
+            'beneficiaries_filters',
+            'beneficiaries_revise',
+        ],
     ];
 
     /**

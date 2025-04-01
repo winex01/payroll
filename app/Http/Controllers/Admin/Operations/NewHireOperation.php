@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Operations;
 
+use App\Traits\FieldTrait;
 use Illuminate\Support\Str;
 use App\Models\EmploymentDetail;
 use App\Models\EmploymentDetailType;
@@ -11,6 +12,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasForm;
 trait NewHireOperation
 {
     use HasForm;
+    use FieldTrait;
 
     /**
      * Define which routes are needed for this operation.
@@ -50,9 +52,9 @@ trait NewHireOperation
 
         $this->crud->operation('newHire', function () {
             $this->crud->setValidation(NewHireRequest::class);
-            $this->crud->field('employee');
+            $this->field('employee');
             $this->employmentDetailTypes(hidden: false);
-            $this->crud->field('effectivity_date');
+            $this->field('effectivity_date');
 
         });
     }
@@ -103,15 +105,6 @@ trait NewHireOperation
         $types = EmploymentDetailType::all();
         foreach ($types as $type) {
             $fieldName = Str::snake($type->name);
-            $this->crud
-                ->field([
-                    'name' => $fieldName,
-                    'wrapper' => [
-                        'class' => 'form-group col-sm-6 mb-3 ' . ($hidden ? 'd-none' : ''),
-                    ],
-                ])
-                ->after('employmentDetailType');
-
             $modifiedAttributes = [];
 
             // model/select
@@ -121,7 +114,7 @@ trait NewHireOperation
 
                 $data = $data->mapWithKeys(function ($item) {
                     return [$item->id => $item->name];
-                });
+                })->toArray();
 
                 $modifiedAttributes = [
                     'type' => 'select_from_array',
@@ -138,7 +131,17 @@ trait NewHireOperation
                 ];
             }
 
-            $this->crud->modifyField($fieldName, $modifiedAttributes);
+            $this->field(
+                array_merge(
+                    [
+                        'name' => $fieldName,
+                        'wrapper' => [
+                            'class' => 'form-group col-sm-12 mb-12 ' . ($hidden ? 'd-none' : ''),
+                        ],
+                    ],
+                    $modifiedAttributes
+                )
+            )->after('employmentDetailType');
         }
     }
 }

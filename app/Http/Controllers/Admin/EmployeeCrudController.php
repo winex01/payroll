@@ -9,11 +9,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Http\Controllers\Admin\Operations\EmployeeFetchOperation;
 use Winex01\BackpackFilter\Http\Controllers\Operations\FilterOperation;
 
-/**
- * Class EmployeeCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class EmployeeCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -26,11 +21,6 @@ class EmployeeCrudController extends CrudController
     use FilterOperation;
     use EmployeeFetchOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
     public function setup()
     {
         CRUD::setModel(\App\Models\Employee::class);
@@ -42,16 +32,10 @@ class EmployeeCrudController extends CrudController
 
     public function setupFilterOperation()
     {
-        $this->crud->field('gender');
-        $this->crud->field('civilStatus');
+        $this->field('gender');
+        $this->field('civilStatus');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
         $this->filterQueries(function ($query) {
@@ -68,19 +52,10 @@ class EmployeeCrudController extends CrudController
 
         CRUD::setFromDb(false, true);
         $this->imageColumn('photo');
-        $this->crud->column('gender')->after('middle_name');
-        $this->crud->column('civilStatus')->after('birth_place')
-            ->label(__('Civil status'));
-        $this->crud->removeColumns(['gender_id', 'civil_status_id']);
+        $this->column('gender.name')->after('middle_name');
+        $this->column('civilStatus.name')->after('birth_place');
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     *
-     */
     protected function setupCreateOperation()
     {
         $this->widgetBladeScript('crud::scripts.employee');
@@ -88,46 +63,39 @@ class EmployeeCrudController extends CrudController
         CRUD::setValidation(EmployeeRequest::class);
 
         $this->imageField('photo');
-        $this->crud->field('employee_no');
-        $this->crud->field('last_name');
-        $this->crud->field('first_name');
-        $this->crud->field('middle_name');
+        $this->field('employee_no');
+        $this->field('last_name');
+        $this->field('first_name');
+        $this->field('middle_name');
 
-        $tab = 'Personal Details';
-        $this->crud->field('gender')->tab($tab);
-        $this->crud->field('birth_date')->tab($tab);
-        $this->crud->field('birth_place')->tab($tab);
-        $this->crud->field('civilStatus')->tab($tab)
-            ->label(__('Civil status'));
-        $this->crud->field('date_of_marriage')->tab($tab);
+        $tab = __('Personal Details');
+        $this->field('gender')->tab($tab);
+        $this->field('birth_date')->tab($tab);
+        $this->field('birth_place')->tab($tab);
+        $this->field('civilStatus')->tab($tab);
+        $this->field('date_of_marriage')->tab($tab);
 
-        $this->crud->field('mobile_no')->tab($tab);
-        $this->crud->field('telephone_no')->tab($tab);
-        $this->crud->field('personal_email')->tab($tab);
-        $this->crud->field('company_email')->tab($tab);
+        $this->field('mobile_no')->tab($tab);
+        $this->field('telephone_no')->tab($tab);
+        $this->field('personal_email')->tab($tab);
+        $this->field('company_email')->tab($tab);
 
-        $this->crud->field('current_address')->tab($tab);
-        $this->crud->field('home_address')->tab($tab);
-        $this->crud->field('house_no')->tab($tab);
-        $this->crud->field('street')->tab($tab);
-        $this->crud->field('brgy')->tab($tab);
-        $this->crud->field('city')->tab($tab);
-        $this->crud->field('province')->tab($tab);
-        $this->crud->field('zip_code')->tab($tab);
+        $this->field('current_address')->tab($tab);
+        $this->field('home_address')->tab($tab);
+        $this->field('house_no')->tab($tab);
+        $this->field('street')->tab($tab);
+        $this->field('brgy')->tab($tab);
+        $this->field('city')->tab($tab);
+        $this->field('province')->tab($tab);
+        $this->field('zip_code')->tab($tab);
 
-        $tab = 'Tin, Sss, Phil...';
-        $this->crud->field('tin')->tab($tab);
-        $this->crud->field('sss')->tab($tab);
-        $this->crud->field('philhealth')->tab($tab);
-        $this->crud->field('pagibig')->tab($tab);
+        $tab = __('Tin, Sss, Phil...');
+        $this->field('tin')->tab($tab);
+        $this->field('sss')->tab($tab);
+        $this->field('philhealth')->tab($tab);
+        $this->field('pagibig')->tab($tab);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
